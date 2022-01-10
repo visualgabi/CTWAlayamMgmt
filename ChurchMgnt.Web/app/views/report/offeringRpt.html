@@ -1,0 +1,302 @@
+﻿<div class="row" ng-controller="offeringRptCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-body">
+
+                <div class="col-md-12">
+                    <form name="reportForm" ng-init="initialize()">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="offeringSearch.startDate">Start Date:</label>
+                                <div class="col-md-4">
+                                    <input type="date" ng-model="offeringSearch.startDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtStartDate" placeholder="yyyy-MM-dd" />
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.max">
+                                        You can not select future date
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.min">
+                                        Start date should be within latest 5 years
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.required">
+                                        Required
+                                    </span>
+                                </div>
+                                <label class="control-label col-sm-2" for="offeringSearch.endDate">End Date:</label>
+                                <div class="col-md-4">
+                                    <input type="date" ng-required="true" ng-model="offeringSearch.endDate" max="{{ maxDate() | date:'yyyy-MM-dd' }}" min="{{offeringSearch.startDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtEndDate" placeholder="yyyy-MM-dd" />
+                                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.min">
+                                        End Date should be greater than start date
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.max">
+                                        Date difference should be 12 months only
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.required">
+                                        Required
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="Phone2">Source:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddOrderBy" ng-model="offeringSearch.sourceId" ng-options=" source.id as  source.name for  source in sources ">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-sm-2" for="Phone2">Fund Type:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddFundType" chosen allow-single-deselect="true" disable-search="true" ng-model="offeringSearch.fundTypeId" ng-options=" fundType.id as  fundType.name for  fundType in fundTypes ">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="Phone2">Offering Type:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddOfferingType" chosen allow-single-deselect="true" disable-search="true" ng-model="offeringSearch.offeringTypeId" ng-options=" offeringType.id as  offeringType.name for  offeringType in offeringTypes ">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-sm-2" for="Phone2">Order By:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddOrderBy" ng-model="offeringSearch.orderById" ng-options=" orderby.id as  orderby.name for  orderby in orderBys ">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div style="align-content:center" class="col-md-5"></div>
+                                <div style="align-content:center" class="col-md-2">
+                                    &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                    <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-click="search(reportForm)">Search</button>
+                                </div>
+                                <div style="align-content:center" class="col-md-5"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForEmptyList}} alert-dismissible" ng-show="showAlertForEmptyList" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForEmptyList=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForEmptyList}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <hr />
+                        <div class="col-md-11">
+                        </div>
+                        <div class="col-md-1 pull-right">
+                            <div class="col-md-6">
+                                <a title="Download in pdf" ng-show="showPrint" type="button" class="btn btn-success glyphicon glyphicon-download-alt" ng-click="downloadPdf()"></a>
+                            </div>
+                            <div class="col-md-6">
+                                <a title="Download in excel" ng-show="showExcel" type="button" class="btn btn-success glyphicon glyphicon-file" ng-click="downloadExcel()"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <!--<div class="row">
+                    <div class="col-md-12" ng-if="false">
+                        <hr />
+                        <a title="Download" ng-show="showPrint" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="print()"></a>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>-->
+
+                <div class="row" ng-show="showPrint">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <td>Total offering in {{authentication.currency}}</td>
+                                        <td>{{total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by source type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Source type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in sourceTypeSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by payment type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Payment type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in paymentTypesSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by fund type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Fund type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in fundTypeSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by offering type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Offering type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in offeringTypeSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                 <!--<div class="row">
+                     <div class="col-md-12">
+                         &nbsp;
+                     </div>
+                    <div class="col-md-12">                        
+                        <a title="Download in excel" ng-show="showExcel" type="button" class="btn btn-success fa fa-file-excel-o pull-right" ng-click="downloadExcel()"></a>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>-->
+
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Source
+                        </th>
+                        <th>
+                            Member Name
+                        </th>
+                        <th>
+                            Offering Type
+                        </th>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Fund Type
+                        </th>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Payment Type
+                        </th>
+                        <th>
+                            Amount in {{authentication.currency}}
+                        </th>
+                        <th>
+                            OfferingDate
+                        </th>
+                    </tr>
+                    <tr ng-repeat="offering in offerings">
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{offering.familyMember != null ? "Family" : "Sponsor"}}
+                        </td>
+                        <td>
+                            {{offering.familyMember != null ? offering.familyMember : offering.sponsor}}
+                        </td>
+                        <td>
+                            {{offering.offeringType}}
+                        </td>
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{offering.fundType}}
+                        </td>
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{offering.paymentType}}
+                        </td>
+                        <td>
+                            {{offering.amount}}
+                        </td>
+                        <td>
+                            {{offering.offeringDate | date:MM/dd/yyyy}}
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>

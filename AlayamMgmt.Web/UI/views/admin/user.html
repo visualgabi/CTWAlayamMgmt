@@ -1,0 +1,242 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+
+    <div class="col-md-12">
+        <span class="lead">User Management.</span>
+        <button title="Add User" ng-click="setAction('add')" class="btn btn-success glyphicon glyphicon-plus  pull-right" data-template-url="addUser.html" data-placement="left" data-auto-close="1" bs-popover></button>
+
+        <hr />
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group has-feedback pull-right">
+            <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+        </div>
+        <div class="col-md-12">
+            <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{alertMsgForDelete}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div ng-init="formLoad()">
+            <table ng-table="tableParams" class="table table-bordered table-striped">
+                <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                    <td data-title="'User Name'" sortable="'userName'">
+                        {{item.userName}}
+                    </td>
+                    <td data-title="'Role'" sortable="'role'">
+                        {{item.role}}
+                    </td>
+                    <td data-title="'First Name'" sortable="'firstName'" class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'">
+                        {{item.firstName}}
+                    </td>
+                    <td data-title="'Last Name'" sortable="'lastName'" class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'">
+                        {{item.lastName}}
+                    </td>
+                    <td data-title="'organization'" sortable="'organization'">
+                        {{item.organization}}
+                    </td>
+                    <td>
+                        <button title="Edit" type="button" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addUser.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                        <button title="Disable" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-remove" data-template="deleteUser.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                        <button title="Enable" type="button" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+
+</div> <hr />
+
+    <script id="addUser.html" type="text/ng-template">
+        <div class="popover" tabindex="-1">
+            <h3 class="popover-title">User</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                        <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsg}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="popover-content popover.Form-content">
+                <form name="userForm" ng-init="initialize(user.id)">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="user.userName">UserName:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="email" ng-model="user.userName" ng-maxlength="256" ng-required="true" class="form-control" name="txtEmail" placeholder="Enter Email" ng-blur="isUnique(user.id, user.userName, userForm.txtEmail)" />
+                                <span class="error" ng-show="userForm.txtEmail.$dirty && userForm.txtEmail.$error.required">
+                                    Required!
+                                </span>
+                                <span class="validation-error" ng-show="userForm.txtEmail.$dirty && userForm.txtEmail.$error.isunique">This user name name is available in the system, please try another</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row hidden-sm hidden-xs" ng-show="user.id == 0">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="user.id == 0">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="user.roleId">Password:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="password" ng-model="user.password" ng-maxlength="256" ng-required="user.id == 0" class="form-control" name="txtPassword" placeholder="Enter Password" password-strength="user.password" />
+                                <span class="error" ng-show="userForm.txtPassword.$dirty && userForm.txtPassword.$error.required">
+                                    Required!
+                                </span>
+                                <span class="help-inline" data-ng-show='userForm.txtPassword.$valid && userForm.txtPassword.$dirty' data-ng-class="strength">This password is {{strength}} ! </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="user.roleId">Role:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddRole" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Role'" ng-required="true" ng-model="user.roleId" ng-options="role.id as role.name for role in roles | filter:shouldShow">
+                                    <option value=""></option>
+                                </select>
+                                <span class="error" ng-show="userForm.ddRole.$dirty && userForm.ddRole.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="user.firstName">First Name:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" ng-model="user.firstName" ng-maxlength="256" ng-required="true" class="form-control" name="txtFirstName" placeholder="Enter First Name" />
+                                <span class="error" ng-show="userForm.firstName.$dirty && userForm.firstName.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="user.lastName">Last Name:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" ng-model="user.lastName" ng-maxlength="256" ng-required="true" class="form-control" name="txtLastName" placeholder="Enter Last Name" />
+                                <span class="error" ng-show="userForm.txtLastName.$dirty && userForm.txtLastName.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="authentication.role == 1">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="user.organization">Organization:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Organization'" name="ddOrganization" ng-disabled="user.roleId == 1" ng-required="user.roleId != 1" ng-model="user.organizationId" ng-options="organization.id as organization.name for organization in organizations">
+                                    <option value=""></option>
+                                </select>
+                                <span class="error" ng-show="userForm.ddOrganization.$dirty && userForm.ddOrganization.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                <button type="submit" class="btn btn-primary" ng-click="save(userForm);">Save</button>
+                                <button type="button" class="btn btn-primary" ng-click="clearAlert();load();$hide()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </script>
+
+    <script id="deleteUser.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-primary" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-danger" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

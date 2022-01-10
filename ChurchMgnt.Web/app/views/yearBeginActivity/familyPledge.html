@@ -1,0 +1,228 @@
+﻿<div class="row" ng-controller="familyPledgeCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Family Pledge list
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback pull-right">
+                        <button title="Add Family Pledge" ng-click="setAction('add')" class="btn btn-success glyphicon glyphicon-plus  pull-right" data-template="addFamilyPledge.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForDelete}}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="col-md-12">
+                    <div ng-init="formLoad()">
+                        <table ng-table="tableParams" class="table table-bordered table-striped">
+                            <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                                <td data-title="'Family'" sortable="'family'">
+                                    {{item.family}}
+                                </td>
+                                <td data-title="'Org Fiscal Year'" sortable="'orgFiscalYear'">
+                                    {{item.orgFiscalYear}}
+                                </td>
+                                <td data-title="'Fund Type'" sortable="'fundType'">
+                                    {{item.fundType}}
+                                </td>
+                                <td data-title="amountTitle" sortable="'amount'">
+                                    {{item.amount }}
+                                </td>
+                                <td>
+                                    <button title="Edit" type="button" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template="addFamilyPledge.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Disable" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteFamilyPledge.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Enable" type="button" ng-click="enableFamilyPledge(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->
+<script id="addFamilyPledge.html" type="text/ng-template">
+    <div class="popover popover-singlecolumn" tabindex="-1">
+        <h3 class="popover-title">Family Pledge</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+
+        <div class="popover-content popover.Form-content">
+            <form name="familyPledgeForm" ng-init="initialize(familyPledge.id)">
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="familyPledge.fiscalYear">Family:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12" ng-show="familiesLoaded==0">
+                            <select class="form-control" disabled>
+                                <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-12" ng-show="familiesLoaded==1">
+                            <!--<select class="form-control" name="ddFamily" ng-required="true" ng-disabled="action === 'edit'" ng-model="familyPledge.familyId" ng-options="family.id as family.name for family in families">
+                                <option value="">Select Family</option>
+                            </select>
+                            <span class="error" ng-show="familyPledgeForm.ddFiscalYear.$dirty && familyPledgeForm.ddFiscalYear.$error.required">
+                                Required!
+                            </span>-->
+                            <ui-select name="ddFamily" allow-clear ng-model="family.selected" theme="bootstrap" required>
+                                <ui-select-match placeholder="Select or search a family in the list...">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="family in families | filter: $select.search">
+                                    <span ng-bind-html="family.name | highlight: $select.search"></span>
+                                    <small ng-bind-html="family.emailId1 | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="error" ng-show="familyPledgeForm.ddFamily.$dirty && familyPledgeForm.ddFamily.$error.required">
+                                Required!
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="familyPledge.fiscalYear">Fiscal Year:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control" name="ddFiscalYear" ng-required="true" ng-disabled="action === 'edit'" ng-model="familyPledge.orgFiscalYearId" ng-options="orgFiscalYear.id as orgFiscalYear.fiscalYear for orgFiscalYear in orgFiscalYears">
+                                <option value="">Select Fiscal Year</option>
+                            </select>
+                            <span class="error" ng-show="familyPledgeForm.ddFiscalYear.$dirty && familyPledgeForm.ddFiscalYear.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="familyPledge.fiscalYear">Fund Type:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control" name="ddFundType" ng-required="true" ng-disabled="action === 'edit'" ng-model="familyPledge.fundTypeId" ng-options="fundType.id as fundType.name for fundType in fundTypes">
+                                <option value="">Select Fund Type</option>
+                            </select>
+                            <span class="error" ng-show="familyPledgeForm.ddFundType.$dirty && familyPledgeForm.ddFundType.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="familyPledge.amount">Amount in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="number" step="0.01" min="0" ng-model="familyPledge.amount" ng-maxlength="10" ng-required="true" class="form-control" name="txtAmount" placeholder="Enter Amount" />
+                            <span class="error" ng-show="familyPledgeForm.txtAmount.$dirty && familyPledgeForm.txtAmount.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                            <button type="submit" class="btn btn-primary" ng-click="saveFamilyPledge(familyPledgeForm);">Save</button>
+                            <button type="button" class="btn btn-default" ng-click="clearAlert();loadFamilyPledges();$hide()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script id="deleteFamilyPledge.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enableFamilyPledge(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

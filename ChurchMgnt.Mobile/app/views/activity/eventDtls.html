@@ -1,0 +1,101 @@
+﻿<div class="row" ng-init="initialize()" ng-controller="eventDtlsCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Event details
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+
+                    <a title="List" class="btn btn-success glyphicon glyphicon-th-list btn-xs" ui-sref="activity.eventlst"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Edit" type="button" ng-disabled="disableEditAction(event.eventDate)" class="btn btn-success glyphicon glyphicon-edit btn-xs" ui-sref="activity.eventEdit({id:{{event.id}}})"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Disable" type="button" ng-show="event.active === true" ng-disabled="disableEditAction(event.eventDate)" class="btn btn-warning glyphicon glyphicon glyphicon-trash btn-xs" data-template="deleteEvent.html" data-placement="right" data-auto-close="1" bs-popover></a>
+                    <a title="Enable" type="button" ng-show="event.active === false" ng-disabled="disableEditAction(event.eventDate)" class="btn btn-success glyphicon glyphicon glyphicon-ok btn-xs" ng-click="enable(event.id, true)"></a>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                            <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{alertMsg}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <table class="table table-bordered">
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>Name:</th>
+                        <td>{{event.name}} </td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>Event Date:</th>
+                        <td>{{event.eventDate | date:MM/dd/yyyy }}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>Event Type:</th>
+                        <td>{{event.eventType}}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>Is Special Event:</th>
+                        <td>{{event.isSpecialEvent}}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>No Of Adult Attended:</th>
+                        <td>{{event.noOfAdultAttended}}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>No Of Men Attended:</th>
+                        <td>{{event.noOfMenAttended}}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>No Of Women Attended:</th>
+                        <td>{{event.noOfWomenAttended }}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>No Of Kids Participated:</th>
+                        <td>{{event.noOfKidsParticipated}}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>Offering:</th>
+                        <td>{{event.offering }}</td>
+                    </tr>
+                    <tr ng-class="{'danger': event.active === false }">
+                        <th>Expense:</th>
+                        <td>{{event.expense}}</td>
+                    </tr>
+                </table>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script id="deleteEvent.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(event.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

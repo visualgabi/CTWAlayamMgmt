@@ -1,0 +1,260 @@
+﻿
+<div class="row" ng-controller="expenselstCtrl">
+    <div class="col-md-12" ng-init="formLoad()">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Expense
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div>
+                        &nbsp;
+                        <button title="Add Expense" class="btn btn-success glyphicon glyphicon-plus btn-xs" ui-sref="activity.expenseAdd"></button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>              
+                        <table id="tblExpense" ng-table="tableParams" class="table table-bordered table-striped">
+                            <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                                <td data-title="'Expense For'" sortable="'targetId'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.branch != null ? "Branch" : "Organization"}}
+                                </td>
+                                <td data-title="'Branch/ Org Name'" sortable="'targetId'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.branch != null ? expense.branch : authentication.orgName}}
+                                </td>
+                                <td data-title="'Expense Type'" sortable="'expenseType'">
+                                    {{item.expenseType}}
+                                </td>
+                                <td data-title="'Sub Expense Type'" sortable="'expenseType'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.subExpenseType}}
+                                </td>
+                                <td data-title="'Payment Type'" sortable="'paymentType'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.paymentType}}
+                                </td>
+                                <td data-title="amountTitle" sortable="'Amount'">
+                                    {{item.amount}}
+                                </td>
+                                <td data-title="'Expense Date'" sortable="'expenseDate'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.expenseDate | date:MM/dd/yyyy}}
+                                </td>
+                                <td data-title="'Action'">
+                                    <a title="Details" ui-sref="activity.expenseDtls({id:{{item.id}}})" class="fa fa-ellipsis-h"></a>
+                                    <!--<button title="Edit" type="button" ng-disabled="disableEditAction(item.expenseDate)" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template="addExpense.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Disable" type="button" ng-disabled="disableEditAction(item.expenseDate)" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteExpense.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Enable" type="button" ng-disabled="disableEditAction(item.expenseDate)" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>-->
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                   
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+        </div>
+    </div>
+    <hr />
+
+</div>
+
+<script id="addExpense.html" type="text/ng-template">
+    <div class="popover popover-doublecolumn" tabindex="-1">
+        <h3 class="popover-title">Expense</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+
+        <div class="popover-content popover.Form-content">
+            <form name="expenseForm" ng-init="initialize(expense.id)">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.targetId">Expense for:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddSource" ng-required="true" ng-model="expense.targetId" ng-options="target.id as target.name for target in targets"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-if="expense.targetId==1">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.branchId">Branch:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddBranch" ng-required="true" ng-model="expense.branchId" ng-options="branch.id as branch.name for branch in branches | filter: availableBranches(expense.id)">
+                                    <option value="">Select Branch</option>
+                                </select>
+                                <span class="error" ng-show="expenseForm.ddBranch.$dirty && expenseForm.ddBranch.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-if="expense.targetId==2">
+                            <div class="col-md-12">
+                                <label class="col-md-12">Organization Name:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" ng-disabled="true" class="form-control" name="txOrgName" value="{{authentication.orgName}}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.expenseTypeId">Expense Type:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddExpenseType" ng-required="true" ng-model="expense.expenseTypeId" ng-options="expenseType.id as expenseType.name for expenseType in expenseTypes | filter: availableExpenseTypes (expense.id)">
+                                    <option value="">Select Expense Type</option>
+                                </select>
+                                <span class="error" ng-show="expenseForm.ddExpenseType.$dirty && expenseForm.ddExpenseType.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.subExpenseTypeId">Sub Expense Type:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddSubExpenseType" ng-required="true" ng-model="expense.subExpenseTypeId" ng-disabled="expense.expenseTypeId == ''" ng-options="subExpenseType.id as  subExpenseType.name for  subExpenseType in subExpenseTypes | filter: availableSubExpenseTypes (expense.id, expense.expenseTypeId)">
+                                    <option value="">Select Sub Expense Type</option>
+                                </select>
+                                <span class="error" ng-show="expenseForm.ddSubExpenseType.$dirty && expenseForm.ddSubExpenseType.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.paymentTypeId">Payment Type:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddPaymentType" ng-required="true" ng-model="expense.paymentTypeId" ng-options="paymentType.id as paymentType.name for paymentType in paymentTypes">
+                                    <option value="">Select Payment Type</option>
+                                </select>
+                                <span class="error" ng-show="expenseForm.ddPaymentType.$dirty && ddPaymentType.ddFundType.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.transactionNumber">Transaction Number:</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" ng-model="expense.transactionNumber" ng-maxlength="10" class="form-control" name="txtTransactionNumber" placeholder="Enter Transaction Number" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.amount">Amount in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="number" step="0.01" min="0" ng-model="expense.amount" ng-maxlength="10" ng-required="true" class="form-control" name="txtAmount" placeholder="Enter Amount" />
+                                <span class="error" ng-show="expenseForm.txtAmount.$dirty && expenseForm.txtAmount.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.expenseDate">Expense Date<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="date" ng-model="expense.expenseDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtExpenseDate" placeholder="yyyy-MM-dd" />
+                                <span class="error" ng-show="expenseForm.txtExpenseDate.$dirty && expenseForm.txtExpenseDate.$error.max">
+                                    You can not select future date
+                                </span>
+                                <span class="error" ng-show="expenseForm.txtExpenseDate.$dirty && expenseForm.txtExpenseDate.$error.min">
+                                    Start date should be greater than {{ rptMinDate() | date:'yyyy-MM-dd' }}
+                                </span>
+                                <span class="error" ng-show="expenseForm.txtExpenseDate.$dirty && expenseForm.txtExpenseDate.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.accountId">Account</label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddAccount" ng-required="true" ng-model="expense.accountId" ng-options="account.id as account.name for account in accounts | filter: availableAccounts (expense.id, expense.accountId)">
+                                    <option value="">Select Account</option>
+                                </select>
+                                <span class="error" ng-show="expenseForm.ddAccount.$dirty && expenseForm.ddAccount.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="expense.notes">Expense Notes</label>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="form-control" rows="2" ng-model="expense.notes" ng-maxlength="250" name="txtNotes" placeholder="Enter Notes"></textarea>
+                                <span class="error" ng-show="expenseForm.txtNotes.$dirty && expenseForm.txtNotes.$error.maxlength">
+                                    Last name cannot be longer than 250 characters
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-12" style="text-align: center;">
+                                <button type="submit" class="btn btn-primary" ng-click="save(expenseForm);">Save</button>
+                                <button type="button" class="btn btn-default" ng-click="clearAlert();load();$hide()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+<script id="deleteExpense.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

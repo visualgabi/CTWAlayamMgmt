@@ -1,0 +1,75 @@
+﻿<div class="container">
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a title="Details" class="btn btn-success glyphicon glyphicon-folder-open pull-right" href="#/orgProfileDtls"></a>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form name="orgProfileForm" ng-init="initialize()">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="name">Tax Id:<span class="required">*</span></label>
+                            <div class="col-md-4">
+                                <input type="text" ng-model="orgProfileData.taxId" ng-required="true" ng-maxlength="100" class="form-control" name="txtTaxId" placeholder="Enter Tax Id" />
+                                <span class="error" ng-show="orgProfileForm.txtTaxId.$touched && orgProfileForm.txtTaxId.$error.required">
+                                    Required!
+                                </span>
+                                <span class="error" ng-show="orgProfileForm.taxId && orgProfileForm.taxId.$error.maxlength">
+                                    Tax Id cannot be longer than 100 characters
+                                </span>
+                            </div>
+                            <label class="control-label col-sm-2" for="name">Currency:<span class="required">*</span></label>
+                            <div class="col-md-4">
+                                <select class="form-control" name="ddCurrency" ng-required="true" ng-model="orgProfileData.currencyId" ng-options="currency.id as currency.name for currency in currencies">
+                                    <option value="">Select Currency</option>
+                                </select>
+                                <span class="error" ng-show="orgProfileForm.ddCurrency.$touched && orgProfileForm.ddCurrency.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="file">Logo:</label>
+                                <div class="col-md-4">
+                                    <button class="button" ngf-select ng-model="orgProfileData.file" name="file" ngf-pattern="'image/*"
+                                            accept="image/*" ngf-max-size="20MB" ngf-min-height="40">
+                                        Upload Logo
+                                    </button>
+                                    <img ngf-src="orgProfileData.file" title="Image Not Yet uploaded" width="150" height="150" class="drop-box">
+                                    </img>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-6 col-sm-6">
+                                    <br />
+                                    <button type="submit" class="btn btn-primary" ng-click="save(orgProfileForm)">Save</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button type="reset" class="btn btn-primary" ng-click="formReset()">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr />
+
+</div>

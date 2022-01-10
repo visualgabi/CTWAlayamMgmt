@@ -1,0 +1,187 @@
+﻿<style>
+    input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+</style>
+<div ng-controller="emailComposeCtrl" ng-init="formLoad()">
+
+       <div class="row">
+            <div class="col-lg-12">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        New email
+                    </div>
+                    <div class="panel-body">
+                        <form name="emailComposeForm" class="form-horizontal" id="emailComposeForm">
+                            <div ng-show="step == 1" class="p-m">
+                                <div class="p-xs h4">
+                                    New message
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                                        <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        {{alertMsg}}
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>                                
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">From:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="txtFromEMail" ng-model="emailCompose.from" class="form-control input-sm" disabled>                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">Subject:</label>
+                                                <div class="col-sm-10"><input type="text" name="txtSubject" ng-model="emailCompose.subject" class="form-control input-sm" placeholder="Enter Email subject"></div>
+                                                <span class="error" ng-show="emailComposeForm.txtSubject.$dirty && emailComposeForm.txtSubject.$error.required">
+                                                    Required!
+                                                </span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">To:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="txtToEMail" ng-model="emailCompose.to" title="Multiple emails with comma separated no empty spaces between the emails example: example@email.com,sample@email.com" class="form-control input-sm" placeholder="Multiple emails with comma separated no empty spaces between the emails example: example@email.com,sample@email.com">
+                                                    <span class="error" ng-show="emailComposeForm.txtToEMail.$dirty && emailComposeForm.txtToEMail.$error.required">
+                                                        Required!
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">To Church members:</label>
+                                                <div class="col-sm-10" ng-show="familyMembersLoaded==0">
+                                                    <select class="form-control" disabled>
+                                                        <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-10" ng-show="familyMembersLoaded==1">
+                                                    <ui-select name="ddFamilyMember" allow-clear ng-model="multiSelected.familyMembers" close-on-select="false" theme="bootstrap" multiple>
+                                                        <ui-select-match placeholder="Select/ search a family member">{{$item.fullName}}</ui-select-match>
+                                                        <ui-select-choices repeat="familyMember in familyMembers | filter: $select.search">
+                                                            <span ng-bind-html="familyMember.fullName | highlight: $select.search"></span>
+                                                            <small ng-bind-html="familyMember.family | highlight: $select.search"></small>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>                                          
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">Email Group:</label>
+                                                <div class="col-sm-10">
+                                                    <ui-select multiple ng-model="multiSelected.groups" theme="bootstrap" close-on-select="false" title="Choose groups">
+                                                        <ui-select-match placeholder="Select groups...">{{$item.name}}</ui-select-match>
+                                                        <ui-select-choices group-by="'typeInString'" repeat="group in groups | filter:$select.search">
+                                                            {{group.name}}
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+                                          
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">Attachments:</label>
+                                                <div class="col-sm-10">
+                                                    <label for="file-upload" class="custom-file-upload">
+                                                        <i class="fa fa-paperclip"></i>
+                                                    </label>
+                                                    <input id="file-upload" type="file" multiple="multiple" file-input="selectedFiles" accept=".xlsx,.xls,image/*,.doc,.docx,.ppt, .pptx,.txt,.pdf,.zip"/>                                                   
+                                                    <span ng-show="selectedFiles.length==0">no files chosen</span>
+                                                    <div ng-show="selectedFiles.length>0"><table><tr ng-repeat="file in selectedFiles"><td>{{file.name}}</td></tr></table><button ng-click="fileClear()" class="btn btn-default">Remove the attachement(s)</button></div>
+                                                </div>
+                                                </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">Load email templte:</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control" name="ddTemplate" ng-model="emailCompose.templateId" ng-options="template.id as template.name for template in templates" ng-change="loadTemplate()">
+                                                        <option value="">Select email template</option>
+                                                    </select>                                                  
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="showAlertForTemplate">
+                                                <label class="col-sm-2 control-label text-left"></label>
+                                                <div class="col-sm-10 alert {{alertClassForTemplate}} alert-dismissible" ng-show="showAlertForTemplate" role="alert">
+                                                    <button type="button" class="close" ng-click="showAlertForTemplate=false;emailCompose.templateId=''" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    {{alertMsgForTemplate}} &nbsp;&nbsp;&nbsp;
+                                                    <button class="btn btn-default" ng-click="showAlertForTemplate=false;assignContent()">Yes</button>
+                                                    <button class="btn btn-default" ng-click="showAlertForTemplate=false;emailCompose.templateId=''">No</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label text-left">Email Content:</label>
+
+                                                <div class="col-sm-10">
+                                                    <div class="panel-body">
+                                                        <div summernote id="txtContent" class="summernote" ng-required="true" height="300" ng-model="emailCompose.content"></div>
+                                                    </div>                                                 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div ng-show="step == 2" class="p-m">
+                                <div class="col-md-12" ng-if="emailSending">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i> <label class="label label-primary">Email sending...</label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                                <div class="p-xs h4">
+                                    Review
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label text-left">From:</label>
+                                        <div class="col-sm-10">{{emailCompose.from}}</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label text-left">Subject:</label>
+                                        <div class="col-sm-10">{{emailCompose.subject}}</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label text-left">To:</label>
+                                        <div class="col-sm-10">{{emailCompose.to}}</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label text-left">Family members:</label>
+                                        <div class="col-sm-10">{{selectedMemberNames}}</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label text-left">Email Groups:</label>
+                                        <div class="col-sm-10">{{selectedGroupNames}}</div>
+                                    </div>                                   
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label text-left">Attachments:</label>
+                                        <div class="col-sm-10">{{selectedFileNames}}</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label text-left">Email Content:</label>
+                                        <div class="col-sm-10" data-ng-bind-html="trustAsHtml(emailCompose.content)"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="text-right m-t-xs">
+                                <button ng-click="wizard.next()" ng-hide="step == 2" class="btn btn-default">Preview</button>
+                                <button ng-click="wizard.prev()" ng-hide="step == 1" class="btn btn-default">Edit</button>
+                                <button ng-click="sendEmail()" ng-hide="step == 1" class="btn btn-default">Send Email</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+

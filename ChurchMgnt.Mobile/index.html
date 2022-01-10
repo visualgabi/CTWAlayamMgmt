@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html ng-app="churchMgntApp">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title set in pageTitle directive -->
+    <title page-title></title>
+
+    <link rel="stylesheet" href="app/content/css/bootstrap.min.css" />    
+    <link rel="stylesheet" href="app/content/css/angular-notify.min.css" />
+    <link rel="stylesheet" href="app/content/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="app/content/css/metisMenu.min.css" />
+    <link rel="stylesheet" href="app/content/css/animate.min.css" />
+    
+    <link rel="stylesheet" href="app/content/css/ng-table.min.css" />
+    <link rel="stylesheet" href="app/content/css/toastr.css" />
+    <link rel="stylesheet" href="app/content/css/loading-bar.min.css" />            
+    <link rel="stylesheet" href="app/content/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
+    <link rel="stylesheet" href="app/content/fonts/pe-icon-7-stroke/css/helper.css" />
+    <link rel="stylesheet" href="app/content/css/style.css" />
+
+</head>
+<body ng-controller="indexCtrl" class="{{$state.current.data.specialClass}}" landing-scrollspy tour backdrop="true">
+
+    <div class="splash">
+        <div class="color-line"></div><div class="splash-title">
+            <h1>ChurchMgnt App</h1>
+            <p>Requested content is loading. </p><div class="spinner">
+                <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4">
+                </div> <div class="rect5"></div>
+            </div>
+        </div>
+    </div>
+
+    <div ui-view autoscroll="true"></div>
+
+    <script src="app/scripts/jquery.min.js"></script>
+    <script src="app/scripts/jquery-ui.min.js"></script>
+    <script src="app/scripts/jquery.base64.js"></script>
+    <script src="app/scripts/jquery.validate.min.js"></script>
+    <script src="app/scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="app/scripts/jquery.slimscroll.min.js"></script>
+    <script src="app/scripts/angular.min.js"></script>
+    <script src="app/scripts/angular-sanitize.min.js"></script>
+    <script src="app/scripts/angular-animate.min.js"></script>
+    <script src="app/scripts/angular-ui-router.min.js"></script>    
+    <script src="app/scripts/ui-bootstrap.min.js"></script>
+    <script src="app/scripts/ui-bootstrap-tpls.min.js"></script>  
+    <script src="app/scripts/bootstrap.min.js"></script>    
+    <script src="app/scripts/metisMenu.min.js"></script>
+    <script src="app/scripts/ui-utils.min.js"></script>
+    <script src="app/scripts/angular-ui-tree.min.js"></script>    
+    <script src="app/scripts/bootstrap-tour.min.js"></script>
+    <script src="app/scripts/angular-bootstrap-tour.min.js"></script>
+    <script src="app/scripts/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="app/scripts/angular-touch.js"></script>
+    <script src="app/scripts/angular-validator.js"></script>
+    <script src="app/scripts/angular-notify.min.js"></script>
+    <script src="app/scripts/xeditable.min.js"></script>        
+    <script src="app/scripts/loading-bar.min.js"></script>
+ 
+        
+    <script src="app/scripts/toastr.js"></script>     
+    
+    <!--<script src="app/scripts/angular-route.js"></script>
+    <script src="app/scripts/angular-route.min.js"></script>
+    <script src="app/scripts/angular-route.min.js.map"></script>-->
+
+    <script src="app/scripts/angular-strap.min.js"></script>
+    <script src="app/scripts/angular-strap.tpl.js"></script>
+    <script src="app/scripts/angular-strap.docs.tpl.js"></script>
+
+    <script src="app/scripts/ng-table.min.js"></script>
+    <script src="app/scripts/angular-local-storage.min.js"></script>
+    <script src="app/scripts/angular-filter.js"></script>
+    <script src="app/scripts/angular-base64.js"></script>
+    <script src="app/scripts/angular-cookies.js"></script>        
+
+    <!--<script src="app/scripts/datetime-picker.min.js"></script>
+    <script src="app/scripts/datetime-picker.tpls.js"></script>        -->
+    
+    
+    
+    <!--<script src="app/scripts/master_bootstrap-colorpicker-module.js"></script> 
+    <script src="app/scripts/master_textAngular-dropdownToggle.js"></script> 
+    <script src="app/scripts/master_textAngular-sanitize.min.js"></script> 
+    <script src="app/scripts/master_textAngular.min.js"></script>-->     
+
+
+    <script src="app/common.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/config.js"></script>
+    <script src="app/directives/directives.js"></script>
+
+    <script src="app/services/authInterceptorService.js"></script>
+    <script src="app/services/authService.js"></script>
+    <script src="app/services/organizationService.js"></script>
+    <script src="app/services/familyService.js"></script>
+    <script src="app/services/lookupService.js"></script>
+    <script src="app/services/sharedService.js"></script>
+    <script src="app/services/familyMemberService.js"></script>    
+    <script src="app/services/dashboardService.js"></script>
+    <script src="app/services/reportedIssueService.js"></script>
+
+    <script src="app/services/orgFiscalYearService.js"></script>
+    <script src="app/services/fiscalYearBudgetService.js"></script>
+    <script src="app/services/offeringService.js"></script>
+    <script src="app/services/expenseService.js"></script>
+    <script src="app/services/sponsorService.js"></script>
+    <script src="app/services/notificationService.js"></script>
+    
+    <script src="app/services/userService.js"></script>
+    <script src="app/services/roleService.js"></script>
+    <script src="app/services/eventService.js"></script>
+    <script src="app/services/depositService.js"></script>
+    <script src="app/services/reportDataService.js"></script>
+    <script src="app/services/openingBalanceService.js"></script>
+    <script src="app/services/yearlyActivityService.js"></script>
+    
+    
+
+
+    <script src="app/ctrls/indexCtrl.js"></script>
+    <script src="app/ctrls/loginCtrl.js"></script>
+    <script src="app/ctrls/indexCtrl.js"></script>
+    <script src="app/ctrls/errorCtrl.js"></script>
+    <script src="app/ctrls/dashboardCtrl.js"></script>    
+
+    <script src="app/ctrls/shared/orglstCtrl.js"></script>
+    <script src="app/ctrls/shared/orgCtrl.js"></script>        
+    <script src="app/ctrls/shared/orgDtlsCtrl.js"></script>
+
+    <script src="app/ctrls/activity/offeringlstCtrl.js"></script>
+    <script src="app/ctrls/activity/offeringDtlsCtrl.js"></script>
+    <script src="app/ctrls/activity/offeringCtrl.js"></script>
+
+    <script src="app/ctrls/activity/expenseCtrl.js"></script>
+    <script src="app/ctrls/activity/expenseDtlsCtrl.js"></script>
+    <script src="app/ctrls/activity/expenselstCtrl.js"></script>
+
+    <script src="app/ctrls/activity/eventCtrl.js"></script>
+    <script src="app/ctrls/activity/eventlstCtrl.js"></script>
+    <script src="app/ctrls/activity/eventDtlsCtrl.js"></script>
+
+    <script src="app/ctrls/activity/depositCtrl.js"></script>
+    <script src="app/ctrls/activity/depositlstCtrl.js"></script>
+    <script src="app/ctrls/activity/depositDtlsCtrl.js"></script>   
+    
+    
+    <script src="app/ctrls/admin/userCtrl.js"></script>
+    <script src="app/ctrls/admin/userlstCtrl.js"></script>
+    <script src="app/ctrls/admin/userDtlsCtrl.js"></script>
+
+    <script src="app/ctrls/yearEndActivity/BalanceSheetCtrl.js"></script>
+    
+</body>
+</html>

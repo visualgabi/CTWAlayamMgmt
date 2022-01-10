@@ -1,0 +1,152 @@
+﻿<div class="row" ng-controller="bankCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Bank list
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback pull-right">
+                        <button title="Add Bank" ng-click="setAction('add')" class="btn btn-success glyphicon glyphicon-plus  pull-right" data-template-url="addBank.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForDelete}}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="col-md-12">
+                    <div ng-init="formLoad()">
+                        <table ng-table="tableParams" class="table table-bordered table-striped table-responsive">
+                            <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                                <td data-title="'Name'" sortable="'name'">
+                                    {{item.name}}
+                                </td>
+                                <td data-title="'Description'" class="hidden-xs" header-class="'hidden-xs'" sortable="'description'">
+                                    {{item.description}}
+                                </td>
+                                <td data-title="'Action'">
+                                    <button title="Edit" type="button" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addBank.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Disable" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteBank.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Enable" type="button" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+        </div>
+    </div>
+</div>
+    <script id="addBank.html" type="text/ng-template">
+        <div class="popover popover-singlecolumn" tabindex="-1">
+            <h3 class="popover-title">Bank</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-dismissible {{alertClass}}" ng-show="showAlert" role="alert">
+                        <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsg}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="popover-content popover.Form-content">
+                <form name="bankForm" ng-init="initialize(bank.id)">
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="bank.name">Bank:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" ng-model="bank.name" ng-maxlength="250" ng-required="true" class="form-control" name="txtName" placeholder="Enter bank" ng-blur="isUnique(bank.id, bank.name, bankForm.txtName)" />
+                                <span class="error" ng-show="bankForm.txtName.$dirty && bankForm.txtName.$error.required">
+                                    Required!
+                                </span>
+                                <span class="validation-error" ng-show="bankForm.txtName.$dirty && bankForm.txtName.$error.isunique">This bank is available in the system, please try another</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label col-md-12" for="bank.description">Description:</label>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="form-control" rows="2" ng-model="bank.description" ng-maxlength="250" name="txtDescription" placeholder="Enter Description"></textarea>
+                                <span class="error" ng-show="bankForm.txtDescription.$dirty && bankForm.txtDescription.$error.maxlength">
+                                    Description cannot be longer than 250 characters
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                <button type="submit" class="btn btn-primary" ng-click="save(bankForm);">Save</button>
+                                <button type="button" class="btn btn-default" ng-click="clearAlert();load();$hide()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </script>
+
+    <script id="deleteBank.html" type="text/ng-template">
+        <div class="popover popover-delete right" tabindex="-1">
+            <div class="arrow" style="top: 50%;"></div>
+            <h3 class="popover-title">Are you sure?</h3>
+            <div class="popover-content">
+                <div class="input-group">
+                    <div class="form-actions">
+                        <button type="button" class="btn-xs btn-danger" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                        <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </script>

@@ -1,0 +1,92 @@
+﻿<div class="row" ng-controller="offeringDtlsCtrl">
+    <div class="col-md-12">               
+            <div class="hpanel">
+                <div class="panel-heading">
+                    <div panel-tools></div>
+                    offering details
+                </div>
+                <div class="panel-body">
+        
+                <div class="col-md-12">
+                  
+                    <a title="List" class="btn btn-success glyphicon glyphicon-th-list btn-xs" ui-sref="activity.offeringlst"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>                    
+                    <a title="Edit" type="button" ng-disabled="disableEditAction(offering.offeringDate)" class="btn btn-success glyphicon glyphicon-edit btn-xs" ui-sref="activity.offeringEdit({id:{{offering.id}}})"></a>
+                   <span class="pull-right">&nbsp;&nbsp;</span>                  
+                    <a title="Disable" type="button" ng-show="offering.active === true" ng-disabled="disableEditAction(offering.offeringDate)" class="btn btn-warning glyphicon glyphicon glyphicon-trash btn-xs" data-template="deleteOffering.html" data-placement="right" data-auto-close="1" bs-popover></a>
+                    <a title="Enable" type="button" ng-show="offering.active === false" ng-disabled="disableEditAction(offering.offeringDate)" class="btn btn-success glyphicon glyphicon glyphicon-ok btn-xs" ng-click="enable(offering.id, true)"></a>
+                </div>     
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                                <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{alertMsg}}
+                            </div>
+                        </div>
+                    </div>         
+                <div class="col-md-12">
+                    &nbsp;
+                </div>                  
+                <div class="col-md-12">
+                    <div class="row" ng-init="formLoad()">
+
+
+                        <table class="table table-bordered">
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Family/ Sponsor:</th>
+                                <td>{{offering.familyMember != null ? offering.familyMember : offering.sponsor}} </td>
+                            </tr>
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Offering Type:</th>
+                                <td>{{offering.offeringType}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Fund Type:</th>
+                                <td>{{offering.fundType}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Payment Type:</th>
+                                <td>{{offering.paymentType}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Offering Date:</th>
+                                <td>{{offering.offeringDate | date:MM/dd/yyyy}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Amount:</th>
+                                <td>{{offering.amount}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Ref No:</th>
+                                <td>{{offering.transactionNumber}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': offering.active === false }">
+                                <th>Notes:</th>
+                                <td>{{ offering.notes | limitTo: 20 }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="deleteOffering.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(offering.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5F621357-02C8-4F27-9BA7-EEA21DCDBE58}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ChurchMgnt.Web</RootNamespace>
+    <AssemblyName>ChurchMgnt.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\app.js" />
+    <Content Include="app\common.js" />
+    <Content Include="app\config.js" />
+    <Content Include="app\content\css\angular-bootstrap-lightbox.css" />
+    <Content Include="app\content\css\angular-notify.min.css" />
+    <Content Include="app\content\css\animate.min.css" />
+    <Content Include="app\content\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="app\content\css\bootstrap-duallistbox.css" />
+    <Content Include="app\content\css\bootstrap-switch.min.css" />
+    <Content Include="app\content\css\bootstrap.min.css" />
+    <Content Include="app\content\css\chartist.css" />
+    <Content Include="app\content\css\colorpicker.min.css" />
+    <Content Include="app\content\css\font-awesome.min.css" />
+    <Content Include="app\content\css\img\alpha.png" />
+    <Content Include="app\content\css\img\hue.png" />
+    <Content Include="app\content\css\img\saturation.png" />
+    <Content Include="app\content\css\ladda-themeless.min.css" />
+    <Content Include="app\content\css\metisMenu.min.css" />
+    <Content Include="app\content\css\ng-table.min.css" />
+    <Content Include="app\content\css\select.min.css" />
+    <Content Include="app\content\css\spectrum.min.css" />
+    <Content Include="app\content\css\style.css" />
+    <Content Include="app\content\css\summernote.css" />
+    <Content Include="app\content\css\textAngular.css" />
+    <Content Include="app\content\css\toastr.css" />
+    <Content Include="app\content\fonts\fontawesome-webfont.svg" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\css\helper.css" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\css\pe-icon-7-stroke.css" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.svg" />
+    <Content Include="app\content\img\alpha.png" />
+    <Content Include="app\content\img\hue.png" />
+    <Content Include="app\content\img\saturation.png" />
+    <Content Include="app\ctrls\admin\accountCtrl.js" />
+    <Content Include="app\ctrls\admin\bankCtrl.js" />
+    <Content Include="app\ctrls\admin\branchCtrl.js" />
+    <Content Include="app\ctrls\admin\branchDtlsCtrl.js" />
+    <Content Include="app\ctrls\admin\branchlstCtrl.js" />
+    <Content Include="app\ctrls\admin\logoCtrl.js" />
+    <Content Include="app\ctrls\admin\signatureCtrl.js" />
+    <Content Include="app\ctrls\admin\userCtrl.js" />
+    <Content Include="app\ctrls\analyticsCtrl.js" />
+    <Content Include="app\ctrls\Communication\emailComposeCtrl.js" />
+    <Content Include="app\ctrls\Communication\emailReviewCtrl.js" />
+    <Content Include="app\ctrls\Communication\groupCtrl.js" />
+    <Content Include="app\ctrls\Communication\groupMemberCtrl.js" />
+    <Content Include="app\ctrls\Communication\smtpSettingCtrl.js" />
+    <Content Include="app\ctrls\Communication\imageUploadCtrl.js" />
+    <Content Include="app\ctrls\Communication\templateCtrl.js" />
+    <Content Include="app\ctrls\Communication\templateDtlsCtrl.js" />
+    <Content Include="app\ctrls\Communication\templateLstCtrl.js" />
+    <Content Include="app\ctrls\errorCtrl.js" />
+    <Content Include="app\ctrls\dashboardCtrl.js" />
+    <Content Include="app\ctrls\indexCtrl.js" />
+    <Content Include="app\ctrls\loginCtrl.js" />
+    <Content Include="app\ctrls\masterData\eventTypeCtrl.js" />
+    <Content Include="app\ctrls\masterData\expenseTypeCtrl.js" />
+    <Content Include="app\ctrls\masterData\fundTypeCtrl.js" />
+    <Content Include="app\ctrls\masterData\offeringTypeCtrl.js" />
+    <Content Include="app\ctrls\masterData\subExpenseTypeCtrl.js" />
+    <Content Include="app\ctrls\memberCare\remainderCtrl.js" />
+    <Content Include="app\ctrls\memberCare\familyCtrl.js" />
+    <Content Include="app\ctrls\memberCare\familyDtlsCtrl.js" />
+    <Content Include="app\ctrls\memberCare\familylstCtrl.js" />
+    <Content Include="app\ctrls\memberCare\familyMemberCtrl.js" />
+    <Content Include="app\ctrls\memberCare\sponsorCtrl.js" />
+    <Content Include="app\ctrls\print\samplePrintCtrl.js" />
+    <Content Include="app\ctrls\profile\changePasswordCtrl.js" />
+    <Content Include="app\ctrls\reportedIssueCtrl.js" />
+    <Content Include="app\ctrls\report\depositRptCtrl.js" />
+    <Content Include="app\ctrls\report\depositRptPrtCtrl.js" />
+    <Content Include="app\ctrls\report\eventRptCtrl.js" />
+    <Content Include="app\ctrls\report\eventRptPrtCtrl.js" />
+    <Content Include="app\ctrls\report\expenseRptCtrl.js" />
+    <Content Include="app\ctrls\print\expenseRptPrtCtrl.js" />
+    <Content Include="app\ctrls\report\familyOfferingRptCtrl.js" />
+    <Content Include="app\ctrls\report\familyPledgeRptCtrl.js" />
+    <Content Include="app\ctrls\report\offeringRptCtrl.js" />
+    <Content Include="app\ctrls\print\offeringRptPrtCtrl.js" />
+    <Content Include="app\ctrls\report\transactionRptCtrl.js" />
+    <Content Include="app\ctrls\activity\depositCtrl.js" />
+    <Content Include="app\ctrls\activity\eventCtrl.js" />
+    <Content Include="app\ctrls\activity\expenseCtrl.js" />
+    <Content Include="app\ctrls\activity\offeringCtrl.js" />
+    <Content Include="app\ctrls\shared\orgCtrl.js" />
+    <Content Include="app\ctrls\shared\orgDtlsCtrl.js" />
+    <Content Include="app\ctrls\shared\orglstCtrl.js" />
+    <Content Include="app\ctrls\shared\orgProfileCtrl.js" />
+    <Content Include="app\ctrls\shared\orgProfileDtlsCtrl.js" />
+    <Content Include="app\ctrls\yearBeginActivity\familyPledgeCtrl.js" />
+    <Content Include="app\ctrls\yearBeginActivity\fiscalYearBudgetCtrl.js" />
+    <Content Include="app\ctrls\yearBeginActivity\openingBalanceCtrl.js" />
+    <Content Include="app\ctrls\yearBeginActivity\orgFiscalYearCtrl.js" />
+    <Content Include="app\ctrls\yearEndActivity\balanceSheetCtrl.js" />
+    <Content Include="app\ctrls\yearEndActivity\contributionRptCtrl.js" />
+    <Content Include="app\ctrls\print\contributionPrintCtrl.js" />
+    <Content Include="app\ctrls\yearEndActivity\taxFilingCtrl.js" />
+    <Content Include="app\directives\directives.js" />
+    <Content Include="app\images\logo.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="app\scripts\angles.js" />
+    <Content Include="app\scripts\angular-bootstrap-lightbox.min.js" />
+    <Content Include="app\scripts\angular-bootstrap-multiselect.js" />
+    <Content Include="app\scripts\angular-chartist.min.js" />
+    <Content Include="app\scripts\angular-file-upload.min.js" />
+    <Content Include="app\scripts\angular-ladda.min.js" />
+    <Content Include="app\scripts\angular-notify.min.js" />
+    <Content Include="app\content\css\loading-bar.min.css" />
+    <Content Include="app\scripts\angular-spectrum-colorpicker.min.js" />
+    <Content Include="app\scripts\angular-summernote.min.js" />
+    <Content Include="app\scripts\bootstrap-colorpicker-module.js" />
+    <Content Include="app\scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="app\scripts\bootstrap-switch.min.js" />
+    <Content Include="app\scripts\bsDuallistbox.js" />
+    <Content Include="app\scripts\Chart.min.js" />
+    <Content Include="app\scripts\chartist.min.js" />
+    <Content Include="app\scripts\checklist-model.js" />
+    <Content Include="app\scripts\html2canvas.js" />
+    <Content Include="app\scripts\img\color-picker\alpha.png" />
+    <Content Include="app\scripts\img\color-picker\hue.png" />
+    <Content Include="app\scripts\img\color-picker\saturation.png" />
+    <Content Include="app\scripts\jquery.bootstrap-duallistbox.js" />
+    <Content Include="app\scripts\ladda.jquery.min.js" />
+    <Content Include="app\scripts\ladda.min.js" />
+    <Content Include="app\scripts\loading-bar.min.js" />
+    <Content Include="app\scripts\master_bootstrap-colorpicker-module.js" />
+    <Content Include="app\scripts\master_textAngular-dropdownToggle.js" />
+    <Content Include="app\scripts\master_textAngular-sanitize.min.js" />
+    <Content Include="app\scripts\master_textAngular.min.js" />
+    <Content Include="app\scripts\module.js" />
+    <Content Include="app\scripts\moment.min.js" />
+    <Content Include="app\scripts\pdfmake.min.js" />
+    <Content Include="app\scripts\select.min.js" />
+    <Content Include="app\scripts\spectrum.min.js" />
+    <Content Include="app\scripts\spin.min.js" />
+    <Content Include="app\scripts\summernote.min.js" />
+    <Content Include="app\scripts\textAngular-dropdownToggle.js" />
+    <Content Include="app\scripts\textAngular-rangy.min.js" />
+    <Content Include="app\scripts\textAngular-sanitize.min.js" />
+    <Content Include="app\scripts\textAngular.js" />
+    <Content Include="app\scripts\textAngularSetup.js" />
+    <Content Include="app\services\profileService.js" />
+    <Content Include="app\services\remainderService.js" />
+    <Content Include="app\services\emailComposeService.js" />
+    <Content Include="app\services\emailTemplateService.js" />
+    <Content Include="app\services\groupMemberService.js" />
+    <Content Include="app\services\groupService.js" />
+    <Content Include="app\services\imageUploadService.js" />
+    <Content Include="app\services\reportedIssueService.js" />
+    <Content Include="app\services\smtpSettingService.js" />
+    <Content Include="app\services\taxFilingService.js" />
+    <Content Include="app\views\admin\signature.html" />
+    <Content Include="app\views\admin\logo.html" />
+    <Content Include="app\views\analytics.html" />
+    <Content Include="app\views\Communication\emailCompose.html" />
+    <Content Include="app\views\Communication\emailReview.html" />
+    <Content Include="app\views\Communication\group.html" />
+    <Content Include="app\views\Communication\groupMember.html" />
+    <Content Include="app\views\Communication\smtpSetting.html" />
+    <Content Include="app\views\dashboard.html" />
+    <Content Include="app\views\Communication\imageUpload.html" />
+    <Content Include="app\views\Communication\template.html" />
+    <Content Include="app\views\Communication\templateDtls.html" />
+    <Content Include="app\views\Communication\templateLst.html" />
+    <Content Include="app\views\layout\content.html" />
+    <Content Include="app\views\layout\content_empty.html" />
+    <Content Include="app\views\layout\footer.html" />
+    <Content Include="app\views\layout\header.html" />
+    <Content Include="app\views\layout\navigation.html" />
+    <Content Include="app\views\layout\panel_tools.html" />
+    <Content Include="app\views\layout\panel_tools_fullscreen.html" />
+    <Content Include="app\scripts\angular-base64.js" />
+    <Content Include="app\scripts\angular-cookies.js" />
+    <Content Include="app\scripts\angular-route.js" />
+    <Content Include="app\scripts\angular-route.min.js" />
+    <Content Include="app\scripts\angular-touch.js" />
+    <Content Include="app\scripts\angular-validator.js" />
+    <Content Include="app\scripts\jquery.base64.js" />
+    <Content Include="app\scripts\jquery.validate.min.js" />
+    <Content Include="app\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\scripts\ui-bootstrap-tpls.min.js" />
+    <Content Include="app\scripts\xeditable.min.js" />
+    <Content Include="app\views\layout\right_sidebar.html" />
+    <Content Include="app\views\memberCare\remainder.html" />
+    <Content Include="app\views\print\samplePrint.html" />
+    <Content Include="app\views\profile\changePassword.html" />
+    <Content Include="app\views\report\familyPledgeRpt.html" />
+    <Content Include="app\views\shared\faq.html" />
+    <Content Include="app\views\yearEndActivity\taxFiling.html" />
+    <Content Include="index.html" />
+    <Content Include="app\scripts\angular-animate.min.js" />
+    <Content Include="app\scripts\angular-bootstrap-tour.min.js" />
+    <Content Include="app\scripts\angular-filter.js" />
+    <Content Include="app\scripts\angular-local-storage.min.js" />
+    <Content Include="app\scripts\angular-sanitize.min.js" />
+    <Content Include="app\scripts\angular-strap.docs.tpl.js" />
+    <Content Include="app\scripts\angular-strap.min.js" />
+    <Content Include="app\scripts\angular-strap.tpl.js" />
+    <Content Include="app\scripts\angular-ui-router.min.js" />
+    <Content Include="app\scripts\angular-ui-tree.min.js" />
+    <Content Include="app\scripts\angular.min.js" />
+    <Content Include="app\scripts\bootstrap-tour.min.js" />
+    <Content Include="app\scripts\bootstrap.min.js" />
+    <Content Include="app\scripts\jquery-ui.min.js" />
+    <Content Include="app\scripts\jquery.bootstrap-touchspin.min.js" />
+    <Content Include="app\scripts\jquery.min.js" />
+    <Content Include="app\scripts\jquery.slimscroll.min.js" />
+    <Content Include="app\scripts\metisMenu.min.js" />
+    <Content Include="app\scripts\modal.js" />
+    <Content Include="app\scripts\ng-table.min.js" />
+    <Content Include="app\scripts\popover.js" />
+    <Content Include="app\scripts\toastr.js" />
+    <Content Include="app\scripts\ui-bootstrap.min.js" />
+    <Content Include="app\scripts\ui-utils.min.js" />
+    <Content Include="app\services\authInterceptorService.js" />
+    <Content Include="app\services\authService.js" />
+    <Content Include="app\services\dashboardService.js" />
+    <Content Include="app\services\depositService.js" />
+    <Content Include="app\services\eventService.js" />
+    <Content Include="app\services\expenseService.js" />
+    <Content Include="app\services\familyMemberService.js" />
+    <Content Include="app\services\familyPledgeService.js" />
+    <Content Include="app\services\familyService.js" />
+    <Content Include="app\services\fiscalYearBudgetService.js" />
+    <Content Include="app\services\logoService.js" />
+    <Content Include="app\services\lookupService.js" />
+    <Content Include="app\services\notificationService.js" />
+    <Content Include="app\services\offeringService.js" />
+    <Content Include="app\services\openingBalanceService.js" />
+    <Content Include="app\services\organizationService.js" />
+    <Content Include="app\services\orgFiscalYearService.js" />
+    <Content Include="app\services\downloadService.js" />
+    <Content Include="app\services\reportDataService.js" />
+    <Content Include="app\services\roleService.js" />
+    <Content Include="app\services\sharedService.js" />
+    <Content Include="app\services\sponsorService.js" />
+    <Content Include="app\services\tokensManagerService.js" />
+    <Content Include="app\services\userService.js" />
+    <Content Include="app\services\yearlyActivityService.js" />
+    <Content Include="app\views\admin\account.html" />
+    <Content Include="app\views\admin\bank.html" />
+    <Content Include="app\views\admin\branch.html" />
+    <Content Include="app\views\admin\branchDtls.html" />
+    <Content Include="app\views\admin\branchlst.html" />
+    <Content Include="app\views\admin\user.html" />
+    <Content Include="app\views\error.html" />
+    <Content Include="app\views\dashboard1.html" />
+    <Content Include="app\views\login.html" />
+    <Content Include="app\views\masterData\eventType.html" />
+    <Content Include="app\views\masterData\expenseType.html" />
+    <Content Include="app\views\masterData\fundType.html" />
+    <Content Include="app\views\masterData\offeringType.html" />
+    <Content Include="app\views\masterData\subExpenseType.html" />
+    <Content Include="app\views\memberCare\family.html" />
+    <Content Include="app\views\memberCare\familyDtls.html" />
+    <Content Include="app\views\memberCare\familylst.html" />
+    <Content Include="app\views\memberCare\sponsor.html" />
+    <Content Include="app\views\report\depositRpt.html" />
+    <Content Include="app\views\report\depositRptPrt.html" />
+    <Content Include="app\views\report\eventRpt.html" />
+    <Content Include="app\views\report\eventRptPrt.html" />
+    <Content Include="app\views\report\expenseRpt.html" />
+    <Content Include="app\views\print\expenseRptPrt.html" />
+    <Content Include="app\views\report\familyOfferingRpt.html" />
+    <Content Include="app\views\report\offeringRpt.html" />
+    <Content Include="app\views\print\offeringRptPrt.html" />
+    <Content Include="app\views\report\transactionRpt.html" />
+    <Content Include="app\views\activity\deposit.html" />
+    <Content Include="app\views\activity\event.html" />
+    <Content Include="app\views\activity\expense.html" />
+    <Content Include="app\views\activity\offering.html" />
+    <Content Include="app\views\shared\org.html" />
+    <Content Include="app\views\shared\orgDtls.html" />
+    <Content Include="app\views\shared\orglst.html" />
+    <Content Include="app\views\shared\orgProfile.html" />
+    <Content Include="app\views\shared\orgProfileDtls.html" />
+    <Content Include="app\views\yearBeginActivity\familyPledge.html" />
+    <Content Include="app\views\yearBeginActivity\fiscalYear.html" />
+    <Content Include="app\views\yearBeginActivity\fiscalYearBudget.html" />
+    <Content Include="app\views\yearBeginActivity\openingBalance.html" />
+    <Content Include="app\views\yearEndActivity\balanceSheet.html" />
+    <Content Include="app\views\yearEndActivity\contributionRpt.html" />
+    <Content Include="app\views\print\contributionPrint.html" />
+    <Content Include="favicon.ico" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\scripts\ng-table.min.js.map" />
+    <Content Include="app\scripts\angular-route.min.js.map" />
+    <Content Include="app\content\fonts\fontawesome-webfont.eot" />
+    <Content Include="app\content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="app\content\fonts\fontawesome-webfont.woff" />
+    <Content Include="app\content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="app\content\fonts\FontAwesome.otf" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.eot" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.ttf" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.woff" />
+    <Content Include="Prod.Web.config" />
+    <None Include="Properties\PublishProfiles\Church.Mgnt.pubxml" />
+    <None Include="Properties\PublishProfiles\Prod.pubxml" />
+    <None Include="Properties\PublishProfiles\QA Web.ChurchMgnt.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\ctrls\email\" />
+    <Folder Include="app\module\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlayamMgmt.Business\AlayamMgmt.Business.csproj">
+      <Project>{3d3ae94b-4810-447e-a6b5-700c034a6679}</Project>
+      <Name>AlayamMgmt.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AlayamMgmt.Common\AlayamMgmt.Common.csproj">
+      <Project>{f8753918-a6ed-47d5-a77d-a42e3d30e757}</Project>
+      <Name>AlayamMgmt.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>9884</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:9884/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

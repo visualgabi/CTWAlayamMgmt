@@ -1,0 +1,89 @@
+﻿
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="lead">Organization Details.</span>
+            <a title="Edit" type="button" class="btn btn-success glyphicon glyphicon-edit pull-right" href="#/shared/org/{{orgData.id}}"></a>
+            <span class="pull-right">&nbsp;&nbsp;</span>
+            <a title="List" type="button" ng-show="authentication.isAuth && authentication.role=='1'" class="btn btn-success glyphicon glyphicon-th-list pull-right" href="#/shared/orglst"></a>
+            <hr />
+        </div>
+    </div>
+    <div class="col-md-12" style="overflow-x:auto;">
+    <div class="row" ng-init="formLoad()">
+
+
+        <table class="table table-bordered">
+            <tr>
+                <th>Name:</th>
+                <td>{{orgData.name}}</td>
+                <th>Website:</th>
+                <td>{{orgData.website}}</td>
+            </tr>
+            <tr>
+                <th>Phone1:</th>
+                <td>{{orgData.phone1}}</td>
+                <th>Phone2:</th>
+                <td>{{orgData.phone2}}</td>
+            </tr>
+            <tr>
+                <th>EmailId1:</th>
+                <td>{{orgData.emailId1}}</td>
+                <th>EmailId2:</th>
+                <td>{{orgData.emailId2}}</td>
+            </tr>
+            <tr>
+                <th>Denomination:</th>
+                <td>{{orgData.denomination}}</td>
+                <th>EthnicOrigin:</th>
+                <td>{{orgData.ethnicOrigin}}</td>
+            </tr>
+            <tr>
+                <th>Primary Language:</th>
+                <td>{{orgData.primaryLanguage}}</td>
+                <th>Secondry Language:</th>
+                <td>{{orgData.secondaryLanguage}}</td>
+            </tr>
+            <tr>
+                <th>Address1:</th>
+                <td>{{orgData.address1}}</td>
+                <th>Address2:</th>
+                <td>{{orgData.address2}}</td>
+            </tr>
+            <tr>
+                <th>Address3:</th>
+                <td>{{orgData.address3}}</td>
+                <th>City:</th>
+                <td>{{orgData.city}}</td>
+            </tr>
+            <tr>
+                <th>Country:</th>
+                <td>{{orgData.country}}</td>
+                <th>State:</th>
+                <td>{{orgData.state}}</td>
+            </tr>
+            <tr>
+                <th>ZipCode:</th>
+                <td>{{orgData.zipCode}}</td>
+                <th>Active:</th>
+                <td>{{orgData.active}}</td>
+            </tr>
+            <tr>
+                <th>TaxId:</th>
+                <td>{{orgData.taxId}}</td>
+                <th>Currency:</th>
+                <td>{{orgData.currency}}</td>
+            </tr>
+            <tr>
+                <th>Description:</th>
+                <td>{{orgData.description}}</td>
+                <th></th>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+    <hr />
+

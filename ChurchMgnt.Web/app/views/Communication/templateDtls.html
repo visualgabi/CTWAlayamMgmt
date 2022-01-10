@@ -1,0 +1,91 @@
+﻿<div class="row" ng-controller="templateDtlsCtrl" ng-init="formLoad()">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Email Templte
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="col-md-12">       
+                    <a title="Edit" type="button" class="btn btn-success glyphicon glyphicon-edit pull-right" ui-sref="communication.templateEdit({id:{{emailTemplate.id}}})"></a>                    
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="List" type="button" class="btn btn-success glyphicon glyphicon-th-list pull-right" ui-sref="communication.templateLst"></a>                    
+                </div>
+                <div class="col-md-12">
+                    <hr />
+                </div>
+                <div class="col-md-12">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <label class="control-label col-md-12" for="emailTemplate.name">Name:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>{{emailTemplate.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row hidden-sm hidden-xs">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <label class="control-label col-md-12" for="emailTemplate.description">Description:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>{{emailTemplate.description}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row hidden-sm hidden-xs">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label col-md-12" for="emailTemplate.template">Email template:</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2"></div>
+                                    <div ng-bind-html="emailTemplate.content"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row hidden-sm hidden-xs">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>                  
+                </div>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,131 @@
+﻿<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand active" ng-show="authentication.isAuth && authentication.role==1" href="#/home">Alayam Mgmt</a>
+        <a class="navbar-brand active" ng-show="authentication.isAuth && authentication.role !=1" href="#/orglst">Welcome to {{authentication.orgName}}</a>
+    </div>
+    <!-- /.navbar-header -->
+    <ul class="nav navbar-top-links navbar-right">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">             
+                <li>
+                <button type="button" class="btn btn-danger btn-sm" data-ng-click="logOut()" ng-show="authentication.isAuth">Logout<i class="fa fa-sign-out fa-fw pull-right"></i></button>
+                    <!--<a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>-->
+                </li>
+            </ul>
+            <!-- /.dropdown-user -->
+        </li>
+        <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">   
+                <li ng-show="authentication.isAuth && authentication.role==1">
+                    <a href="#/orglst"><i class="fa fa-dashboard fa-fw"></i> Organization</a>
+                    <a href="#/user"><i class="fa fa-dashboard fa-fw"></i> User</a>
+                </li>           
+                <li ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+                    <a href="#/home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="#/orgDtls/{{authentication.orgId}}/"><i class="fa fa-dashboard fa-fw"></i> Organization</a>
+                </li>
+                <li ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+                    <a href="#/offering"><i class="fa fa-dashboard fa-fw"></i> Offering</a>
+                    <a href="#/expense"><i class="fa fa-dashboard fa-fw"></i> Expense</a>
+                    <a href="#/deposit"><i class="fa fa-dashboard fa-fw"></i> Deposit</a>
+                    <a href="#/event"><i class="fa fa-dashboard fa-fw"></i> Event</a>
+                </li>               
+                <li ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+                    <a data-target="#p1"><i class="fa fa-bar-chart-o fa-fw"></i> Member Care<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level" id="p1">
+                        <li>
+                            <a href="#/familylst"> Family</a>
+                        </li>
+                        <li>
+                            <a href="#/familyPledge"> Family Pledge</a>
+                        </li>
+                        <li>
+                            <a href="#/sponsor"> Sponsor</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+
+
+                <li ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3)">
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Report<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#/expenseRpt"> Expense</a>
+                        </li>
+                        <li>
+                            <a href="#/offeringRpt"> Offering</a>
+                        </li>
+                        <li>
+                            <a href="#/eventRpt"> Event</a>
+                        </li>
+                        <li>
+                            <a href="#/depositRpt"> Deposit</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Master Data<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#/orgFiscalYear"> Fiscal Year</a>
+                        </li>
+                        <li>
+                            <a href="#/fundType"> Fund Type</a>
+                        </li>
+                        <li>
+                            <a href="#/offeringType"> Offering Type</a>
+                        </li>
+                        <li>
+                            <a href="#/expenseType"> Expense Type</a>
+                        </li>
+                        <li>
+                            <a href="#/subExpenseType"> Sub Expense Type</a>
+                        </li>
+                        <li>
+                            <a href="#/eventType"> Event Type</a>
+                        </li>
+                        <li>
+                            <a href="#/fiscalYearBudget"> Fiscal Year Budget</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li ng-show="authentication.isAuth && authentication.role==2">
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Admin<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#/user"> User</a>
+                        </li>
+                        <li>
+                            <a href="#/branchlst"> Branch</a>
+                        </li>
+                        <li>
+                            <a href="#/bank"> Bank</a>
+                        </li>
+                        <li>
+                            <a href="#/account"> Account</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>                
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+</nav>

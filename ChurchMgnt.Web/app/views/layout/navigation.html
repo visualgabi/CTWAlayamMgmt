@@ -1,0 +1,387 @@
+﻿<div id="navigation">
+    <div class="profile-picture">
+        <a href="index.html">
+             <img src="app/images/logo.png" class="img-circle m-b" alt="logo">
+        </a>
+    </div>
+
+    <div class="small-logo">
+        <span class="text-primary">ChurchMgnt</span>
+    </div>   
+
+    <ul side-navigation class="nav" id="side-menu" ng-if="authentication.isAuth && authentication.role==1">
+        <li ui-sref-active="active">
+            <a ui-sref="orglst"> <span class="nav-label">Organization</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="admin.user"> <span class="nav-label">User</span></a>
+        </li>  
+        <li ui-sref-active="active">
+            <a ui-sref="communication.smtpSetting"> <span class="nav-label">SMTP Setting</span></a>
+        </li>     
+    </ul>
+
+    <ul side-navigation class="nav" id="side-menu" ng-if="authentication.isAuth && authentication.role==5">
+        <li ui-sref-active="active">
+            <a ui-sref="analytics"> <span class="nav-label">Dashboard</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="dashboard"> <span class="nav-label">Recent Activity</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="orgDtls({id:{{authentication.orgId}}})"> <span class="nav-label">Organization</span></a>
+        </li>
+        <li ng-class="{active: $state.includes('activity')}">
+            <a href="#"><span class="nav-label">Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('activity')}">
+                <li ui-sref-active="active"><a ui-sref="activity.offering">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.expense">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.deposit">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.event">Event</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('memberCare')}">
+            <a href="#"><span class="nav-label">Member Care</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('memberCare')}">
+                <li ui-sref-active="active"><a ui-sref="memberCare.familylst">Family</a></li>
+                <li ui-sref-active="active"><a ui-sref="memberCare.sponsor">Sponsor</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('communication')}">
+            <a href="#"><span class="nav-label">Communication</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('communication')}">
+                <li ui-sref-active="active"><a ui-sref="communication.emailCompose">Email Compose</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.groupMember">Group Member</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.group">Group</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.templateLst">Template</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.imageUpload">Image Upload</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('report')}">
+            <a href="#"><span class="nav-label">Report</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
+                <li ui-sref-active="active"><a ui-sref="report.offeringRpt">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.expenseRpt">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.depositRpt">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.eventRpt">Event</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyOfferingRpt">Family Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyPledgeRpt">Family Pledge</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.transactionRpt">Transaction</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('masterData')}">
+            <a href="#"><span class="nav-label">Master Data</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('masterData')}">
+                <li ui-sref-active="active"><a ui-sref="masterData.fundType">Fund Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.offeringType">Offering Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.expenseType">Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.subExpenseType">Sub Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.eventType">Event Type</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearBegActivity')}">
+            <a href="#"><span class="nav-label">Year Beg Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearBegActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYear">Fiscal Year</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYearBudget">Fiscal Year Budget</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.openingBalance">Opening Balance</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.familyPledge">Family Pledge</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearEndActivity')}">
+            <a href="#"><span class="nav-label">Year End Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearEndActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.contribution">Contribution</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.balanceSheet">Balance Sheet</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.taxFiling">Tax Filing</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('admin')}">
+            <a href="#"><span class="nav-label">Admin</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('admin')}">
+                <li ui-sref-active="active"><a ui-sref="admin.branchlst">Branch</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.bank">Bank</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.account">Account</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.user">User</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.logo">Logo</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.signature">Signature</a></li>
+            </ul>
+        </li>
+    </ul>
+
+    <ul side-navigation class="nav" id="side-menu" ng-if="authentication.isAuth && authentication.role==2">
+        <li ui-sref-active="active">
+            <a ui-sref="analytics"> <span class="nav-label">Dashboard</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="dashboard"> <span class="nav-label">Recent Activity</span></a>
+        </li>     
+        <li ui-sref-active="active">
+            <a ui-sref="orgDtls({id:{{authentication.orgId}}})"> <span class="nav-label">Organization</span></a>
+        </li>
+        <li ng-class="{active: $state.includes('activity')}">
+            <a href="#"><span class="nav-label">Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('activity')}">
+                <li ui-sref-active="active"><a ui-sref="activity.offering">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.expense">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.deposit">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.event">Event</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('memberCare')}">
+            <a href="#"><span class="nav-label">Member Care</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('memberCare')}">
+                <li ui-sref-active="active"><a ui-sref="memberCare.familylst">Family</a></li>
+                <li ui-sref-active="active"><a ui-sref="memberCare.sponsor">Sponsor</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('communication')}">
+            <a href="#"><span class="nav-label">Communication</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('communication')}">
+                <li ui-sref-active="active"><a ui-sref="communication.emailCompose">Email Compose</a></li>                
+                <li ui-sref-active="active"><a ui-sref="communication.groupMember">Group Member</a></li>                
+                <li ui-sref-active="active"><a ui-sref="communication.group">Group</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.templateLst">Template</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.imageUpload">Image Upload</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('report')}">
+            <a href="#"><span class="nav-label">Report</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
+                <li ui-sref-active="active"><a ui-sref="report.offeringRpt">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.expenseRpt">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.depositRpt">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.eventRpt">Event</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyOfferingRpt">Family Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyPledgeRpt">Family Pledge</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.transactionRpt">Transaction</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('masterData')}">
+            <a href="#"><span class="nav-label">Master Data</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('masterData')}">
+                <li ui-sref-active="active"><a ui-sref="masterData.fundType">Fund Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.offeringType">Offering Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.expenseType">Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.subExpenseType">Sub Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.eventType">Event Type</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearBegActivity')}">
+            <a href="#"><span class="nav-label">Year Beg Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearBegActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYear">Fiscal Year</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYearBudget">Fiscal Year Budget</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.openingBalance">Opening Balance</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.familyPledge">Family Pledge</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearEndActivity')}">
+            <a href="#"><span class="nav-label">Year End Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearEndActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.contribution">Contribution</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.balanceSheet">Balance Sheet</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.taxFiling">Tax Filing</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('admin')}">
+            <a href="#"><span class="nav-label">Admin</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('admin')}">
+                <li ui-sref-active="active"><a ui-sref="admin.branchlst">Branch</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.bank">Bank</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.account">Account</a></li>                
+            </ul>
+        </li>
+    </ul>
+
+    <ul side-navigation class="nav" id="side-menu" ng-if="authentication.isAuth && authentication.role==3">
+        <li ui-sref-active="active">
+            <a ui-sref="analytics"> <span class="nav-label">Dashboard</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="dashboard"> <span class="nav-label">Recent Activity</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="orgDtls({id:{{authentication.orgId}}})"> <span class="nav-label">Organization</span></a>
+        </li>
+        <li ng-class="{active: $state.includes('activity')}">
+            <a href="#"><span class="nav-label">Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('activity')}">
+                <li ui-sref-active="active"><a ui-sref="activity.offering">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.expense">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.deposit">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.event">Event</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('memberCare')}">
+            <a href="#"><span class="nav-label">Member Care</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('memberCare')}">
+                <li ui-sref-active="active"><a ui-sref="memberCare.familylst">Family</a></li>
+                <li ui-sref-active="active"><a ui-sref="memberCare.sponsor">Sponsor</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('communication')}">
+            <a href="#"><span class="nav-label">Communication</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('communication')}">
+                <li ui-sref-active="active"><a ui-sref="communication.emailCompose">Email Compose</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.groupMember">Group Member</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.group">Group</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.templateLst">Template</a></li>
+                <li ui-sref-active="active"><a ui-sref="communication.imageUpload">Image Upload</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('report')}">
+            <a href="#"><span class="nav-label">Report</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
+                <li ui-sref-active="active"><a ui-sref="report.offeringRpt">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.expenseRpt">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.depositRpt">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.eventRpt">Event</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyOfferingRpt">Family Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyPledgeRpt">Family Pledge</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.transactionRpt">Transaction</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('masterData')}">
+            <a href="#"><span class="nav-label">Master Data</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('masterData')}">
+                <li ui-sref-active="active"><a ui-sref="masterData.fundType">Fund Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.offeringType">Offering Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.expenseType">Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.subExpenseType">Sub Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.eventType">Event Type</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearBegActivity')}">
+            <a href="#"><span class="nav-label">Year Beg Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearBegActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYear">Fiscal Year</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYearBudget">Fiscal Year Budget</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.openingBalance">Opening Balance</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.familyPledge">Family Pledge</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearEndActivity')}">
+            <a href="#"><span class="nav-label">Year End Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearEndActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.contribution">Contribution</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.balanceSheet">Balance Sheet</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.taxFiling">Tax Filing</a></li>
+            </ul>
+        </li>       
+    </ul>
+
+    <ul side-navigation class="nav" id="side-menu" ng-if="authentication.isAuth && authentication.role==4">
+        <li ui-sref-active="active">
+            <a ui-sref="analytics"> <span class="nav-label">Dashboard</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="dashboard"> <span class="nav-label">Recent Activity</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="orgDtls({id:{{authentication.orgId}}})"> <span class="nav-label">Organization</span></a>
+        </li>
+        <li ng-class="{active: $state.includes('activity')}">
+            <a href="#"><span class="nav-label">Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('activity')}">
+                <li ui-sref-active="active"><a ui-sref="activity.offering">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.expense">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.deposit">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="activity.event">Event</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('memberCare')}">
+            <a href="#"><span class="nav-label">Member Care</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('memberCare')}">
+                <li ui-sref-active="active"><a ui-sref="memberCare.familylst">Family</a></li>
+                <li ui-sref-active="active"><a ui-sref="memberCare.sponsor">Sponsor</a></li>
+            </ul>
+        </li>            
+    </ul>
+
+    
+    <!--
+    <ul side-navigation class="nav" id="side-menu">      
+        <li ui-sref-active="active">
+            <a ui-sref="dashboard" ng-if="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)"> <span class="nav-label">Dashboard</span></a>
+        </li> 
+        <li ui-sref-active="active" ng-if="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+            <a ui-sref="analytics"> <span class="nav-label">Analytics</span></a>
+        </li> 
+        <li ui-sref-active="active" ng-if="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+            <a ui-sref="orgDtls({id:{{authentication.orgId}}})"> <span class="nav-label">Organization</span></a>
+        </li>           
+        <li ng-class="{active: $state.includes('activity')}" ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+            <a href="#"><span class="nav-label">Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('activity')}">
+                <li ui-sref-active="active"><a ui-sref="activity.offering">Offering</a></li>                
+                <li ui-sref-active="active"><a ui-sref="activity.expense">Expense</a></li>                
+                <li ui-sref-active="active"><a ui-sref="activity.deposit">Deposit</a></li>                
+                <li ui-sref-active="active"><a ui-sref="activity.event">Event</a></li>                
+            </ul>
+        </li>       
+        <li ng-class="{active: $state.includes('memberCare')}" ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+            <a href="#"><span class="nav-label">Member Care</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('memberCare')}">
+                <li ui-sref-active="active"><a ui-sref="memberCare.familylst">Family</a></li>
+                <li ui-sref-active="active"><a ui-sref="memberCare.sponsor">Sponsor</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('email')}" ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+            <a href="#"><span class="nav-label">Email</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('email')}">
+                <li ui-sref-active="active"><a ui-sref="email.templateLst">Template</a></li>                
+                <li ui-sref-active="active"><a ui-sref="email.imageUpload">Image Upload</a></li>                
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('report')}" ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+            <a href="#"><span class="nav-label">Report</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
+                <li ui-sref-active="active"><a ui-sref="report.offeringRpt">Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.expenseRpt">Expense</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.depositRpt">Deposit</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.eventRpt">Event</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyOfferingRpt">Family Offering</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.familyPledgeRpt">Family Pledge</a></li>
+                <li ui-sref-active="active"><a ui-sref="report.transactionRpt">Transaction</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('masterData')}" ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+            <a href="#"><span class="nav-label">Master Data</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('masterData')}">
+                <li ui-sref-active="active"><a ui-sref="masterData.fundType">Fund Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.offeringType">Offering Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.expenseType">Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.subExpenseType">Sub Expense Type</a></li>
+                <li ui-sref-active="active"><a ui-sref="masterData.eventType">Event Type</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearBegActivity')}" ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3)">
+            <a href="#"><span class="nav-label">Year Beg Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearBegActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYear">Fiscal Year</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.fiscalYearBudget">Fiscal Year Budget</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.openingBalance">Opening Balance</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearBegActivity.familyPledge">Family Pledge</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('yearEndActivity')}" ng-show="authentication.isAuth && (authentication.role==2 || authentication.role==3)">
+            <a href="#"><span class="nav-label">Year End Activity</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('yearEndActivity')}">
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.contribution">Contribution</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.balanceSheet">Balance Sheet</a></li>
+                <li ui-sref-active="active"><a ui-sref="yearEndActivity.taxFiling">Tax Filing</a></li>
+            </ul>
+        </li>
+        <li ng-class="{active: $state.includes('admin')}" ng-show="authentication.isAuth && (authentication.role==2)">
+            <a href="#"><span class="nav-label">Admin</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('admin')}">
+                <li ui-sref-active="active"><a ui-sref="admin.branchlst">Branch</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.bank">Bank</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.account">Account</a></li>
+                <li ui-sref-active="active"><a ui-sref="admin.user">User</a></li>
+            </ul>
+        </li>               
+    </ul>
+    -->
+</div>

@@ -1,0 +1,239 @@
+﻿<div class="col-md-12">
+    &nbsp;
+</div>
+<div class="col-md-12">
+    <span class="lead">Event Report.</span>
+    <hr />
+</div>
+
+
+<div class="col-md-12">
+    <form name="reportForm" ng-init="initialize()">
+        <div class="row">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="eventSearch.eventStartDate">Start Date:</label>
+                <div class="col-md-4">                 
+
+                    <input type="date" ng-model="eventSearch.eventStartDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtStartDate" placeholder="yyyy-MM-dd" />
+                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.max">
+                        You can not select future date
+                    </span>
+                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.min">
+                        Start date should be within latest 5 years
+                    </span>
+                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.required">
+                        Required
+                    </span>
+                </div>
+                <label class="control-label col-sm-2" for="eventSearch.eventEndDate">End Date:</label>
+                <div class="col-md-4">
+                    <input type="date" ng-required="true" ng-model="eventSearch.eventEndDate" max="{{ maxDate() | date:'yyyy-MM-dd' }}" min="{{eventSearch.eventStartDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtEndDate" placeholder="yyyy-MM-dd" />
+                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.min">
+                        End Date should be greater than start date
+                    </span>
+                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.max">
+                        Date difference should be six months only
+                    </span>
+                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.required">
+                        Required
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="eventSearch.onlySplEvent">Event Type:</label>
+                <div class="col-md-4">
+                    <select class="form-control" chosen allow-single-deselect="true" disable-search="true" name="ddSplEventType" ng-model="eventSearch.splEventTypeId" ng-options="splEventType.id as splEventType.name for splEventType in splEventTypes">
+                        <option value="">-- All --</option>
+                    </select>
+                </div>
+                <label class="control-label col-sm-2" for="eventSearch.eventTypeId">Sub Event Type:</label>
+                <div class="col-md-4">
+                    <select class="form-control" name="ddEventType" ng-model="eventSearch.eventTypeId" ng-options="eventType.id as eventType.name for eventType in eventTypes">
+                        <option value="">-- All --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="eventSearch.orderById">Order By:</label>
+                <div class="col-md-4">
+                    <select class="form-control" name="ddOrderBy" ng-model="eventSearch.orderById" ng-options="orderBy.id as orderBy.name for orderBy in orderBys">
+                        <option value="">-- All --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div style="align-content:center" class="col-md-5"></div>
+                <div style="align-content:center" class="col-md-2">
+                    &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                    <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-click="search(reportForm)">Search</button>
+                </div>
+                <div style="align-content:center" class="col-md-5"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-md-12">
+    <div class="alert {{alertClassForEmptyList}} alert-dismissible" ng-show="showAlertForEmptyList" role="alert">
+        <button type="button" class="close" ng-click="showAlertForEmptyList=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{alertMsgForEmptyList}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" ng-if="false">
+        <hr />
+        <a title="Download" ng-show="showPrint" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="print()"></a>
+    </div>
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+</div>
+<div class="row" ng-show="showPrint">
+
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <div class="panel panel-default height">
+            <div class="panel-heading">summary</div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Type</th>
+                        <th>No Of Event</th>
+                        <th>Avg Adult Count</th>
+                        <th>Avg Men Count</th>
+                        <th>Avg Women Count</th>
+                        <th>Avg Kids Count</th>
+                        <th>Total Offering in {{authentication.currency}}</th>
+                        <th>Total Expense in {{authentication.currency}}</th>
+                        <th>Avg Offering in {{authentication.currency}}</th>
+                        <th>Avg Expense in {{authentication.currency}}</th>
+                    </tr>
+                    <tr ng-repeat="item in eventSummary">
+                        <td>{{item.type}}</td>
+                        <td>{{item.noOfEvent}}</td>
+                        <td>{{item.avgAdultCount | setDecimal:2}}</td>
+                        <td>{{item.avgMenCount | setDecimal:2}}</td>
+                        <td>{{item.avgWomenCount | setDecimal:2}}</td>
+                        <td>{{item.avgKidsCount | setDecimal:2}}</td>
+                        <td>{{item.offeringTotal}}</td>
+                        <td>{{item.expenseTotal}}</td>
+                        <td>{{item.offeringAvg | setDecimal:2}}</td>
+                        <td>{{item.expenseAvg | setDecimal:2}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="tblEvent" class="table table-bordered table-striped">
+    <tr>
+        <th>
+            Event Type
+        </th>
+        <th>
+            Event Name
+        </th>
+        <th>
+            Spl Event
+        </th>
+        <th>
+            Adult Count
+        </th>
+        <th>
+            Men Count
+        </th>
+        <th>
+            Women Count
+        </th>
+        <th>
+            Kids Count
+        </th>
+        <th>
+            EventDate
+        </th>
+        <th>
+            Offering in {{authentication.currency}}
+        </th>
+        <th>
+            Expense in {{authentication.currency}}
+        </th>
+    </tr>
+    <tr ng-repeat="event in events">
+        <td>
+            {{event.eventType}}
+        </td>
+        <td>
+            {{event.name}}
+        </td>
+        <td>
+            {{event.isSpecialEvent}}
+        </td>
+        <td>
+            {{event.noOfAdultAttended}}
+        </td>
+        <td>
+            {{event.noOfMenAttended}}
+        </td>
+        <td>
+            {{event.noOfWomenAttended}}
+        </td>
+        <td>
+            {{event.noOfKidsParticipated}}
+        </td>
+        <td>
+            {{event.eventDate}}
+        </td>
+        <td>
+            {{event.offering}}
+        </td>
+        <td>
+            {{event.expense}}
+        </td>
+    </tr>
+</table>
+
+<div class="col-md-12">
+    &nbsp;
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+</div>
+
+<hr />

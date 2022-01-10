@@ -1,0 +1,92 @@
+﻿
+
+<div id="sidebar" class="sidebar-offcanvas">
+    <div class="col-md-12">
+        <h3></h3>
+        <ul class="nav nav-pills nav-stacked">
+            <li><a ng-href="#/login" ng-if="!authentication.isAuth">Login<i class="fa fa-sign-in fa-fw pull-right"></i></a></li>
+            <li><button type="button" class="btn btn-danger btn-sm" data-ng-click="logOut()" ng-if="authentication.isAuth">Logout<i class="fa fa-sign-out fa-fw pull-right"></i></button></li>
+            <li ng-if="authentication.isAuth" class="nav-divider"></li>            
+        </ul>   
+        <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==1">            
+                    <li><a ng-href="#/orglst">Organization<i class="fa fa-leanpub fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/user">User<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>                                   
+                </ul>
+
+                <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==2">
+                    <li><a ng-href="#/home">Home<i class="fa fa-home fa-fw pull-right"></i></a></li>
+                    <li class="nav-divider"></li>
+                    <li><a ng-href="#/orgDtls/{{authentication.orgId}}/">Org Details<i class="fa fa-leanpub fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/familylst/">Family<i class="fa fa-users fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/familyPledge">Family Pledge<i class="fa fa-gift fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/sponsor">Sponsor<i class="fa fa-user-secret fa-fw pull-right"></i></a></li>
+
+                    <li class="nav-divider"></li>
+                    <li><a ng-href="#/deposit">Deposit<i class="fa fa-briefcase fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/event">Event<i class="fa fa-bell-o fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/offering">Offering<i class="fa fa-money fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/expense">Expense<i class="fa fa-credit-card fa-fw pull-right"></i></a></li>
+                    <li class="nav-divider"></li>
+
+                    <li>
+                        <a class="nav-container" data-toggle="collapse" data-parent="#stacked-menu" data-target="#p1"><b>Master Data</b><div class="pull-right"><span class="caret arrow"></span></div></a>
+                        <ul class="nav nav-pills nav-stacked collapse" id="p1">
+                            <li><a ng-href="#/user">User<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#branchlst/">Branch<i class="fa fa-cubes fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/orgFiscalYear">Fiscal Year<i class="fa fa-calendar fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/fundType">Fund Type<i class="fa fa-compass fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/offeringType">Offering Type<i class="fa fa-cog fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/expenseType">Expense Type<i class="fa fa-certificate fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/subExpenseType">Sub Expense Type<i class="fa fa-certificate fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/fiscalYearBudget">Fiscal Year Budget<i class="fa fa-briefcase fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/bank">Bank<i class="fa fa-university fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/account">Account<i class="fa fa-book fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/eventType">Event Type<i class="fa fa-child fa-fw pull-right"></i></a></li>
+                        </ul>
+                    </li>
+                    <li ng-if="authentication.isAuth">
+                        <a class="nav-container" data-toggle="collapse" data-parent="#stacked-menu" data-target="#p2"><b>Reports</b><div class="pull-right"><span class="caret arrow"></span></div></a>
+
+                        <ul class="nav nav-pills nav-stacked collapse" id="p2">
+                            <li><a ng-href="#/expenseRpt">Expense Report<i class="fa fa-area-chart fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/offeringRpt">Offering Report<i class="fa fa-bar-chart fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/eventRpt">Event Report<i class="fa fa-line-chart fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/depositRpt">Deposit Report<i class="fa fa-pie-chart fa-fw pull-right"></i></a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==3 ">
+                    <li><a ng-href="#/home">Home<i class="fa fa-home fa-fw pull-right"></i></a></li>
+                    <li class="nav-divider"></li>
+                    <li><a ng-href="#/familylst/">Family<i class="fa fa-users fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/familyPledge">Family Pledge<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/sponsor">Sponsor<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+
+                    <li class="nav-divider"></li>
+                    <li><a ng-href="#/offering">Offering<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/expense">Expense<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+                    <li class="nav-divider"></li>
+
+                    <li><a ng-href="#/orgFiscalYear">Fiscal Year<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/fiscalYearBudget">Fiscal Year Budget<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+                    <li class="nav-divider"></li>
+                    <li><a ng-href="#/expenseRpt">Expense Report<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                                        <li><a ng-href="#/offeringRpt">Offering Report<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+
+                </ul>
+                <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==4">
+                    <li><a ng-href="#/home">Home<i class="fa fa-home fa-fw pull-right"></i></a></li>
+                    <li class="nav-divider"></li>
+                    <li><a ng-href="#/familylst/">Family<i class="fa fa-users fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/familyPledge">Family Pledge<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/sponsor">Sponsor<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+
+                    <li class="nav-divider"></li>
+                    <li><a ng-href="#/offering">Offering<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                    <li><a ng-href="#/expense">Expense<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+                    <li class="nav-divider"></li>
+
+                </ul>
+
+</div>
+</div>

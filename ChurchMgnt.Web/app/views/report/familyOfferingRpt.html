@@ -1,0 +1,795 @@
+﻿<div class="row" ng-controller="familyOfferingRptCtrl" ng-init="initialize()">
+
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-body">
+
+                <div id="exTab2">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#1" data-toggle="tab">Family offering</a>
+                        </li>
+                        <li>
+                            <a href="#2" data-toggle="tab">Family member offering</a>
+                        </li>
+                        <li>
+                            <a href="#3" data-toggle="tab">Sponsor offering</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content ">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane active" id="1">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <form name="familyForm">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamily.startDate">Start Date:</label>
+                                        <div class="col-md-4">
+                                            <input type="date" ng-model="offeringSearchFamily.startDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtFamilyStartDate" placeholder="yyyy-MM-dd" />
+                                            <span class="error" ng-show="familyForm.txtFamilyStartDate.$dirty && familyForm.txtFamilyStartDate.$error.max">
+                                                You can not select future date
+                                            </span>
+                                            <span class="error" ng-show="familyForm.txtFamilyStartDate.$dirty && familyForm.txtFamilyStartDate.$error.min">
+                                                Start date should be within latest 5 years
+                                            </span>
+                                            <span class="error" ng-show="familyForm.txtFamilyStartDate.$dirty && familyForm.txtFamilyStartDate.$error.required">
+                                                Required
+                                            </span>
+                                        </div>
+                                        <label class="control-label col-sm-2" for="offeringSearchFamily.endDate">End Date:</label>
+                                        <div class="col-md-4">
+                                            <input type="date" ng-required="true" ng-model="offeringSearchFamily.endDate" max="{{ familyMaxDate() | date:'yyyy-MM-dd' }}" min="{{offeringSearchFamily.startDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtFamilyEndDate" placeholder="yyyy-MM-dd" />
+                                            <span class="error" ng-show="familyForm.txtFamilyEndDate.$dirty && familyForm.txtFamilyEndDate.$error.min">
+                                                End Date should be greater than start date
+                                            </span>
+                                            <span class="error" ng-show="familyForm.txtFamilyEndDate.$dirty && familyForm.txtFamilyEndDate.$error.max">
+                                                Date difference should be 12 months only
+                                            </span>
+                                            <span class="error" ng-show="familyForm.txtFamilyEndDate.$dirty && familyForm.txtFamilyEndDate.$error.required">
+                                                Required
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamily.familyId">Family Name:</label>
+                                        <div class="col-md-4" ng-show="familiesLoaded==0">
+                                            <select class="form-control" disabled>
+                                                <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4"  ng-show="familiesLoaded==1">
+                                            <ui-select name="ddFamily" allow-clear ng-model="family.selected" theme="bootstrap" required>
+                                                <ui-select-match placeholder="Select or search a family in the list...">{{$select.selected.name}}</ui-select-match>
+                                                <ui-select-choices repeat="family in familes | filter: $select.search">
+                                                    <span ng-bind-html="family.name | highlight: $select.search"></span>
+                                                    <small ng-bind-html="family.emailId1 | highlight: $select.search"></small>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="error" ng-show="familyForm.ddFamily.$dirty && familyForm.ddFamily.$error.required">
+                                                Required!
+                                            </span>
+
+                                            <!--<select class="form-control" ng-required="true" name="ddFamily" ng-model="offeringSearchFamily.familyId" ng-options=" family.id as  family.name + ' (' + family.emailId1 + ')' for  family in familes">
+                                                <option value="">Select Family</option>
+                                            </select>
+                                            <span class="error" ng-show="familyForm.ddFamily.$dirty && familyForm.ddFamily.$error.required">
+                                                Required
+                                            </span>-->
+                                        </div>                                       
+                                        <label class="control-label col-sm-2" for="offeringSearchFamily.fundTypeId">Fund Type:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddFundType" ng-model="offeringSearchFamily.fundTypeId" ng-options=" fundType.id as  fundType.name for  fundType in fundTypes ">
+                                                <option value="">-- All --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamily.offeringTypeId">Offering Type:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddOfferingType" ng-model="offeringSearchFamily.offeringTypeId" ng-options=" offeringType.id as  offeringType.name for  offeringType in offeringTypes ">
+                                                <option value="">-- All --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <div style="align-content:center" class="col-md-5"></div>
+                                        <div style="align-content:center" class="col-md-2">
+                                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                            <!-- ng-disabled="offeringSearchFamily.familyId == '' || offeringSearchFamily.endDate == '' || offeringSearchFamily.startDate == '' || offeringSearchFamily.familyId == null || offeringSearchFamily.endDate == null || offeringSearchFamily.startDate == null"-->
+                                            <button class="btn btn-lg btn-primary btn-block pull-right" type="submit"
+                                                    ng-click="getFamilyOfferingReport(familyForm)">
+                                                Search
+                                            </button>
+                                        </div>
+                                        <div style="align-content:center" class="col-md-5"></div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12">
+                                <div class="alert {{alertClassForEmptyListFamily}} alert-dismissible" ng-show="showAlertForEmptyListFamily" role="alert">
+                                    <button type="button" class="close" ng-click="showAlertForEmptyListFamily=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{alertMsgForEmptyListFamily}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="false">
+                                <div class="col-md-12">
+                                    <hr />
+                                    <a title="Download" ng-show="showPrintFamily" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printMonthly()"></a>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+
+                            <div class="row" ng-show="showPrintFamily">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <td>Total offering in {{authentication.currency}}</td>
+                                                    <td>{{totalFamilyOffering}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by payment type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Payment type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in paymentTypesSummaryFamily | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by fund type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Fund type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in fundTypeSummaryFamily | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by offering type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Offering type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in offeringTypeSummaryFamily | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table id="tblFamily" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Offering Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Fund Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Payment Type
+                                    </th>
+                                    <th>
+                                        Amount in {{authentication.currency}}
+                                    </th>
+                                    <th>
+                                        Offering Date
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="familyOffering in familyOfferings">
+                                    <td>
+                                        {{familyOffering.offeringType}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.fundType}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.paymentType}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.amount}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.offeringDate | date:MM/dd/yyyy}}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane" id="2">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <form name="familyMemberForm">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamilyMember.startDate">Start Date:</label>
+                                        <div class="col-md-4">
+                                            <input type="date" ng-model="offeringSearchFamilyMember.startDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtFamilyMemberStartDate" placeholder="yyyy-MM-dd" />
+                                            <span class="error" ng-show="familyMemberForm.txtFamilyMemberStartDate.$dirty && familyMemberForm.txtFamilyMemberStartDate.$error.max">
+                                                You can not select future date
+                                            </span>
+                                            <span class="error" ng-show="familyMemberForm.txtFamilyMemberStartDate.$dirty && familyMemberForm.txtFamilyMemberStartDate.$error.min">
+                                                Start date should be within latest 5 years
+                                            </span>
+                                            <span class="error" ng-show="familyMemberForm.txtFamilyMemberStartDate.$dirty && familyMemberForm.txtFamilyMemberStartDate.$error.required">
+                                                Required
+                                            </span>
+                                        </div>
+                                        <label class="control-label col-sm-2" for="offeringSearchFamilyMember.endDate">End Date:</label>
+                                        <div class="col-md-4">
+                                            <input type="date" ng-required="true" ng-model="offeringSearchFamilyMember.endDate" max="{{ familyMemberMaxDate() | date:'yyyy-MM-dd' }}" min="{{offeringSearchFamilyMember.startDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtFamilyMemberEndDate" placeholder="yyyy-MM-dd" />
+                                            <span class="error" ng-show="familyMemberForm.txtFamilyMemberEndDate.$dirty && familyMemberForm.txtFamilyMemberEndDate.$error.min">
+                                                End Date should be greater than start date
+                                            </span>
+                                            <span class="error" ng-show="familyMemberForm.txtFamilyMemberEndDate.$dirty && familyMemberForm.txtFamilyMemberEndDate.$error.max">
+                                                Date difference should be 12 months only
+                                            </span>
+                                            <span class="error" ng-show="familyMemberForm.txtFamilyMemberEndDate.$dirty && familyMemberForm.txtFamilyMemberEndDate.$error.required">
+                                                Required
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamilyMember.familyMemberId">FamilyMember Name:</label>
+                                        <div class="col-md-4" ng-show="familyMembersLoaded==0">
+                                            <select class="form-control" disabled>
+                                                <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4" ng-show="familyMembersLoaded==1">
+                                            <ui-select name="ddFamilyMember" allow-clear ng-model="familyMember.selected" theme="bootstrap" required>
+                                                <ui-select-match placeholder="Select or search a family member in the list...">{{$select.selected.fullName}}</ui-select-match>
+                                                <ui-select-choices repeat="familyMember in familyMembers | filter: $select.search">
+                                                    <span ng-bind-html="familyMember.fullName | highlight: $select.search"></span>
+                                                    <small ng-bind-html="familyMember.family | highlight: $select.search"></small>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="error" ng-show="familyMemberForm.ddFamilyMember.$dirty && familyMemberForm.ddFamilyMember.$error.required">
+                                                Required!
+                                            </span>
+                                            <!--<select class="form-control" ng-required="true" name="ddFamilyMember" ng-model="offeringSearchFamilyMember.familyMemberId" ng-options=" familyMember.id as  familyMember.fullName  + ' (' + familyMember.family + ')' for  familyMember in familyMembers">
+                                                <option value="">-- Select FamilyMember --</option>
+                                            </select>
+                                            <span class="error" ng-show="familyMemberForm.ddFamilyMember.$dirty && familyMemberForm.ddFamilyMember.$error.required">
+                                                Required
+                                            </span>-->
+                                        </div>
+                                        <label class="control-label col-sm-2" for="offeringSearchFamilyMember.fundTypeId">Fund Type:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddFundType" ng-model="offeringSearchFamilyMember.fundTypeId" ng-options=" fundType.id as  fundType.name for  fundType in fundTypes ">
+                                                <option value="">-- All --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamilyMember.offeringTypeId">Offering Type:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddOfferingType" ng-model="offeringSearchFamilyMember.offeringTypeId" ng-options=" offeringType.id as  offeringType.name for  offeringType in offeringTypes ">
+                                                <option value="">-- All --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <div style="align-content:center" class="col-md-5"></div>
+                                        <div style="align-content:center" class="col-md-2">
+                                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                            <button class="btn btn-lg btn-primary btn-block pull-right" type="submit"
+                                                    ng-click="getFamilyMemberOfferingReport(familyMemberForm)">
+                                                Search
+                                            </button>
+                                        </div>
+                                        <div style="align-content:center" class="col-md-5"></div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12">
+                                <div class="alert {{alertClassForEmptyListFamilyMember}} alert-dismissible" ng-show="showAlertForEmptyListFamilyMember" role="alert">
+                                    <button type="button" class="close" ng-click="showAlertForEmptyListFamilyMember=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{alertMsgForEmptyListFamilyMember}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="false">
+                                <div class="col-md-12">
+                                    <hr />
+                                    <a title="Download" ng-show="showPrintFamilyMember" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printMonthly()"></a>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+
+                            <div class="row" ng-show="showPrintFamilyMember">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <td>Total offering in {{authentication.currency}}</td>
+                                                    <td>{{totalFamilyMemberOffering}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by payment type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Payment type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in paymentTypesSummaryFamilyMember | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by fund type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Fund type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in fundTypeSummaryFamilyMember | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by offering type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Offering type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in offeringTypeSummaryFamilyMember | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table id="tblFamilyMember" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Offering Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Fund Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Payment Type
+                                    </th>
+                                    <th>
+                                        Amount in {{authentication.currency}}
+                                    </th>
+                                    <th>
+                                        Offering Date
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="familyMemberOffering in familyMemberOfferings">
+                                    <td>
+                                        {{familyMemberOffering.offeringType}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.fundType}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.paymentType}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.amount}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.offeringDate | date:MM/dd/yyyy}}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="3">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <form name="sponsorForm">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchSponsor.startDate">Start Date:</label>
+                                        <div class="col-md-4">
+                                            <input type="date" ng-model="offeringSearchSponsor.startDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtSponsorStartDate" placeholder="yyyy-MM-dd" />
+                                            <span class="error" ng-show="sponsorForm.txtSponsorStartDate.$dirty && sponsorForm.txtSponsorStartDate.$error.max">
+                                                You can not select future date
+                                            </span>
+                                            <span class="error" ng-show="sponsorForm.txtSponsorStartDate.$dirty && sponsorForm.txtSponsorStartDate.$error.min">
+                                                Start date should be within latest 5 years
+                                            </span>
+                                            <span class="error" ng-show="sponsorForm.txtSponsorStartDate.$dirty && sponsorForm.txtSponsorStartDate.$error.required">
+                                                Required
+                                            </span>
+                                        </div>
+                                        <label class="control-label col-sm-2" for="offeringSearchSponsor.endDate">End Date:</label>
+                                        <div class="col-md-4">
+
+                                            <input type="date" ng-required="true" ng-model="offeringSearchSponsor.endDate" max="{{ sponsorMemberMaxDate() | date:'yyyy-MM-dd' }}" min="{{offeringSearchSponsor.startDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtSponsorEndDate" placeholder="yyyy-MM-dd" />
+                                            <span class="error" ng-show="sponsorForm.txtSponsorEndDate.$dirty && sponsorForm.txtSponsorEndDate.$error.min">
+                                                End Date should be greater than start date
+                                            </span>
+                                            <span class="error" ng-show="sponsorForm.txtSponsorEndDate.$dirty && sponsorForm.txtSponsorEndDate.$error.max">
+                                                Date difference should be 12 months only
+                                            </span>
+                                            <span class="error" ng-show="sponsorForm.txtSponsorEndDate.$dirty && sponsorForm.txtSponsorEndDate.$error.required">
+                                                Required
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchSponsor.sponsorId">Sponsor Name:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddSponsor" ng-required="true" ng-model="offeringSearchSponsor.sponsorId" ng-options=" sponsor.id as  sponsor.name for  sponsor in sponsors">
+                                                <option value="">-- Select Sponsor --</option>
+                                            </select>
+                                        </div>
+                                        <label class="control-label col-sm-2" for="offeringSearchSponsor.fundTypeId">Fund Type:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddFundType" ng-model="offeringSearchSponsor.fundTypeId" ng-options=" fundType.id as  fundType.name for  fundType in fundTypes ">
+                                                <option value="">-- All --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchSponsor.offeringTypeId">Offering Type:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddOfferingType" ng-model="offeringSearchSponsor.offeringTypeId" ng-options=" offeringType.id as  offeringType.name for  offeringType in offeringTypes ">
+                                                <option value="">-- All --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <div style="align-content:center" class="col-md-5"></div>
+                                        <div style="align-content:center" class="col-md-2">
+                                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                            <button class="btn btn-lg btn-primary btn-block pull-right" type="submit"
+                                                    ng-click="getSponsorOfferingReport(sponsorForm)">
+                                                Search
+                                            </button>
+                                        </div>
+                                        <div style="align-content:center" class="col-md-5"></div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12">
+                                <div class="alert {{alertClassForEmptyListSponsor}} alert-dismissible" ng-show="showAlertForEmptyListSponsor" role="alert">
+                                    <button type="button" class="close" ng-click="showAlertForEmptyListSponsor=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{alertMsgForEmptyListSponsor}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="false">
+                                <div class="col-md-12">
+                                    <hr />
+                                    <a title="Download" ng-show="showPrintSponsor" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printMonthly()"></a>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+
+                            <div class="row" ng-show="showPrintSponsor">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <td>Total offering in {{authentication.currency}}</td>
+                                                    <td>{{totalSponsorOffering}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by payment type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Payment type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in paymentTypesSummarySponsor | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by fund type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Fund type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in fundTypeSummarySponsor | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by offering type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Offering type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in offeringTypeSummarySponsor | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table id="tblSponsor" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Offering Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Fund Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Payment Type
+                                    </th>
+                                    <th>
+                                        Amount in {{authentication.currency}}
+                                    </th>
+                                    <th>
+                                        Offering Date
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="sponsorOffering in sponsorOfferings">
+                                    <td>
+                                        {{sponsorOffering.offeringType}}
+                                    </td>
+                                    <td>
+                                        {{sponsorOffering.fundType}}
+                                    </td>
+                                    <td>
+                                        {{sponsorOffering.paymentType}}
+                                    </td>
+                                    <td>
+                                        {{sponsorOffering.amount}}
+                                    </td>
+                                    <td>
+                                        {{sponsorOffering.offeringDate | date:MM/dd/yyyy}}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

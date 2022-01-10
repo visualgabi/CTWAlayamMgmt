@@ -1,0 +1,219 @@
+﻿<div class="col-md-12" ng-init="initialize()">
+    &nbsp;
+</div>
+<div class="col-md-12">
+    <span class="lead">Opening balance details</span>
+    <hr />
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+</div>
+
+<div id="exTab2">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#1" data-toggle="tab">Balance Sheet</a>
+        </li>
+        <li>
+            <a href="#2" data-toggle="tab">Balance Sheet by quarterly</a>
+        </li>
+    </ul>
+
+    <div class="tab-content ">
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane active" id="1">
+            <div class="row center-block">
+                <div style="align-content:center" class="col-md-3"></div>
+                <div class="form-group col-md-2">
+                    <label class="control-label" for="transactionSearchDaily.orgFiscalYearId">FiscalYear:</label>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="form-control" name="ddOrgFiscalYearBalanceSheet" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select FiscalYear'" ng-model="balanceSheetSearch.orgFiscalYearId" ng-required="true" ng-options="orgFiscalYear.id as orgFiscalYear.fiscalYear for orgFiscalYear in orgFiscalYears">
+                        <option value=""></option>
+                    </select>
+                    <span class="error" ng-show="ddOrgFiscalYearBalanceSheet.$dirty && ddOrgFiscalYearBalanceSheet.$error.required">
+                        Required!
+                    </span>
+                </div>
+                <div style="align-content:center" class="col-md-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div style="align-content:center" class="col-md-5"></div>
+                    <div style="align-content:center" class="col-md-2">
+                        &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                        <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-disabled="balanceSheetSearch.orgFiscalYearId == '' || balanceSheetSearch.orgFiscalYearId == null" ng-click="searchBalanceSheet()">Show Balance Sheet</button>
+                    </div>
+                    <div style="align-content:center" class="col-md-5"></div>
+                </div>
+            </div>
+
+            <div class="row" ng-if="false">
+                <div class="col-md-12">
+                    <hr />
+                    <a title="Download" ng-show="showPrintBalanceSheet" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printDaily()"></a>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-show="showPrintBalanceSheet">
+                <div class="panel panel-default height">
+                    <div class="panel-heading">Balance sheet</div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Title</th>
+                                <th>Amount in {{authentication.currency}}</th>
+                            </tr>
+                            <tr ng-repeat="bItem in balanceSheet">
+                                <td>{{bItem.type }} :</td>
+                                <td>{{bItem.amount}}</td>
+                            </tr>
+                            <tr>
+                                <th>Avilable Balance</th>
+                                <th>{{availableBalance(balanceSheet)}}</th>
+                            </tr>
+                        </table>                       
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-show="showPrintBalanceSheet">
+
+            </div>
+
+            <div class="row" ng-show="showPrintBalanceSheet">
+                <div class="col-md-12">
+                    <hr />
+                    <strong>Account level summary</strong>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+
+
+            <div class="row" ng-show="showPrintBalanceSheet">
+                <div class="col-md-12">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-repeat="(key, values) in accountBalanceSheet | groupBy: 'account'">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Account Name {{key}}</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Amount in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="value in values">
+                                        <td>{{value.type}} :</td>
+                                        <td>{{value.amount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Avilable Balance</th>
+                                        <th>{{availableBalance(values)}}</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div class="tab-pane" id="2">
+                    <div class="row center-block">
+                        <div style="align-content:center" class="col-md-3"></div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for="transactionSearchDaily.orgFiscalYearId">FiscalYear:</label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <select class="form-control" name="ddOrgFiscalYearBalanceSheetQuarter" ng-model="balanceSheetSearchQuarter.orgFiscalYearId" ng-required="true" ng-options="orgFiscalYear.id as orgFiscalYear.fiscalYear for orgFiscalYear in orgFiscalYears">
+                                <option value="">Select FiscalYear</option>
+                            </select>
+                            <span class="error" ng-show="ddOrgFiscalYearBalanceSheetQuarter.$dirty && ddOrgFiscalYearBalanceSheetQuarter.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <div style="align-content:center" class="col-md-3"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <div style="align-content:center" class="col-md-5"></div>
+                            <div style="align-content:center" class="col-md-2">
+                                &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-disabled="balanceSheetSearchQuarter.orgFiscalYearId == '' || balanceSheetSearchQuarter.orgFiscalYearId == null" ng-click="searchBalanceSheetQuarter()">Show Balance Sheet</button>
+                            </div>
+                            <div style="align-content:center" class="col-md-5"></div>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="false">
+                        <div class="col-md-12">
+                            <hr />
+                            <a title="Download" ng-show="showPrintForBalanceSheetQuater" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printDaily()"></a>
+                        </div>
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="showPrintForBalanceSheetQuater">
+                        <div class="col-md-12">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-repeat="(keyQuarter, balanceSheetQuarterValues) in balanceSheetQuarter | groupBy: 'quarter'">
+                                <div class="panel panel-default height">
+                                    <div class="panel-heading">Quarter {{keyQuarter}}</div>
+                                    <div class="panel-body">
+                                        <table class="table table-bordered table-striped">
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Amount in {{authentication.currency}}</th>
+                                            </tr>
+                                            <tr ng-repeat="balanceSheetQuarterValue in balanceSheetQuarterValues">
+                                                <td>{{balanceSheetQuarterValue.type}} :</td>
+                                                <td>{{balanceSheetQuarterValue.amount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Avilable Balance</th>
+                                                <th>{{availableBalanceQuarter(balanceSheetQuarterValues)}}</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

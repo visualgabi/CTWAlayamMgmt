@@ -1,0 +1,91 @@
+﻿<div class="row" ng-controller="branchDtlsCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Branch details
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="col-md-12">
+                    <span class="lead">Organization Details.</span>
+                    <a title="Edit" type="button" class="btn btn-success glyphicon glyphicon-edit pull-right" ui-sref="admin.branchEdit({id:{{branch.id}}})"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="List" type="button" class="btn btn-success glyphicon glyphicon-th-list pull-right" ui-sref="admin.branchlst"></a>
+                    <hr />
+                </div>
+                <div class="col-md-12">
+                    <div class="row" ng-init="formLoad()">
+
+
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Name:</th>
+                                <td>{{branch.name}}</td>
+                                <th>Website:</th>
+                                <td>{{branch.website}}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone1:</th>
+                                <td>{{branch.phone1}}</td>
+                                <th>Phone2:</th>
+                                <td>{{branch.phone2}}</td>
+                            </tr>
+                            <tr>
+                                <th>EmailId1:</th>
+                                <td>{{branch.emailId1}}</td>
+                                <th>EmailId2:</th>
+                                <td>{{branch.emailId2}}</td>
+                            </tr>
+                            <tr>
+                                <th>Denomination:</th>
+                                <td>{{branch.denomination}}</td>
+                                <th>EthnicOrigin:</th>
+                                <td>{{branch.ethnicOrigin}}</td>
+                            </tr>
+                            <tr>
+                                <th>Primary Language:</th>
+                                <td>{{branch.primaryLanguage}}</td>
+                                <th>Secondry Language:</th>
+                                <td>{{branch.secondaryLanguage}}</td>
+                            </tr>
+                            <tr>
+                                <th>Address1:</th>
+                                <td>{{branch.address1}}</td>
+                                <th>Address2:</th>
+                                <td>{{branch.address2}}</td>
+                            </tr>
+                            <tr>
+                                <th>Address3:</th>
+                                <td>{{branch.address3}}</td>
+                                <th>City:</th>
+                                <td>{{branch.city}}</td>
+                            </tr>
+                            <tr>
+                                <th>Country:</th>
+                                <td>{{branch.country}}</td>
+                                <th>State:</th>
+                                <td>{{branch.state}}</td>
+                            </tr>
+                            <tr>
+                                <th>ZipCode:</th>
+                                <td>{{branch.zipCode}}</td>
+                                <th>Active:</th>
+                                <td>{{branch.active}}</td>
+                            </tr>
+                            <tr>
+                                <th>Description:</th>
+                                <td>{{branch.description}}</td>
+                                <th></th>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

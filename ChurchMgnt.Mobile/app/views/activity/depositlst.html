@@ -1,0 +1,267 @@
+﻿<!-- This is content container for nested view in UI-Router-->
+<!-- You can put here any constant element in app content for example: Page title or breadcrum -->
+<!-- Header -->
+
+<div class="row" ng-init="formLoad()" ng-controller="depositlstCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Deposit list
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div> &nbsp;
+                        <button title="Add Deposit" class="btn btn-success glyphicon glyphicon-plus btn-xs" ui-sref="activity.depositAdd"></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+               
+                    <table ng-table="tableParams" class="table table-bordered table-striped">
+                        <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                            <td data-title="'Deposit Date'" sortable="'depositDate'">
+                                {{item.depositDate | date:MM/dd/yyyy}}
+                            </td>
+                            <td data-title="'amountTitle'" sortable="'amount'">
+                                {{item.amount}}
+                            </td>
+                            <td data-title="'Offering Date'" sortable="'offeringDate'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                {{item.offeringDate | date:MM/dd/yyyy}}
+                            </td>
+                            <td data-title="'User'" sortable="'user'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                {{item.user}}
+                            </td>
+                            <td data-title="'Description'" sortable="'description'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                {{item.description}}
+                            </td>
+                            <td>
+                                <a title="Details" ui-sref="activity.depositDtls({id:{{item.id}}})" class="fa fa-ellipsis-h"></a>
+                                <!--<button title="Edit" type="button" ng-disabled="disableEditAction(item.offeringDate)" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addDeposit.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Disable" type="button" ng-disabled="disableEditAction(item.offeringDate)" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteDeposit.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Enable" type="button" ng-disabled="disableEditAction(item.offeringDate)" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>-->
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                 
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+
+
+<script id="addDeposit.html" type="text/ng-template">
+    <div class="popover popover-singlecolumn">
+        <h3 class="popover-title">Deposit</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+
+        <div class="popover-content popover.Form-content">
+            <form name="depositForm" ng-init="initialize(deposit.id)">
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <label class="col-md-12" for="deposit.depositDate">Deposit Date<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="date" ng-model="deposit.depositDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtDepositDate" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="depositForm.txtDepositDate.$dirty && depositForm.txtDepositDate.$error.max">
+                                You can not select future date
+                            </span>
+                            <span class="error" ng-show="depositForm.txtDepositDate.$dirty && depositForm.txtDepositDate.$error.min">
+                                Deposit date should be greater than {{ rptMinDate() | date:'yyyy-MM-dd' }}
+                            </span>
+                            <span class="error" ng-show="depositForm.txtDepositDate.$dirty && depositForm.txtDepositDate.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row hidden-sm hidden-xs hidden-md">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="deposit.accountId">Account:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control" name="ddAccount" ng-model="deposit.accountId" required ng-options="account.id as account.name for account in accounts | filter: availableAccounts (deposit.id)">
+                                <option value="">Select Account</option>
+                            </select>
+
+                            <span class="error" ng-show="depositForm.ddAccount.$dirty && depositForm.ddAccount.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs hidden-md">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="deposit.userId">User:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control" name="ddUser" required ng-model="deposit.userId" ng-options="user.id as user.firstName for user in users | filter: availableUsers (deposit.id)">
+                                <option value="">Select User</option>
+                            </select>
+
+                            <span class="error" ng-show="depositForm.ddUser.$dirty && depositForm.ddUser.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row hidden-sm hidden-xs hidden-md">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="deposit.amount">Amount in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="number" step="0.01" min="0" ng-model="deposit.amount" ng-maxlength="10" ng-required="true" class="form-control" name="txtAmount" placeholder="Enter the amount" />
+                            <span class="error" ng-show="depositForm.txtAmount.$dirty && depositForm.txtAmount.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs hidden-md">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="deposit.offeringDate">Offering Date:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="date" ng-model="deposit.offeringDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ deposit.depositDate | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtOfferingDate" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="depositForm.txtOfferingDate.$dirty && depositForm.txtOfferingDate.$error.max">
+                                Offering date should be less than deposit date
+                            </span>
+                            <span class="error" ng-show="depositForm.txtOfferingDate.$dirty && depositForm.txtOfferingDate.$error.min">
+                                Deposit date should be greater than {{ rptMinDate() | date:'yyyy-MM-dd' }}
+                            </span>
+                            <span class="error" ng-show="depositForm.txtOfferingDate.$dirty && depositForm.txtOfferingDate.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs hidden-md">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="deposit.description">Description:</label>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="2" ng-model="deposit.description" ng-maxlength="250" name="txtDescription" placeholder="Enter Description"></textarea>
+                            <span class="error" ng-show="depositForm.txtDescription.$dirty && depositForm.txtDescription.$error.maxlength">
+                                Last name cannot be longer than 250 characters
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs hidden-md">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                            <button type="submit" class="btn btn-primary" ng-click="save(depositForm);">Save</button>
+                            <button type="button" class="btn btn-default" ng-click="clearAlert();load();$hide()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script id="deleteDeposit.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

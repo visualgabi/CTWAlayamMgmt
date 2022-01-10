@@ -1,0 +1,36 @@
+﻿<div class="color-line">
+</div>
+<div id="logo" class="light-version">
+    <span>
+       ChurchMgnt
+    </span>
+</div>
+<nav role="navigation">
+    <minimaliza-menu></minimaliza-menu>
+    <div class="small-logo">
+        <span class="text-primary"></span>
+    </div>   
+    <div class="navbar-left">
+        <br />
+        <span ng-if="authentication.isAuth && authentication.role !=1"><b>{{authentication.orgName}}</b></span>
+    </div>
+    <div class="navbar-right">
+        <ul class="nav navbar-nav no-borders"> 
+            <li>
+                <a title="FAQ" ui-sref="fqa">
+                    <i class="pe-7s-help2"></i>
+                </a>
+            </li>  
+            <li>
+                <a title="Report an issue" ng-click="$root.rightSidebar = !$root.rightSidebar">
+                    <i class="pe-7s-upload pe-7s-news-paper"></i>
+                </a>
+            </li>                        
+            <li>
+                <a title="logout" ng-click="logOut()" >
+                    <i class="pe-7s-upload pe-rotate-90"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

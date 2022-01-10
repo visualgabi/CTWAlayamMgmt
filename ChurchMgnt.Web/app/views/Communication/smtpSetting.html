@@ -1,0 +1,272 @@
+﻿<div class="row" ng-controller="smtpSettingCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Organization SMTP Setting
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback pull-right">
+                        <button title="Add SMTP Setting" ng-click="setAction('add')" class="btn btn-success glyphicon glyphicon-plus  pull-right" data-template-url="addSMTPSetting.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForDelete}}
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div ng-init="formLoad()">
+                    <table ng-table="tableParams" class="table table-bordered table-striped">
+                        <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                            <td data-title="'Organization'" sortable="'organization'">
+                                {{item.organization}}
+                            </td>
+                            <td data-title="'SMTPServer'" sortable="'smtpServer'">
+                                {{item.smtpServer}}
+                            </td>
+                            <td data-title="'SMTPServerPort'" sortable="'smtpServerPort'">
+                                {{item.smtpServerPort}}
+                            </td>
+                            <td data-title="'SMTPServerUserName'" sortable="'smtpServerUserName'">
+                                {{item.smtpServerUserName}}
+                            </td>
+                            <td data-title="'SMTPServerPassword'" sortable="'smtpServerPassword'">
+                                {{item.smtpServerPassword}}
+                            </td>
+                            <td data-title="'FromEmailId'" sortable="'fromEmailId'">
+                                {{item.fromEmailId}}
+                            </td>
+                            <td data-title="'FromEmailLabel'" sortable="'fromEmailLabel'">
+                                {{item.fromEmailLabel}}
+                            </td>
+                            <td>
+                                <button title="Edit" type="button" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addSMTPSetting.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Disable" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteSMTPSetting.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Enable" type="button" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+<script id="addSMTPSetting.html" type="text/ng-template">
+    <div class="popover popover-singlecolumn" id="myModal" tabindex="-1">
+        <h3 class="popover-title">SMTP Setting</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+
+        <div class="popover-content popover.Form-content">
+            <form name="smtpSettingForm" ng-init="initialize(smtpSetting.id)">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="deposit.userId">Organization:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control" name="ddOrganization" required ng-model="smtpSetting.organizationId" ng-options="organization.id as organization.name for organization in organizations | filter: availableOrganizations (smtpSetting.id)">
+                                <option value="">Select Organization</option>
+                            </select>
+
+                            <span class="error" ng-show="smtpSettingForm.ddOrganization.$dirty && smtpSettingForm.ddOrganization.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="smtpSettingForm.smtpServer">SMTP server:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" ng-model="smtpSetting.smtpServer" ng-required="true" ng-maxlength="100" class="form-control" name="txtSMTPServer" placeholder="Enter SMTPServer" />
+                            <span class="error" ng-show="smtpSettingForm.txtSMTPServer.$dirty && smtpSettingForm.txtSMTPServer.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="smtpSettingForm.smtpServerPort">SMTP server port:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" ng-model="smtpSetting.smtpServerPort" ng-required="true" ng-maxlength="10" class="form-control" name="txtSMTPServerPort" placeholder="Enter SMTP server port" />
+                            <span class="error" ng-show="smtpSettingForm.txtSMTPServerPort.$dirty && smtpSettingForm.txtSMTPServerPort.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>               
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="smtpSettingForm.smtpServerUserName">SMTP server user name:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" ng-model="smtpSetting.smtpServerUserName" ng-required="true" ng-maxlength="256" class="form-control" name="txtSMTPServerUserName" placeholder="Enter SMTP server user name" />
+                            <span class="error" ng-show="smtpSettingForm.txtSMTPServerUserName.$dirty && smtpSettingForm.txtSMTPServerUserName.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="smtpSettingForm.smtpServerPassword">SMTP server password:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" ng-model="smtpSetting.smtpServerPassword" ng-required="true" ng-maxlength="256" class="form-control" name="txtSMTPServerPassword" placeholder="Enter SMTP server password" />
+                            <span class="error" ng-show="smtpSettingForm.txtSMTPServerPassword.$dirty && smtpSettingForm.txtSMTPServerPassword.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="smtpSettingForm.fromEmailId">From email:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="email" ng-model="smtpSetting.fromEmailId" ng-required="true" ng-maxlength="256" class="form-control" name="txtFromEmail" placeholder="Enter from email" />
+                            <span class="error" ng-show="smtpSettingForm.txtFromEmail.$dirty && smtpSettingForm.txtFromEmail.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="smtpSettingForm.fromEmailLabel">From email label:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" ng-model="smtpSetting.fromEmailLabel" ng-required="true" ng-maxlength="100" class="form-control" name="txtFromEmailLabel" placeholder="Enter from email label" />
+                            <span class="error" ng-show="smtpSettingForm.txtFromEmailLabel.$dirty && smtpSettingForm.txtFromEmailLabel.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs hidden-md">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                            <button type="submit" class="btn btn-primary" ng-click="save(smtpSettingForm);">Save</button>
+                            <button type="button" class="btn btn-default" ng-click="clearAlert();load();$hide()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script id="deleteSMTPSetting.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

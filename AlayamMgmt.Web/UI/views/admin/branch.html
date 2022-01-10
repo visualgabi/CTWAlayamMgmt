@@ -1,0 +1,233 @@
+﻿    <div class="col-md-12">
+        &nbsp;
+    </div>
+
+    <div class="col-md-12">
+        <span class="lead" ng-show="branchData.id == 0">Add Branch.</span>
+        <span class="lead" ng-show="branchData.id != 0">Edit Branch.</span>
+        <a title="Details" ng-show="branchData.id != 0" class="btn btn-success glyphicon glyphicon-folder-open pull-right" href="#/admin/branchDtls/{{branchData.id}}"></a>
+        <span ng-show="branchData.id != 0" class="pull-right">&nbsp;&nbsp;</span>
+        <a title="List" type="button" class="btn btn-success glyphicon glyphicon-th-list pull-right" href="#/admin/branchlst"></a>
+        <hr />
+    </div>
+
+    <div class="col-md-12">
+        <form name="orgForm" ng-init="initialize()">
+            <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{alertMsg}}
+            </div>
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">Name:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <!--<input type="text" ng-model="branchData.name" ng-required="true" ng-maxlength="100" class="form-control" name="txtName" placeholder="Enter Name" data-org-unique="orgForm.txtName" />-->
+                            <input type="text" ng-model="branchData.name" ng-required="true" ng-maxlength="100" class="form-control" name="txtName" placeholder="Enter Name" data-org-unique="{key:branchData.id, property:orgForm.txtName}" />
+                            <span class="error" ng-show="orgForm.txtName.$dirty && orgForm.txtName.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="orgForm.txtName.$dirty && orgForm.txtName.$error.maxlength">
+                                Branch name cannot be longer than 100 characters
+                            </span>
+                            <span class="validation-error" ng-show="orgForm.txtName.$dirty && orgForm.txtName.$error.isunique">This branch name is available in the system, please try another</span>
+                        </div>
+                        <label class="control-label col-sm-2" for="name">Website:</label>
+                        <div class="col-md-4">
+                            <input type="url" class="form-control" name="txtWebsite" ng-maxlength="100" ng-model="branchData.website" placeholder="Enter Website" />
+
+                            <span class="error" ng-show="orgForm.txtWebsite.$dirty && orgForm.txtWebsite.$error.maxlength">
+                                Branch website address cannot be longer than 100 characters
+                            </span>
+                            <span class="error" ng-show="orgForm.txtWebsite.$dirty && orgForm.txtWebsite.$error.url">
+                                Not valid website address!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Phone1">Phone1:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtPhone1" ng-model="branchData.phone1" ng-required="true" ng-maxlength="15" placeholder="Enter Primary Phone" />
+                            <span class="error" ng-show="orgForm.txtPhone1.$dirty && orgForm.txtPhone1.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="orgForm.txtPhone1.$dirty && orgForm.txtPhone1.$error.maxlength">
+                                Primary Phone cannot be longer than 15 characters
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="Phone2">Phone2:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtPhone2" ng-model="branchData.phone2" ng-maxlength="15" placeholder="Enter Secondary Phone" />
+                            <span class="error" ng-show="orgForm.txtPhone2.$dirty && orgForm.txtPhone2.$error.maxlength">
+                                Secondary Phone cannot be longer than 15 characters
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="EmailId1">EmailId1:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="email" class="form-control" name="txtEmailId1" ng-model="branchData.emailId1" ng-required="true" ng-maxlength="100" placeholder="Enter Primary Email" />
+                            <span class="error" ng-show="orgForm.txtEmailId1.$dirty && orgForm.txtEmailId1.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="orgForm.txtEmailId1.$dirty && orgForm.txtEmailId1.$error.maxlength">
+                                Primary email cannot be longer than 100 characters
+                            </span>
+                            <span class="error" ng-show="orgForm.txtEmailId1.$dirty && orgForm.txtEmailId1.$error.email">
+                                Not valid email!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="EmailId2">Email2:</label>
+                        <div class="col-md-4">
+                            <input type="email" class="form-control" name="txtEmailId2" ng-model="branchData.emailId2" ng-maxlength="100" placeholder="Enter Secondary Email" />
+                            <span class="error" ng-show="orgForm.txtEmailId2.$dirty && orgForm.txtEmailId2.$error.maxlength">
+                                Secondary email cannot be longer than 100 characters
+                            </span>
+                            <span class="error" ng-show="orgForm.txtEmailId2.$dirty && orgForm.txtEmailId2.$error.email">
+                                Not valid email!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">EthnicOrigin:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddEthnicOrigin" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select EthnicOrigin'" ng-required="true" ng-model="branchData.ethnicOriginId" ng-options="ethnicOrigin.id as ethnicOrigin.name for ethnicOrigin in ethnicOrigins">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="orgForm.ddEthnicOrigin.$dirty && orgForm.ddEthnicOrigin.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="PrimaryLanguage">Primary Language:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Primary Language'" name="ddPrimaryLanguage" ng-required="true" ng-model="branchData.primaryLanguageId" ng-options="language.id as language.name for language in languages">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="orgForm.ddPrimaryLanguage.$dirty && orgForm.ddPrimaryLanguage.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="SecondaryLanguage">Secondry Language:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddSecondaryLanguage" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Secondary Language'" ng-required="true" ng-model="branchData.secondaryLanguageId" ng-options="language.id as language.name for language in languages">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="orgForm.ddSecondaryLanguage.$dirty && orgForm.ddSecondaryLanguage.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="Address1">Address1:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtAddress1" ng-model="branchData.address1" ng-required="true" ng-maxlength="100" placeholder="Address1" />
+                            <span class="error" ng-show="orgForm.txtAddress1.$dirty && orgForm.txtAddress1.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="orgForm.txtAddress1.$dirty && orgForm.txtAddress1.$error.maxlength">
+                                Address1 cannot be longer than 100 characters
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Address2">Address2:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtAddress2" ng-model="branchData.address2" ng-maxlength="100" placeholder="Address2" />
+                            <span class="error" ng-show="orgForm.txtAddress2.$dirty && orgForm.txtAddress2.$error.maxlength">
+                                Address2 cannot be longer than 100 characters
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="name">Address3:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtAddress3" ng-model="branchData.address3" ng-maxlength="100" placeholder="Address3" />
+                            <span class="error" ng-show="orgForm.txtAddress3.$dirty && orgForm.txtAddress3.$error.maxlength">
+                                Address3 cannot be longer than 100 characters
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="city">City:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtCity" ng-model="branchData.city" ng-required="true" ng-maxlength="100" placeholder="City" />
+                            <span class="error" ng-show="orgForm.txtCity.$dirty && orgForm.txtCity.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="orgForm.txtCity.$dirty && orgForm.txtCity.$error.maxlength">
+                                City cannot be longer than 100 characters
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="PrimaryLanguage">Country:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Country'" name="ddCountry" ng-required="true" ng-model="branchData.countryId" ng-options="country.id as country.name for country in countries">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="orgForm.ddCountry.$dirty && orgForm.ddCountry.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="State">State:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddState" ng-required="true" ng-disabled="branchData.countryId == ''" ng-model="branchData.stateId" ng-options="state.id as state.name for state in states  | filter : {countryId : branchData.countryId}">
+                                <option value="">Select State</option>
+                            </select>
+                            <span class="error" ng-show="orgForm.ddState.$dirty && orgForm.ddState.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="name">ZipCode:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtZipCode" ng-model="branchData.zipCode" ng-required="true" ng-maxlength="15" placeholder="ZipCode" />
+                            <span class="error" ng-show="orgForm.txtZipCode.$dirty && orgForm.txtZipCode.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="orgForm.txtZipCode.$dirty && orgForm.txtZipCode.$error.maxlength">
+                                Zip code cannot be longer than 15 characters
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="city">Description:</label>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="5" ng-model="branchData.discription" ng-maxlength="250" name="txtDescription"></textarea>
+                            <span class="error" ng-show="orgForm.txtDescription.$dirty && orgForm.txtDescription.$error.maxlength">
+                                discription code cannot be longer than 250 characters
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-offset-6 col-sm-6">
+                            <br />
+                            <button type="submit" class="btn btn-primary" ng-click="saveOrg(orgForm)">Save</button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-primary" ng-click="close()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+

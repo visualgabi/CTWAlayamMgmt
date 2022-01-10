@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E781210B-1E89-4C1A-8790-3A2C3B62C578}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Online.ChurchMgnt.Web</RootNamespace>
+    <AssemblyName>Online.ChurchMgnt.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\app.js" />
+    <Content Include="app\common.js" />
+    <Content Include="app\config.js" />
+    <Content Include="app\content\css\angular-notify.min.css" />
+    <Content Include="app\content\css\animate.min.css" />
+    <Content Include="app\content\css\bootstrap.min.css" />
+    <Content Include="app\content\css\font-awesome.min.css" />
+    <Content Include="app\content\css\img\alpha.png" />
+    <Content Include="app\content\css\img\hue.png" />
+    <Content Include="app\content\css\img\saturation.png" />
+    <Content Include="app\content\css\metisMenu.min.css" />
+    <Content Include="app\content\css\style.css" />
+    <Content Include="app\content\css\toastr.css" />
+    <Content Include="app\content\fonts\fontawesome-webfont.svg" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\css\helper.css" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\css\pe-icon-7-stroke.css" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.svg" />
+    <Content Include="app\content\img\alpha.png" />
+    <Content Include="app\content\img\hue.png" />
+    <Content Include="app\content\img\saturation.png" />
+    <Content Include="app\ctrls\homeCtrl.js" />
+    <Content Include="app\ctrls\indexCtrl.js" />
+    <Content Include="app\directives\directives.js" />
+    <Content Include="app\scripts\angular-animate.min.js" />
+    <Content Include="app\scripts\angular-base64.js" />
+    <Content Include="app\scripts\angular-bootstrap-tour.min.js" />
+    <Content Include="app\scripts\angular-cookies.js" />
+    <Content Include="app\scripts\angular-filter.js" />
+    <Content Include="app\scripts\angular-sanitize.min.js" />
+    <Content Include="app\scripts\angular-touch.js" />
+    <Content Include="app\scripts\angular-ui-router.min.js" />
+    <Content Include="app\scripts\angular-ui-tree.min.js" />
+    <Content Include="app\scripts\angular-validator.js" />
+    <Content Include="app\scripts\angular.min.js" />
+    <Content Include="app\scripts\bootstrap-tour.min.js" />
+    <Content Include="app\scripts\bootstrap.min.js" />
+    <Content Include="app\scripts\img\color-picker\alpha.png" />
+    <Content Include="app\scripts\img\color-picker\hue.png" />
+    <Content Include="app\scripts\img\color-picker\saturation.png" />
+    <Content Include="app\scripts\jquery-ui.min.js" />
+    <Content Include="app\scripts\jquery.base64.js" />
+    <Content Include="app\scripts\jquery.bootstrap-touchspin.min.js" />
+    <Content Include="app\scripts\jquery.min.js" />
+    <Content Include="app\scripts\jquery.slimscroll.min.js" />
+    <Content Include="app\scripts\jquery.validate.min.js" />
+    <Content Include="app\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\scripts\loading-bar.min.js" />
+    <Content Include="app\scripts\metisMenu.min.js" />
+    <Content Include="app\scripts\toastr.js" />
+    <Content Include="app\scripts\ui-bootstrap-tpls.min.js" />
+    <Content Include="app\scripts\ui-bootstrap.min.js" />
+    <Content Include="app\scripts\ui-utils.min.js" />
+    <Content Include="app\services\contactService.js" />
+    <Content Include="app\views\home.html" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="images\features\analytics.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\balanceSheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\contributionRpt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\dashboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\event.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\expense.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\expenseRpt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\memberCare.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\offering.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\offeringRpt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\features\pledgeRpt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\landing\c1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\landing\c2.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\landing\c3.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\landing\c4.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\landing\header.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="index.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="app\content\fonts\fontawesome-webfont.eot" />
+    <Content Include="app\content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="app\content\fonts\fontawesome-webfont.woff" />
+    <Content Include="app\content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="app\content\fonts\FontAwesome.otf" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.eot" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.ttf" />
+    <Content Include="app\content\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.woff" />
+    <None Include="Properties\PublishProfiles\Prod web.churchmgnt.com.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5439</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:5439/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

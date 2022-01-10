@@ -1,0 +1,163 @@
+﻿<div class="container container-pdf">
+
+    <div class="col-md-12" ng-init="initialize()">
+        &nbsp;
+    </div>
+    <div class="col-md-12">
+        <span class="lead">Expense Report.</span>
+        <hr />
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="expenseSearch.expenseStartDate">Start Date: {{expenseSearch.expenseStartDate | date:MM/dd/yyyy}}</label>
+            <label class="control-label col-sm-2" for="expenseSearch.expenseEndDate">End Date:  {{expenseSearch.expenseEndDate | date:MM/dd/yyyy}}</label>
+            <div class="col-md-2">
+
+            </div>            
+            <label class="control-label col-sm-2" for="expenseSearch.expenseEndDate">Expense Type: {{expenseTypeName}}</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="showPrint">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="panel panel-default height">
+                <div class="panel-heading">Summary</div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td>Total Expense :</td>
+                            <td>{{totalExpense}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="panel panel-default height">
+                <div class="panel-heading">Summary by Payment Type</div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Payment Type</th>
+                            <th>Total</th>
+                        </tr>
+                        <tr ng-repeat="paymentTypeTotal in paymentTypesWithAmount">
+                            <td>{{paymentTypeTotal.name }} :</td>
+                            <td>{{paymentTypeTotal.total}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="panel panel-default height">
+                <div class="panel-heading">Summary by Account</div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Account</th>
+                            <th>Total</th>
+                        </tr>
+                        <tr ng-repeat="accountWithAmount in accountsWithAmount">
+                            <td>{{accountWithAmount.name }} :</td>
+                            <td>{{accountWithAmount.total}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="panel panel-default height">
+                <div class="panel-heading">Summary by Expense Type</div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Expense Type</th>
+                            <th>Total</th>
+                        </tr>
+                        <tr ng-repeat="expenseTypesTotal in expenseTypesWithAmount">
+                            <td>{{expenseTypesTotal.name }} :</td>
+                            <td>{{expenseTypesTotal.total}}</td>
+                        </tr>
+                    </table>
+                    <!--<strong>{{expenseTypesTotal.name }} : {{expenseTypesTotal.total}}</strong>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+
+    <table id="tblExpense" ng-table="tableParams" class="table table-bordered table-striped">
+        <tr>
+            <th>
+                Expense Type
+            </th>
+            <th>
+                Sub Expense Type
+            </th>
+            <th>
+                Payment Type
+            </th>            
+            <th>
+                Amount
+            </th>
+            <th>
+                ExpenseDate
+            </th>          
+        </tr>
+        <tr ng-repeat="expense in $data">
+            <td sortable="'familyMember'">
+                {{expense.expenseType}}
+            </td>
+            <td sortable="'expenseType'">
+                {{expense.subExpenseType}}
+            </td>
+            <td sortable="'paymentType'">
+                {{expense.paymentType}}
+            </td>          
+            <td sortable="'Amount'">
+                {{expense.amount}}
+            </td>
+            <td sortable="'amound'">
+                {{expense.expenseDate | date:MM/dd/yyyy}}
+            </td>           
+        </tr>
+    </table>
+
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <div after-render="missionCompled"></div>
+    <hr />
+
+</div>

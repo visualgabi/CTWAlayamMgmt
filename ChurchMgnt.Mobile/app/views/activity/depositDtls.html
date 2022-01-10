@@ -1,0 +1,85 @@
+﻿<div class="row" ng-init="initialize()" ng-controller="depositDtlsCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Deposit details                
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+
+                    <a title="List" class="btn btn-success glyphicon glyphicon-th-list btn-xs" ui-sref="activity.depositlst"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Edit" type="button" ng-disabled="disableEditAction(deposit.offeringDate)" class="btn btn-success glyphicon glyphicon-edit btn-xs" ui-sref="activity.depositEdit({id:{{deposit.id}}})"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Disable" type="button" ng-show="deposit.active === true" ng-disabled="disableEditAction(deposit.offeringDate)" class="btn btn-warning glyphicon glyphicon glyphicon-trash btn-xs" data-template="deleteDeposit.html" data-placement="right" data-auto-close="1" bs-popover></a>
+                    <a title="Enable" type="button" ng-show="deposit.active === false" ng-disabled="disableEditAction(deposit.offeringDate)" class="btn btn-success glyphicon glyphicon glyphicon-ok btn-xs" ng-click="enable(deposit.id, true)"></a>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                            <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{alertMsg}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="col-md-12">
+                    <div class="row" ng-init="formLoad()">
+
+                        <table class="table table-bordered">
+                            <tr ng-class="{'danger': deposit.active === false }">
+                                <th>Account:</th>
+                                <td>{{deposit.account}} </td>
+                            </tr>
+                            <tr ng-class="{'danger': deposit.active === false }">
+                                <th>Deposit Date:</th>
+                                <td>{{deposit.depositDate | date:MM/dd/yyyy}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': deposit.active === false }">
+                                <th>Offering Date:</th>
+                                <td>{{deposit.offeringDate | date:MM/dd/yyyy}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': deposit.active === false }">
+                                <th>Deposited Amount:</th>
+                                <td>{{deposit.amount}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': deposit.active === false }">
+                                <th>User:</th>
+                                <td>{{deposit.user}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': deposit.active === false }">
+                                <th>Description:</th>
+                                <td>{{deposit.description }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script id="deleteDeposit.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(deposit.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

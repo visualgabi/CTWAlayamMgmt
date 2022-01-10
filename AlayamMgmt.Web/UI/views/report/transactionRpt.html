@@ -1,0 +1,359 @@
+﻿<div class="col-md-12" ng-init="initialize()">
+    &nbsp;
+</div>
+<div class="col-md-12">
+    <span class="lead">Transaction details</span>
+    <hr />
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+</div>
+
+<div id="exTab2">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#1" data-toggle="tab">Summary by daily</a>
+        </li>
+        <li>
+            <a href="#2" data-toggle="tab">Summary by monthly</a>
+        </li>  
+        <li ng-if="false">
+            <a href="#3" data-toggle="tab">Summary by quarter</a>
+        </li>      
+    </ul>
+
+    <div class="tab-content ">
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-pane active" id="1">           
+            <form name="reportFormDaily">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="transactionSearchDaily.startDate">Start Date:</label>
+                        <div class="col-md-4">
+                            <input type="date" ng-model="transactionSearchDaily.startDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtStartDate" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="reportFormDaily.txtStartDate.$dirty && reportFormDaily.txtStartDate.$error.max">
+                                You can not select future date
+                            </span>
+                            <span class="error" ng-show="reportFormDaily.txtStartDate.$dirty && reportFormDaily.txtStartDate.$error.min">
+                                Start date should be within latest 5 years
+                            </span>
+                            <span class="error" ng-show="reportFormDaily.txtStartDate.$dirty && reportFormDaily.txtStartDate.$error.required">
+                                Required
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="transactionSearchDaily.endDate">End Date:</label>
+                        <div class="col-md-4">
+                            <input type="date" ng-required="true" ng-model="transactionSearchDaily.endDate" max="{{ maxDate() | date:'yyyy-MM-dd' }}" min="{{transactionSearchDaily.startDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtEndDate" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="reportFormDaily.txtEndDate.$dirty && reportFormDaily.txtEndDate.$error.min">
+                                End Date should be greater than start date
+                            </span>
+                            <span class="error" ng-show="reportFormDaily.txtEndDate.$dirty && reportFormDaily.txtEndDate.$error.max">
+                                Date difference should be six months only
+                            </span>
+                            <span class="error" ng-show="reportFormDaily.txtEndDate.$dirty && reportFormDaily.txtEndDate.$error.required">
+                                Required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <div style="align-content:center" class="col-md-5"></div>
+                        <div style="align-content:center" class="col-md-2">
+                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                            <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-click="searchDaily(reportFormDaily)">Search</button>
+                        </div>
+                        <div style="align-content:center" class="col-md-5"></div>
+                    </div>
+                </div>
+</form>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForEmptyListDaily}} alert-dismissible" ng-show="showAlertForEmptyListDaily" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForEmptyListDaily=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForEmptyListDaily}}
+                    </div>
+                </div>
+                <div class="row" ng-if="false">
+                    <div class="col-md-12">
+                        <hr />
+                        <a title="Download" ng-show="showPrintDaily" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printDaily()"></a>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <table id="tblTransactionDaily" class="table table-bordered table-striped">
+                    <tr>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Amount in {{authentication.currency}}
+                        </th>
+                        <th>
+                            Account
+                        </th>
+                    </tr>
+                    <!--<tr ng-repeat="itemDaily in transactionDetailsDaily" ng-class="getClass(itemDaily.type)">-->
+                    <tr ng-repeat="itemDaily in transactionDetailsDaily">
+                        <td>
+                            {{itemDaily.type}}
+                        </td>
+                        <td>
+                            {{itemDaily.date | date:MM/dd/yyyy}}
+                        </td>
+                        <td>
+                            {{itemDaily.amount}}
+                        </td>
+                        <td>
+                            {{itemDaily.account}}
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+</div>
+        <div class="tab-pane" id="2">
+            <!--<div class="row center-block"> 
+                <div style="align-content:center" class="col-md-3"></div>               
+                <div class="form-group col-md-2">
+                    <label class="control-label" for="transactionSearchMonthly.orgFiscalYearId">FiscalYear:</label>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="form-control" name="ddOrgFiscalYearMonthly" ng-model="transactionSearchMonthly.orgFiscalYearId" ng-required="true" ng-options="orgFiscalYear.id as orgFiscalYear.fiscalYear for orgFiscalYear in orgFiscalYears">
+                        <option value="">Select FiscalYear</option>
+                    </select>
+                    <span class="error" ng-show="ddOrgFiscalYearMonthly.$dirty && ddOrgFiscalYearMonthly.$error.required">
+                        Required!
+                    </span>
+                </div>
+                <div style="align-content:center" class="col-md-3"></div>
+            </div>-->
+            <form name="reportFormMonthly">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="transactionSearchMonthly.startDate">Start Date:</label>
+                        <div class="col-md-4">
+                            <input type="date" ng-model="transactionSearchMonthly.startDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtStartDateMonthly" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="reportFormMonthly.txtStartDateMonthly.$dirty && reportFormMonthly.txtStartDateMonthly.$error.max">
+                                You can not select future date
+                            </span>
+                            <span class="error" ng-show="reportFormMonthly.txtStartDateMonthly.$dirty && reportFormMonthly.txtStartDateMonthly.$error.min">
+                                Start date should be within latest 5 years
+                            </span>
+                            <span class="error" ng-show="reportFormMonthly.txtStartDateMonthly.$dirty && reportFormMonthly.txtStartDateMonthly.$error.required">
+                                Required
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="transactionSearchMonthly.endDate">End Date:</label>
+                        <div class="col-md-4">
+                            <input type="date" ng-required="true" ng-model="transactionSearchMonthly.endDate" max="{{ maxDateMonthly() | date:'yyyy-MM-dd' }}" min="{{transactionSearchMonthly.startDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtEndDateMonthly" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="reportFormMonthly.txtEndDateMonthly.$dirty && reportFormMonthly.txtEndDateMonthly.$error.min">
+                                End Date should be greater than start date
+                            </span>
+                            <span class="error" ng-show="reportFormMonthly.txtEndDateMonthly.$dirty && reportFormMonthly.txtEndDateMonthly.$error.max">
+                                Date difference should be 12 months only
+                            </span>
+                            <span class="error" ng-show="reportFormMonthly.txtEndDateMonthly.$dirty && reportFormMonthly.txtEndDateMonthly.$error.required">
+                                Required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <div style="align-content:center" class="col-md-5"></div>
+                        <div style="align-content:center" class="col-md-2">
+                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                            <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-click="searchMonthly(reportFormMonthly)">Search</button>
+                        </div>
+                        <div style="align-content:center" class="col-md-5"></div>
+                    </div>
+                </div>
+</form>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForEmptyListMonthly}} alert-dismissible" ng-show="showAlertForEmptyListMonthly" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForEmptyListMonthly=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForEmptyListMonthly}}
+                    </div>
+                </div>
+                <div class="row" ng-if="false">
+                    <div class="col-md-12">
+                        <hr />
+                        <a title="Download" ng-show="showPrintMonthly" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printMonthly()"></a>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <table id="tblTransactionMonthly" class="table table-bordered table-striped">
+                    <tr>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Month
+                        </th>
+                        <th>
+                            Amount in {{authentication.currency}}
+                        </th>
+                        <th>
+                            Account
+                        </th>
+                    </tr>
+                    <tr ng-repeat="itemMonthly in transactionDetailsMonthly">
+                        <td>
+                            {{itemMonthly.type}}
+                        </td>
+                        <td>
+                            {{itemMonthly.month}}
+                        </td>
+                        <td>
+                            {{itemMonthly.amount}}
+                        </td>
+                        <td>
+                            {{itemMonthly.account}}
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+</div>  
+        <div class="tab-pane" id="3">
+            <div class="row center-block">
+                <div style="align-content:center" class="col-md-3"></div>
+                <div class="form-group col-md-2">
+                    <label class="control-label" for="transactionSearchQuarter.orgFiscalYearId">FiscalYear:</label>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="form-control" name="ddOrgFiscalYearQuarter" ng-model="transactionSearchQuarter.orgFiscalYearId" ng-required="true" ng-options="orgFiscalYear.id as orgFiscalYear.fiscalYear for orgFiscalYear in orgFiscalYears">
+                        <option value="">Select FiscalYear</option>
+                    </select>
+                    <span class="error" ng-show="ddOrgFiscalYearQuarter.$dirty && ddOrgFiscalYearQuarter.$error.required">
+                        Required!
+                    </span>
+                </div>
+                <div style="align-content:center" class="col-md-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div style="align-content:center" class="col-md-5"></div>
+                    <div style="align-content:center" class="col-md-2">
+                        &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                        <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-disabled="transactionSearchQuarter.orgFiscalYearId == '' || transactionSearchQuarter.orgFiscalYearId == null" ng-click="searchQuarter()">Search</button>
+                    </div>
+                    <div style="align-content:center" class="col-md-5"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="alert {{alertClassForEmptyListQuarter}} alert-dismissible" ng-show="showAlertForEmptyListQuarter" role="alert">
+                    <button type="button" class="close" ng-click="showAlertForEmptyListQuarter=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsgForEmptyList}}
+                </div>
+            </div>
+            <div class="row" ng-if="false">
+                <div class="col-md-12">
+                    <hr />
+                    <a title="Download" ng-show="showPrintQuarter" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printQuarter()"></a>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+
+            <table id="tblTransactionQuarter" class="table table-bordered table-striped">
+                <tr>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Quarter
+                    </th>
+                    <th>
+                        Amount in {{authentication.currency}}
+                    </th>
+                    <th>
+                        Account
+                    </th>
+                </tr>
+                <tr ng-repeat="itemQuarter in transactionDetailsQuarter">
+                    <td>
+                        {{itemQuarter.type}}
+                    </td>
+                    <td>
+                        {{itemQuarter.quarter}}
+                    </td>
+                    <td>
+                        {{itemQuarter.amount}}
+                    </td>
+                    <td>
+                        {{itemQuarter.account}}
+                    </td>
+                </tr>
+            </table>
+
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>  
+    </div>
+</div>
+    
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+
+    <hr />

@@ -1,0 +1,257 @@
+﻿<div class="row" ng-controller="familyPledgeRptCtrl" ng-init="initialize()">
+
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-body">
+                        <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                <form name="familyForm">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="offeringSearchFamily.familyId">Family Name:</label>
+                            <div class="col-md-4" ng-show="familiesLoaded==0">
+                                <select class="form-control" disabled>
+                                    <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" ng-show="familiesLoaded==1">                                
+                                <!--<select class="form-control" ng-required="true" name="ddFamily" ng-model="offeringSearchFamily.familyId" ng-options=" family.id as  family.name + ' (' + family.emailId1 + ')' for  family in familes">
+                                    <option value="">Select Family</option>
+                                </select>-->
+
+                                <ui-select name="ddFamily" allow-clear ng-model="family.selected" theme="bootstrap" required>
+                                    <ui-select-match placeholder="Select or search a family in the list...">{{$select.selected.name}}</ui-select-match>
+                                    <ui-select-choices repeat="family in familes | filter: $select.search">
+                                        <span ng-bind-html="family.name | highlight: $select.search"></span>
+                                        <small ng-bind-html="family.emailId1 | highlight: $select.search"></small>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="error" ng-show="familyForm.ddFamily.$dirty && familyForm.ddFamily.$error.required">
+                                    Required!
+                                </span>
+
+                            </div>
+                            <label class="control-label col-sm-2" for="offeringSearchFamily.fiscalYearId">Fiscal Year:</label>
+                            <div class="col-md-4">
+                                <select class="form-control" name="ddFiscalYearsFamily" ng-model="offeringSearchFamily.fiscalYearId" ng-options=" fiscalYear.id as  fiscalYear.fiscalYear for  fiscalYear in fiscalYears ">
+                                    <option value="">Select Fiscal Year</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="offeringSearchFamily.startDate">Start Date:</label>
+                            <div class="col-md-4">
+                                <input type="date" ng-model="offeringSearchFamily.startDate" min="{{ rptStartMinDate() | date:'yyyy-MM-dd' }}" max="{{ rptStartMaxDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtFamilyStartDate" placeholder="yyyy-MM-dd" />
+                                <span class="error" ng-show="familyForm.txtFamilyStartDate.$dirty && familyForm.txtFamilyStartDate.$error.max">
+                                    You can not select future date
+                                </span>
+                                <span class="error" ng-show="familyForm.txtFamilyStartDate.$dirty && familyForm.txtFamilyStartDate.$error.min">
+                                    Start date should be within latest 5 years
+                                </span>
+                                <span class="error" ng-show="familyForm.txtFamilyStartDate.$dirty && familyForm.txtFamilyStartDate.$error.required">
+                                    Required
+                                </span>
+                            </div>
+                            <label class="control-label col-sm-2" for="offeringSearchFamily.endDate">End Date:</label>
+                            <div class="col-md-4">
+                                <input type="date" ng-required="true" ng-model="offeringSearchFamily.endDate" max="{{ rptEndMaxDate() | date:'yyyy-MM-dd' }}" min="{{offeringSearchFamily.startDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtFamilyEndDate" placeholder="yyyy-MM-dd" />
+                                <span class="error" ng-show="familyForm.txtFamilyEndDate.$dirty && familyForm.txtFamilyEndDate.$error.min">
+                                    End Date should be greater than start date
+                                </span>
+                                <span class="error" ng-show="familyForm.txtFamilyEndDate.$dirty && familyForm.txtFamilyEndDate.$error.max">
+                                    Date difference should be 12 months only
+                                </span>
+                                <span class="error" ng-show="familyForm.txtFamilyEndDate.$dirty && familyForm.txtFamilyEndDate.$error.required">
+                                    Required
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <div style="align-content:center" class="col-md-5"></div>
+                            <div style="align-content:center" class="col-md-2">
+                                &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                <!-- ng-disabled="offeringSearchFamily.familyId == '' || offeringSearchFamily.endDate == '' || offeringSearchFamily.startDate == '' || offeringSearchFamily.familyId == null || offeringSearchFamily.endDate == null || offeringSearchFamily.startDate == null"-->
+                                <button class="btn btn-lg btn-primary btn-block pull-right" type="submit"
+                                        ng-click="getFamilyOfferingReport(familyForm)">
+                                    Search
+                                </button>
+                            </div>
+                            <div style="align-content:center" class="col-md-5"></div>
+                        </div>
+                    </div>
+                </form>
+                            <div class="col-md-12">
+                                <div class="alert {{alertClassForEmptyListFamily}} alert-dismissible" ng-show="showAlertForEmptyListFamily" role="alert">
+                                    <button type="button" class="close" ng-click="showAlertForEmptyListFamily=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{alertMsgForEmptyListFamily}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <hr />
+                                    <a title="Download" ng-show="showPrintFamily" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="downloadPdf()"></a>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+
+                            <div class="row" ng-show="showPrintFamily">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <td>Total offering in {{authentication.currency}}</td>
+                                                    <td>{{totalFamilyOffering}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Family pledge Summary</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Fund type</th>
+                                                    <th>Total commitment in {{authentication.currency}}</th>
+                                                    <th>Total offering in {{authentication.currency}}</th>                                                    
+                                                </tr>
+                                                <tr ng-repeat="summary in fundTypeSummaryFamily | filter : isGreaterThanZeroForCommitment()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.committed}}</td>
+                                                    <td>{{summary.total}}</td>                                                    
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by payment type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Payment type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in paymentTypesSummaryFamily | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>                               
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <div class="panel panel-default height">
+                                        <div class="panel-heading">Summary by offering type</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <th>Offering type</th>
+                                                    <th>Total in {{authentication.currency}}</th>
+                                                </tr>
+                                                <tr ng-repeat="summary in offeringTypeSummaryFamily | filter : isGreaterThanZero()">
+                                                    <td>{{summary.name }}</td>
+                                                    <td>{{summary.total}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table id="tblFamily" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Offering Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Fund Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Payment Type
+                                    </th>
+                                    <th>
+                                        Amount in {{authentication.currency}}
+                                    </th>
+                                    <th>
+                                        Offering Date
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="familyOffering in familyOfferings">
+                                    <td>
+                                        {{familyOffering.offeringType}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.fundType}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.paymentType}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.amount}}
+                                    </td>
+                                    <td>
+                                        {{familyOffering.offeringDate | date:MM/dd/yyyy}}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        

@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F8753918-A6ED-47D5-A77D-A42E3D30E757}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AlayamMgmt.Common</RootNamespace>
+    <AssemblyName>AlayamMgmt.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constant.cs" />
+    <Compile Include="DBEntity\AccountDBEntity.cs" />
+    <Compile Include="DBEntity\AccountTypeDBEntity.cs" />
+    <Compile Include="DBEntity\BalanceSheetDBEntity.cs" />
+    <Compile Include="DBEntity\BankDBEntity.cs" />
+    <Compile Include="DBEntity\BaseCriteria.cs" />
+    <Compile Include="DBEntity\BaseDBEntity.cs" />
+    <Compile Include="DBEntity\BirthdayRemainderDBEntity.cs" />
+    <Compile Include="DBEntity\ClientDBEntity.cs" />
+    <Compile Include="DBEntity\CountryDBEntity.cs" />
+    <Compile Include="DBEntity\CurrencyDBEntity.cs" />
+    <Compile Include="DBEntity\DenominationDBEntity.cs" />
+    <Compile Include="DBEntity\DepositDBEntity.cs" />
+    <Compile Include="DBEntity\EmailContentDBEntity.cs" />
+    <Compile Include="DBEntity\EMailTemplateDBEntity.cs" />
+    <Compile Include="DBEntity\EmailTypeDBEntity.cs" />
+    <Compile Include="DBEntity\EthnicOriginDBEntity.cs" />
+    <Compile Include="DBEntity\EventDBEntity.cs" />
+    <Compile Include="DBEntity\EventTypeDBEntity.cs" />
+    <Compile Include="DBEntity\ExpenseDBEntity.cs" />
+    <Compile Include="DBEntity\ExpenseTypeDBEntity.cs" />
+    <Compile Include="DBEntity\FamilyDBEntity.cs" />
+    <Compile Include="DBEntity\FamilyMemberDBEntity.cs" />
+    <Compile Include="DBEntity\FamilyPledgeDBEntity.cs" />
+    <Compile Include="DBEntity\FiscalYearDBEntity.cs" />
+    <Compile Include="DBEntity\FiscalYearStartAndEndMonthDBEntity.cs" />
+    <Compile Include="DBEntity\FunctionalityDBEntity.cs" />
+    <Compile Include="DBEntity\FundTypeDBEntity.cs" />
+    <Compile Include="DBEntity\GroupDBEntity.cs" />
+    <Compile Include="DBEntity\GroupMemberDBEntity.cs" />
+    <Compile Include="DBEntity\IssueStatusDBEntity.cs" />
+    <Compile Include="DBEntity\LanguageDBEntity.cs" />
+    <Compile Include="DBEntity\LookupDBEntity.cs" />
+    <Compile Include="DBEntity\MailMessageDBEntity.cs" />
+    <Compile Include="DBEntity\MarriageAnniversaryRemainderDBEntity.cs" />
+    <Compile Include="DBEntity\MemberOrVisitorDBEntity.cs" />
+    <Compile Include="DBEntity\MembershipStatusDBEntity.cs" />
+    <Compile Include="DBEntity\MessageTypeDBEntity.cs" />
+    <Compile Include="DBEntity\OfferingTypeDBEntity.cs" />
+    <Compile Include="DBEntity\OpeningBalanceDBEntity.cs" />
+    <Compile Include="DBEntity\OrganizationDBEntity.cs" />
+    <Compile Include="DBEntity\OrganizationLookupDBEntity.cs" />
+    <Compile Include="DBEntity\MessageDBEntity.cs" />
+    <Compile Include="DBEntity\OrgFiscalYearBudgetDBEntity.cs" />
+    <Compile Include="DBEntity\OrgFiscalYearDBEntity.cs" />
+    <Compile Include="DBEntity\OfferingDBEntity.cs" />
+    <Compile Include="DBEntity\OrgFunctionalityDBEntity.cs" />
+    <Compile Include="DBEntity\OrgProfileDBEntity.cs" />
+    <Compile Include="DBEntity\SMTPSettingDBEntity.cs" />
+    <Compile Include="DBEntity\PaymentTypeDBEntity.cs" />
+    <Compile Include="DBEntity\RefreshTokenDBEntity.cs" />
+    <Compile Include="DBEntity\RelationshipDBEntity.cs" />
+    <Compile Include="DBEntity\ReportedIssueDBEntity.cs" />
+    <Compile Include="DBEntity\SponsorDBEntity.cs" />
+    <Compile Include="DBEntity\StateDBEntity.cs" />
+    <Compile Include="DBEntity\SubExpenseTypeDBEntity.cs" />
+    <Compile Include="DBEntity\TaxFilingDBEntity.cs" />
+    <Compile Include="DBEntity\TransactionCriteria.cs" />
+    <Compile Include="DBEntity\TransactionDetailDBEntity.cs" />
+    <Compile Include="DBEntity\TransactionMonthlyDBEntity.cs" />
+    <Compile Include="DBEntity\TransactionQuarterDBEntity.cs" />
+    <Compile Include="DBEntity\UserDBEntity.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="Helper\DateTimeHelper.cs" />
+    <Compile Include="Helper\HashHelper.cs" />
+    <Compile Include="Helper\LogHelper.cs" />
+    <Compile Include="HMACSHA512Hasher.cs" />
+    <Compile Include="Interface\Business\IAccountBusiness.cs" />
+    <Compile Include="Interface\Business\IBankBusiness.cs" />
+    <Compile Include="Interface\Business\IBirthdayRemainderBusiness.cs" />
+    <Compile Include="Interface\Business\IBusiness.cs" />
+    <Compile Include="Interface\Business\IClientBusiness.cs" />
+    <Compile Include="Interface\Business\ICurrentYearReportBusiness.cs" />
+    <Compile Include="Interface\Business\IDepositBusiness.cs" />
+    <Compile Include="Interface\Business\IEditableBusiness.cs" />
+    <Compile Include="Interface\Business\IEmailContentBusiness.cs" />
+    <Compile Include="Interface\Business\IEMailTemplateBusiness.cs" />
+    <Compile Include="Interface\Business\IEventBusiness.cs" />
+    <Compile Include="Interface\Business\IEventTypeBusiness.cs" />
+    <Compile Include="Interface\Business\IExpenseBusiness.cs" />
+    <Compile Include="Interface\Business\IExpenseTypeBusiness.cs" />
+    <Compile Include="Interface\Business\IFamilyBusiness.cs" />
+    <Compile Include="Interface\Business\IFamilyMemberBusiness.cs" />
+    <Compile Include="Interface\Business\IFamilyPledgeBusiness.cs" />
+    <Compile Include="Interface\Business\IFundTypeBusiness.cs" />
+    <Compile Include="Interface\Business\IGroupBusiness.cs" />
+    <Compile Include="Interface\Business\IGroupMemberBusiness.cs" />
+    <Compile Include="Interface\Business\IMarriageAnniversaryRemainderBusiness.cs" />
+    <Compile Include="Interface\Business\IOfferingTypeBusiness.cs" />
+    <Compile Include="Interface\Business\IOpeningBalanceBusiness.cs" />
+    <Compile Include="Interface\Business\IOrganizationBusiness.cs" />
+    <Compile Include="Interface\Business\IMessageBusiness.cs" />
+    <Compile Include="Interface\Business\IOrgFiscalYearBudgetBusiness.cs" />
+    <Compile Include="Interface\Business\IOrgFiscalYearBusiness.cs" />
+    <Compile Include="Interface\Business\IOfferingBusiness.cs" />
+    <Compile Include="Interface\Business\IOrgFiscalYearReportBusiness.cs" />
+    <Compile Include="Interface\Business\IOrgProfileBusiness.cs" />
+    <Compile Include="Interface\Business\ISMTPSettingBusiness.cs" />
+    <Compile Include="Interface\Business\IReadOnlyBusiness.cs" />
+    <Compile Include="Interface\Business\IRefreshTokenBusiness.cs" />
+    <Compile Include="Interface\Business\IReportBusiness.cs" />
+    <Compile Include="Interface\Business\IReportedIssueBusiness.cs" />
+    <Compile Include="Interface\Business\ISponsorBusiness.cs" />
+    <Compile Include="Interface\Business\IStateBusiness.cs" />
+    <Compile Include="Interface\Business\ISubExpenseTypeBusiness.cs" />
+    <Compile Include="Interface\Business\ITaxFilingBusiness.cs" />
+    <Compile Include="Interface\Business\IUserBusiness.cs" />
+    <Compile Include="Interface\Data\IGenericEditableRepository.cs" />
+    <Compile Include="Interface\Data\IGenericReadOnlyRepository.cs" />
+    <Compile Include="Interface\Data\IGenericRepository.cs" />
+    <Compile Include="Interface\Data\IOrgFiscalYearReportRepository.cs" />
+    <Compile Include="Interface\Data\IReportRepository.cs" />
+    <Compile Include="Interface\Data\IUnitOfWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SortExpression.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

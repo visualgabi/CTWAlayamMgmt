@@ -1,0 +1,216 @@
+﻿<div class="row" ng-controller="taxFilingCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Tax filing list - Whenever insert new record, Please logout and login back to the system
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback pull-right">
+                        <button title="Add tax filing" ng-click="setAction('add')" class="btn btn-success glyphicon glyphicon-plus  pull-right" data-template="addTaxFiling.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                            <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{alertMsgForDelete}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="col-md-12" ng-init="formLoad()">
+                    <table ng-table="tableParams" class="table table-bordered table-striped">
+                        <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                            <td data-title="'Org Fiscal Year'" sortable="'orgFiscalYear'">
+                                {{item.orgFiscalYear}}
+                            </td>
+                            <td data-title="'Filed Date'" sortable="'filedDate'">
+                                {{item.filedDate | date:MM/dd/yyyy}}
+                            </td>
+                            <td data-title="revenueTitle" sortable="'totalRevenue'">
+                                {{item.totalRevenue }}
+                            </td>
+                            <td data-title="expenseTitle" sortable="'totalExpense'">
+                                {{item.totalExpense }}
+                            </td>
+                            <td data-title="assetTitle" sortable="'totalAsset'">
+                                {{item.totalAsset }}
+                            </td>
+                            <td data-title="liabilityTitle" sortable="'totalLiability'">
+                                {{item.totalLiability }}
+                            </td>
+                            <td data-title="'Action'">
+                                <button title="Edit" type="button" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template="addTaxFiling.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Disable" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteTaxFiling.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Enable" type="button" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            No of rows : {{filteredData.length}}
+        </div>
+    </div>
+</div>
+<!--</div>-->
+<script id="addTaxFiling.html" type="text/ng-template">
+    <div class="popover popover-doublecolumn" tabindex="-1">
+        <h3 class="popover-title">Tax filing</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+
+        <div class="popover-content popover.Form-content">
+            <form name="taxFilingForm" ng-init="initialize(taxFiling.id)">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="taxFiling.fiscalYear">Fiscal Year:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddFiscalYear" ng-required="true" ng-disabled="action === 'edit'" ng-model="taxFiling.orgFiscalYearId" ng-options="orgFiscalYear.id as orgFiscalYear.fiscalYear for orgFiscalYear in orgFiscalYears">
+                                    <option value="">Select Fiscal Year</option>
+                                </select>
+                                <span class="error" ng-show="taxFilingForm.ddFiscalYear.$dirty && taxFilingForm.ddFiscalYear.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="taxFiling.filedDate">Filed Date<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+
+                                <input type="date" ng-model="taxFiling.filedDate" min="{{ minDate() | date:'yyyy-MM-dd' }}" max="{{ maxDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtFiledDate" placeholder="yyyy-MM-dd" />
+                                <span class="error" ng-show="taxFilingForm.txtFiledDate.$dirty && taxFilingForm.txtFiledDate.$error.min">
+                                    Filed date should be greater than {{ minDate() | date:'yyyy-MM-dd' }}
+                                </span>
+                                <span class="error" ng-show="taxFilingForm.txtFiledDate.$dirty && taxFilingForm.txtFiledDate.$error.max">
+                                    Filed date should be not greater than today
+                                </span>
+                                <span class="error" ng-show="taxFilingForm.txtFiledDate.$dirty && taxFilingForm.txtFiledDate.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="taxFiling.revenue">Revenue in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="number" step="0.01" min="0" ng-model="taxFiling.totalRevenue" ng-maxlength="10" ng-required="true" class="form-control" name="txtRevenue" placeholder="Enter revenue" />
+                                <span class="error" ng-show="taxFilingForm.txtRevenue.$dirty && taxFilingForm.txtRevenue.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="taxFiling.revenue">Expense in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="number" step="0.01" min="0" ng-model="taxFiling.totalExpense" ng-maxlength="10" ng-required="true" class="form-control" name="txtExpense" placeholder="Enter expense" />
+                                <span class="error" ng-show="taxFilingForm.txtExpense.$dirty && taxFilingForm.txtExpense.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="taxFiling.asset">Asset in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="number" step="0.01" min="0" ng-model="taxFiling.totalAsset" ng-maxlength="10" ng-required="true" class="form-control" name="txtAsset" placeholder="Enter asset" />
+                                <span class="error" ng-show="taxFilingForm.txtAsset.$dirty && taxFilingForm.txtAsset.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="taxFiling.liability">Liability in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="number" step="0.01" min="0" ng-model="taxFiling.totalLiability" ng-maxlength="10" ng-required="true" class="form-control" name="txtLiability" placeholder="Enter liability" />
+                                <span class="error" ng-show="taxFilingForm.txtLiability.$dirty && taxFilingForm.txtLiability.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="taxFiling.filedBy">Prepared by:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" ng-model="taxFiling.filedBy" ng-maxlength="100" ng-required="true" class="form-control" name="txtFiledBy" placeholder="Enter prepared by" />
+                                <span class="error" ng-show="taxFilingForm.txtFiledBy.$dirty && taxFilingForm.txtFiledBy.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12" style="text-align: center;">
+                                <button type="submit" class="btn btn-primary" ng-click="save(taxFilingForm);">Save</button>
+                                <button type="button" class="btn btn-default" ng-click="clearAlert();load();$hide()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+</form>
+        </div>
+    </div>
+</script>
+
+<script id="deleteTaxFiling.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

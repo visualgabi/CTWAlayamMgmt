@@ -1,0 +1,81 @@
+﻿<div class="row" ng-controller="groupMemberCtrl" ng-init="formLoad()">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Group Member
+            </div>
+            <div class="panel-body">   
+                <form name="groupMemberForm">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                            <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{alertMsg}}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-2"></div>
+                        <label class="control-label col-sm-2" for="PrimaryLanguage">Group:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddGroup" ng-model="selectedGroup" ng-options="group.id as group.name for group in groups" ng-change="onChange()">
+                                <option value="">Select Group</option>
+                            </select>
+                            <span class="error pull-right" ng-show="groupMemberForm.ddGroup.$dirty && groupMemberForm.ddGroup.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <select multiple bs-duallistbox size="20" class="demo2" non-selected-list-label ="Available members" selected-list-label="Selected members" name="duallistbox_demo2" ng-required="true" move-on-select="false" ng-model="selectedMembers" ng-options="member.id as member.fullName for member in members"></select>
+                            <span class="error" ng-show="groupMemberForm.duallistbox_demo2.$dirty && groupMemberForm.duallistbox_demo2.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary" ng-disabled="selectedGroup == ''" ng-click="SaveGroupMember(groupMemberForm)">Save</button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-default" ng-click="reset()">Cancel</button>
+                        </div>
+                        <div class="col-md-5"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer">            
+                        </div>
+        </div>
+    </div>
+    <div class="col-md-7">        
+    </div>     
+</div>

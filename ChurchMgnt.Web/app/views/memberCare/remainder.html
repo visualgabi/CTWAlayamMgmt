@@ -1,0 +1,154 @@
+﻿<div class="row" ng-controller="remainderCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Family member today birthday list
+            </div>
+            <div class="panel-body">              
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                        <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsg}}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="col-md-12">
+                    <div ng-init="formLoad()">
+                        <table ng-table="tableParams" class="table table-bordered table-striped">
+                            <tr ng-repeat="item in birthdayRemainders">
+                                <td data-title="'Family Member'" sortable="'familyMember'">
+                                    {{item.familyMember}}
+                                </td>
+                                <td data-title="'BirthDate'" sortable="'birthDate'">
+                                    {{item.birthDate}}
+                                </td>
+                                <td data-title="'Phone'" sortable="'phone'">
+                                    {{item.phone}}
+                                </td>
+                                <td data-title="'Email'" sortable="'emailId'">
+                                    {{item.emailId}}
+                                </td>
+                                <td data-title="'Address'" sortable="'address1'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.address1}}
+                                </td>
+                                <td data-title="'City'" sortable="'city'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.city}}
+                                </td>
+                                <td data-title="'ZipCode'" sortable="'zipCode'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.zipCode}}
+                                </td>
+                              <!--   <td data-title="'wishedStatus'" sortable="'wishedStatus'">
+                                    {{item.wishedStatus}}
+                                </td>
+                                <td data-title="'wishedBy'" sortable="'user'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.User}}
+                                </td>                               
+                               <td>
+                                    <button title="Send email wishes" type="button" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-container="body"></button>
+                                    <button title="Phone" type="button" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-container="body"></button>
+                                </td>-->
+                            </tr>
+                        </table>
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                No of rows : {{birthdayRemainders.length}}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Family member today Marriage Anniversary an list
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                        <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsg}}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="col-md-12">
+                    <div ng-init="formLoad()">
+                        <table ng-table="tableParams" class="table table-bordered table-striped">
+                            <tr ng-repeat="item in marriageAnniversaryRemainders">
+                                <td data-title="'Family'" sortable="'family'">
+                                    {{item.family}}
+                                </td>
+                                <td data-title="'Husband Name'" sortable="'husbandName'">
+                                    {{item.husbandName}}
+                                </td>
+                                <td data-title="'Wife Name'" sortable="'wifeName'">
+                                    {{item.wifeName}}
+                                </td>
+                                <td data-title="'MarriageDate'" sortable="'marriageDate'">
+                                    {{item.marriageDate}}
+                                </td>
+                                <td data-title="'Phone'" sortable="'phone'">
+                                    {{item.phone}}
+                                </td>
+                                <td data-title="'Email'" sortable="'emailId'">
+                                    {{item.emailId}}
+                                </td>
+                                <td data-title="'Address'" sortable="'address1'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.address1}}
+                                </td>
+                                <td data-title="'City'" sortable="'city'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.city}}
+                                </td>
+                                <td data-title="'ZipCode'" sortable="'zipCode'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.zipCode}}
+                                </td>
+                              <!--   <td data-title="'wishedStatus'" sortable="'wishedStatus'">
+                                    {{item.wishedStatus}}
+                                </td>
+                                <td data-title="'wishedBy'" sortable="'user'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.User}}
+                                </td>
+                               <td>
+                                    <button title="Send email wishes" type="button" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-container="body"></button>
+                                    <button title="Phone" type="button" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-container="body"></button>
+                                </td>-->
+                            </tr>
+                        </table>
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                No of rows : {{marriageAnniversaryRemainders.length}}
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,86 @@
+﻿    <div class="col-md-12">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="lead">Organization List.</span>
+            <a title="Add" type="button" class="btn btn-success glyphicon glyphicon-plus pull-right" href="#/shared/org"></a>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{alertMsg}}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group has-feedback pull-right">
+                <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+        </div>
+        <div ng-init="formLoad()">
+
+            <table ng-table="tableParams" class="table table-bordered table-striped">
+                <tr ng-repeat="org in $data" ng-class="{'danger': org.active === false }">                    
+                    <td data-title="'Name'" sortable="'name'">
+                        {{org.name}}
+                    </td>
+                    <td data-title="'Phone'" sortable="'phone1'">
+                        {{org.phone1}}
+                    </td>
+                    <td data-title="'Email'" sortable="'emailId1'">
+                        {{org.emailId1}}
+                    </td>
+                    <td data-title="'Denomination'" sortable="'denomination'">
+                        {{org.denomination}}
+                    </td>
+                    <td data-title="'EthnicOrigin'" sortable="'ethnicOrigin'">
+                        {{org.ethnicOrigin}}
+                    </td>
+                    <td data-title="'Language'" sortable="'primaryLanguage'">
+                        {{org.primaryLanguage}}
+                    </td>
+                    <td data-title="'State'" sortable="'state'">
+                        {{org.state}}
+                    </td>
+                    <td data-title="'Country'" sortable="'country'">
+                        {{org.country}}
+                    </td>
+                    <td data-title="'Action'">
+                        <a type="button" title="Details" href="#/shared/orgDtls/{{org.id}}" class="btn btn-info btn-sm glyphicon glyphicon-folder-open"></a>
+                        <a title="Edit" type="button" href="#/shared/org/{{org.id}}" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit"></a>
+                        <button title="Disable" type="button" ng-show="org.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-remove" data-template="deleteOrg.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                        <button title="Enable" type="button" ng-click="enableOrg(org.id, true)" ng-show="org.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <script id="deleteOrg.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-primary" ng-click="enableOrg(org.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-danger" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

@@ -1,0 +1,87 @@
+﻿<!--<div class="container">-->
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="lead">Family Details.</span>
+            <a title="Edit" type="button" class="btn btn-success glyphicon glyphicon-edit pull-right" href="#/memberCare/family/{{family.id}}"></a>
+            <span class="pull-right">&nbsp;&nbsp;</span>
+            <a title="List" type="button" class="btn btn-success glyphicon glyphicon-th-list pull-right" href="#/memberCare/familylst"></a>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row" ng-init="formLoad()" style="overflow-x:auto;">
+    <div class="col-md-12">
+
+        <table class="table table-bordered">
+            <tr>
+                <th>Name:</th>
+                <td>{{family.name}}</td>
+                <th>MariageDate:</th>
+                <td>{{family.mariageDate | date:MM/dd/yyyy}}</td>
+            </tr>
+            <tr>
+                <th>FirstVisitedDate:</th>
+                <td>{{family.firstVisitedDate | date:MM/dd/yyyy}}</td>
+                <th>MembershipStartDate:</th>
+                <td>{{family.membershipStartDate | date:MM/dd/yyyy}}</td>
+            </tr>
+            <tr>
+                <th>Phone1:</th>
+                <td>{{family.phone1}}</td>
+                <th>Phone2:</th>
+                <td>{{family.phone2}}</td>
+            </tr>
+            <tr>
+                <th>EmailId1:</th>
+                <td>{{family.emailId1}}</td>
+                <th>EmailId2:</th>
+                <td>{{family.emailId2}}</td>
+            </tr>
+            <tr>
+                <th>Primary Language:</th>
+                <td>{{family.primaryLanguage}}</td>
+                <th>Secondry Language:</th>
+                <td>{{family.secondaryLanguage}}</td>
+            </tr>
+            <tr>
+                <th>Address1:</th>
+                <td>{{family.address1}}</td>
+                <th>Address2:</th>
+                <td>{{family.address2}}</td>
+            </tr>
+            <tr>
+                <th>Address3:</th>
+                <td>{{family.address3}}</td>
+                <th>City:</th>
+                <td>{{family.city}}</td>
+            </tr>
+            <tr>
+                <th>Country:</th>
+                <td>{{family.country}}</td>
+                <th>State:</th>
+                <td>{{family.state}}</td>
+            </tr>
+            <tr>
+                <th>ZipCode:</th>
+                <td>{{family.zipCode}}</td>
+                <th>Memership Status:</th>
+                <td>{{family.membershipStatus}}</td>
+            </tr>
+            <tr>
+                <th>Branch:</th>
+                <td>{{family.branch}}</td>
+                <th>EthnicOrigin:</th>
+                <td>{{family.ethnicOrigin}}</td>                
+            </tr>
+            <tr>             
+                <th>Notes:</th>
+                <td>{{family.notes}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+    <hr />
+

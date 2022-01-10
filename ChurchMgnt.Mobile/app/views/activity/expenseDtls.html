@@ -1,0 +1,100 @@
+﻿<div class="row" ng-controller="expenseDtlsCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Expense details
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+
+                    <a title="List" class="btn btn-success glyphicon glyphicon-th-list btn-xs" ui-sref="activity.expenselst"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Edit" type="button" ng-disabled="disableEditAction(expense.expenseDate)" class="btn btn-success glyphicon glyphicon-edit btn-xs" ui-sref="activity.expenseEdit({id:{{expense.id}}})"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Disable" type="button" ng-show="expense.active === true" ng-disabled="disableEditAction(expense.expenseDate)" class="btn btn-warning glyphicon glyphicon glyphicon-trash btn-xs" data-template="deleteExpense.html" data-placement="right" data-auto-close="1" bs-popover></a>
+                    <a title="Enable" type="button" ng-show="expense.active === false" ng-disabled="disableEditAction(expense.expenseDate)" class="btn btn-success glyphicon glyphicon glyphicon-ok btn-xs" ng-click="enable(expense.id, true)"></a>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                            <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{alertMsg}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="col-md-12">
+                    <div class="row" ng-init="formLoad()">
+
+                        <table class="table table-bordered">
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Expense For:</th>
+                                <td>{{expense.branch != null ? "Branch" : "Organization"}} </td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Branch/ Org Name:</th>
+                                <td>{{expense.branch != null ? expense.branch : authentication.orgName}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Expense Type:</th>
+                                <td>{{expense.ExpenseType}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Sub Expense Type:</th>
+                                <td>{{expense.subExpenseType}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Payment Type:</th>
+                                <td>{{expense.paymentType | date:MM/dd/yyyy}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Account:</th>
+                                <td>{{expense.account | date:MM/dd/yyyy}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Amount:</th>
+                                <td>{{expense.amount}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Expense Date:</th>
+                                <td>{{expense.expenseDate | date:MM/dd/yyyy}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>transacitonNumber:</th>
+                                <td>{{ expense.transacitonNumber | limitTo: 20 }}</td>
+                            </tr>
+                            <tr ng-class="{'danger': expense.active === false }">
+                                <th>Notes:</th>
+                                <td>{{ expense.notes | limitTo: 20 }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="deleteExpense.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(expense.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

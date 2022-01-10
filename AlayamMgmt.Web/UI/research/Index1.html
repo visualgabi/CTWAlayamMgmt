@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYIL Church Management App</title>
+    <link href="UI/content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="UI/content/css/site.css" rel="stylesheet" />
+    <!--<link href="http://ui-grid.info/release/ui-grid-unstable.min.css" rel="stylesheet" />-->
+    <link href="UI/content/css/loading-bar.min.css" rel="stylesheet" />
+    <!--<link href="UI/content/css/font-awesome.min.css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="UI/content/css/ng-table.min.css" rel="stylesheet" />
+    <link href="UI/content/css/angular-chart.min.css" rel="stylesheet" />
+    <link href="UI/content/css/toastr.css" rel="stylesheet" />
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">-->
+
+    <link rel="stylesheet" href="//mgcrea.github.io/angular-strap/styles/libs.min.css">
+    <link rel="stylesheet" href="//mgcrea.github.io/angular-strap/styles/docs.min.css">
+</head>
+
+<body ng-controller="indexController">    
+        <div>
+        <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-template="views/partials/aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" data-container="body" bs-aside="">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand active" ng-if="authentication.isAuth && authentication.role==1" href="#/default">Alayam Mgmt</a>
+                    <a class="navbar-brand active" ng-if="authentication.isAuth && authentication.role !=1" href="#/default">Welcome to {{authentication.orgName}}</a>
+                </div>
+                <nav class="collapse navbar-collapse" role="navigation">
+
+                </nav>
+            </div>
+        </header>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <div id="sidebar" class="col-md-12; sidebar-offcanvas">
+                    <div class="col-md-12">
+                        <h3></h3>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a ng-href="#/login" ng-if="!authentication.isAuth">Login<i class="fa fa-sign-in fa-fw pull-right"></i></a></li>
+                            <li><button type="button" class="btn btn-danger btn-sm" data-ng-click="logOut()" ng-if="authentication.isAuth">Logout<i class="fa fa-sign-out fa-fw pull-right"></i></button></li>
+                            <li ng-if="authentication.isAuth" class="nav-divider"></li>
+                        </ul>
+                        <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==1">
+                            <li><a ng-href="#/orglst">Organization<i class="fa fa-leanpub fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/user">User<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+                        </ul>
+
+                        <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==2">
+                            <li><a ng-href="#/home">Home<i class="fa fa-home fa-fw pull-right"></i></a></li>
+                            <li class="nav-divider"></li>
+                            <li><a ng-href="#/orgDtls/{{authentication.orgId}}/">Org Details<i class="fa fa-leanpub fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/familylst/">Family<i class="fa fa-users fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/familyPledge">Family Pledge<i class="fa fa-gift fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/sponsor">Sponsor<i class="fa fa-user-secret fa-fw pull-right"></i></a></li>
+
+                            <li class="nav-divider"></li>
+                            <li><a ng-href="#/deposit">Deposit<i class="fa fa-briefcase fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/event">Event<i class="fa fa-bell-o fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/offering">Offering<i class="fa fa-money fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/expense">Expense<i class="fa fa-credit-card fa-fw pull-right"></i></a></li>
+                            <li class="nav-divider"></li>
+
+                            <li>
+                                <a class="nav-container" data-toggle="collapse" data-parent="#stacked-menu" data-target="#p1"><b>Master Data</b><div class="pull-right"><span class="caret arrow"></span></div></a>
+                                <ul class="nav nav-pills nav-stacked collapse" id="p1">
+                                    <li><a ng-href="#/user">User<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#branchlst/">Branch<i class="fa fa-cubes fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/orgFiscalYear">Fiscal Year<i class="fa fa-calendar fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/fundType">Fund Type<i class="fa fa-compass fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/offeringType">Offering Type<i class="fa fa-cog fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/expenseType">Expense Type<i class="fa fa-certificate fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/subExpenseType">Sub Expense Type<i class="fa fa-certificate fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/fiscalYearBudget">Fiscal Year Budget<i class="fa fa-briefcase fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/bank">Bank<i class="fa fa-university fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/account">Account<i class="fa fa-book fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/eventType">Event Type<i class="fa fa-child fa-fw pull-right"></i></a></li>
+                                </ul>
+                            </li>
+                            <li ng-if="authentication.isAuth">
+                                <a class="nav-container" data-toggle="collapse" data-parent="#stacked-menu" data-target="#p2"><b>Reports</b><div class="pull-right"><span class="caret arrow"></span></div></a>
+
+                                <ul class="nav nav-pills nav-stacked collapse" id="p2">
+                                    <li><a ng-href="#/expenseRpt">Expense Report<i class="fa fa-area-chart fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/offeringRpt">Offering Report<i class="fa fa-bar-chart fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/eventRpt">Event Report<i class="fa fa-line-chart fa-fw pull-right"></i></a></li>
+                                    <li><a ng-href="#/depositRpt">Deposit Report<i class="fa fa-pie-chart fa-fw pull-right"></i></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==3 ">
+                            <li><a ng-href="#/home">Home<i class="fa fa-home fa-fw pull-right"></i></a></li>
+                            <li class="nav-divider"></li>
+                            <li><a ng-href="#/familylst/">Family<i class="fa fa-users fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/familyPledge">Family Pledge<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/sponsor">Sponsor<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+
+                            <li class="nav-divider"></li>
+                            <li><a ng-href="#/offering">Offering<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/expense">Expense<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+                            <li class="nav-divider"></li>
+
+                            <li><a ng-href="#/orgFiscalYear">Fiscal Year<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/fiscalYearBudget">Fiscal Year Budget<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+                            <li class="nav-divider"></li>
+                            <li><a ng-href="#/expenseRpt">Expense Report<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/offeringRpt">Offering Report<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+
+                            <!--<li ng-if="authentication.isAuth">
+                    <a class="nav-container" data-toggle="collapse" data-parent="#stacked-menu" data-target="#p2"><b>Reports</b><div class="pull-right"><span class="caret arrow"></span></div></a>
+
+                    <ul class="nav nav-pills nav-stacked collapse" id="p2">
+                        <li><a href="#/expenseRpt">Expense Report</a></li>
+                        <li><a href="#/offeringRpt">Offering Report</a></li>
+                    </ul>
+                </li>-->
+                        </ul>
+                        <ul class="nav nav-pills nav-stacked" ng-if="authentication.isAuth && authentication.role==4">
+                            <li><a ng-href="#/home">Home<i class="fa fa-home fa-fw pull-right"></i></a></li>
+                            <li class="nav-divider"></li>
+                            <li><a ng-href="#/familylst/">Family<i class="fa fa-users fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/familyPledge">Family Pledge<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/sponsor">Sponsor<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+
+                            <li class="nav-divider"></li>
+                            <li><a ng-href="#/offering">Offering<i class="fa fa-film fa-fw pull-right"></i></a></li>
+                            <li><a ng-href="#/expense">Expense<i class="fa fa-plus-circle fa-fw pull-right"></i></a></li>
+                            <li class="nav-divider"></li>
+
+
+
+                            <!--<li ng-if="authentication.isAuth">
+                    <a class="nav-container" data-toggle="collapse" data-parent="#stacked-menu" data-target="#p2"><b>Reports</b><div class="pull-right"><span class="caret arrow"></span></div></a>
+
+                    <ul class="nav nav-pills nav-stacked collapse" id="p2">
+                        <li><a href="#/expenseRpt">Expense Report</a></li>
+                        <li><a href="#/offeringRpt">Offering Report</a></li>
+                    </ul>
+                </li>-->
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div id="main" class="col-md-11">
+                <div class="page {{ pageClass }}" ng-view></div>
+            </div>            
+        </div>
+        <!--<div class="row-offcanvas row-offcanvas-left">
+            <div id="main">
+                <div class="col-md-12">
+                    <div class="page {{ pageClass }}" ng-view></div>
+                </div>
+            </div>
+        </div>-->
+        <!--<bottom-bar></bottom-bar>-->
+    
+
+  
+
+    <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+    <script src="UI/scripts/jquery.validate.min.js"></script>
+    <script src="UI/scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script type="text/javascript" src="UI/scripts/tableExport.js">   </script>
+    <script type="text/javascript" src="UI/scripts/jquery.base64.js"></script>
+    <script type="text/javascript" src="UI/scripts/html2canvas.js"></script>
+
+    <script type="text/javascript" src="UI/scripts/jspdf/libs/sprintf.js"></script>
+    <script type="text/javascript" src="UI/scripts/jspdf/jspdf.js"></script>
+    <script type="text/javascript" src="UI/scripts/jspdf/libs/base64.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.js"></script>
+
+    <script src="UI/scripts/angular-route.js"></script>
+    <script src="UI/scripts/angular-local-storage.min.js"></script>
+    <script src="UI/scripts/loading-bar.min.js"></script>
+    <script src="UI/scripts/ng-file-upload-shim.min.js"></script>
+    <script src="UI/scripts/ng-file-upload.min.js"></script>
+    <script src="UI/scripts/Chart.js"></script>
+    <script src="UI/scripts/angular-chart.min.js"></script>
+    <script src="UI/scripts/ui-bootstrap-tpls-0.14.3.min.js"></script>
+    <script src="UI/scripts/toastr.js"></script>
+    <!--<script src="UI/scripts/modal.js"></script>
+    <script src="UI/scripts/jquery.flot.tooltip.min.js"></script>-->
+    <!--<script src="//cdn.jsdelivr.net/angularjs/1.3.14/angular-animate.min.js" data-semver="1.3.14"></script>-->
+    <script src="UI/scripts/angular-animate.min.js"></script>
+    <script src="UI/scripts/angular-sanitize.min.js"></script>
+
+    <script src="//mgcrea.github.io/angular-strap/dist/angular-strap.js" data-semver="v2.2.4"></script>
+    <script src="//mgcrea.github.io/angular-strap/dist/angular-strap.tpl.js" data-semver="v2.2.4"></script>
+    <script src="//mgcrea.github.io/angular-strap/docs/angular-strap.docs.tpl.js" data-semver="v2.2.4"></script>
+
+    <script src="UI/scripts/ng-table.min.js"></script>
+    <script src="UI/scripts/angular-touch.js"></script>
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-touch.js"></script>-->
+
+
+    <script src="UI/scripts/loading-bar.min.js"></script>
+    <script src="UI/scripts/modernizr-2.6.2.js"></script>
+    <script src="UI/scripts/bootstrap.min.js"></script>
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.tpl.min.js"></script>-->
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
+    <script src="UI/scripts/ui-bootstrap-tpls-1.3.1.min.js"></script>
+    <script src="UI/scripts/bootstrap-confirmation.min.js"></script>
+
+    <script src="UI/modules/common.core.js"></script>
+    <script src="UI/modules/common.ui.js"></script>
+    <script src="app.js"></script>
+
+    <script src="UI/layout/sideBar.directive.js"></script>
+    <script src="UI/layout/topBar.directive.js"></script>
+    <script src="UI/layout/bottomBar.directive.js"></script>
+
+
+
+    <script src="UI/scripts/angular-cookies.js"></script>
+    <script src="UI/scripts/angular-base64.js"></script>
+    <script src="UI/scripts/angular-file-upload.js"></script>
+    <script src="UI/scripts/angular-validator.js"></script>
+    <script src="UI/scripts/angucomplete-alt.min.js"></script>
+
+
+    <!-- Load services -->
+    <script src="UI/services/authInterceptorService.js"></script>
+    <script src="UI/services/authService.js"></script>
+    <script src="UI/services/tokensManagerService.js"></script>
+    <script src="UI/services/organizationService.js"></script>
+    <script src="UI/services/familyService.js"></script>
+    <script src="UI/services/lookupService.js"></script>
+    <script src="UI/services/sharedService.js"></script>
+    <script src="UI/services/familyMemberService.js"></script>
+    <script src="UI/services/familyPledgeService.js"></script>
+    <script src="UI/services/dashboardService.js"></script>
+
+    <script src="UI/services/orgFiscalYearService.js"></script>
+    <script src="UI/services/fiscalYearBudgetService.js"></script>
+    <script src="UI/services/offeringService.js"></script>
+    <script src="UI/services/expenseService.js"></script>
+    <script src="UI/services/sponsorService.js"></script>
+    <script src="UI/services/logoService.js"></script>
+    <script src="UI/services/notificationService.js"></script>
+    <script src="UI/services/PDFConveterService.js"></script>
+    <script src="UI/services/userService.js"></script>
+    <script src="UI/services/roleService.js"></script>
+    <script src="UI/services/eventService.js"></script>
+    <script src="UI/services/depositService.js"></script>
+
+
+    <!-- Load controllers -->
+    <script src="UI/controllers/indexController.js"></script>
+    <script src="UI/controllers/defaultController.js"></script>
+    <script src="UI/controllers/homeController.js"></script>
+    <script src="UI/controllers/loginController.js"></script>
+    <script src="UI/controllers/signupController.js"></script>
+    <script src="UI/controllers/orglstController.js"></script>
+    <script src="UI/controllers/orgController.js"></script>
+    <script src="UI/controllers/refreshController.js"></script>
+    <script src="UI/controllers/tokensManagerController.js"></script>
+    <script src="UI/controllers/orgDtlsController.js"></script>
+    <script src="UI/controllers/branchlstController.js"></script>
+    <script src="UI/controllers/branchDtlsController.js"></script>
+    <script src="UI/controllers/branchController.js"></script>
+    <script src="UI/controllers/orgProfileDtlsController.js"></script>
+    <script src="UI/controllers/orgProfileController.js"></script>
+    <script src="UI/controllers/orgFiscalYearController.js"></script>
+    <script src="UI/controllers/fiscalYearBudgetController.js"></script>
+    <script src="UI/controllers/familyPledgeController.js"></script>
+
+    <script src="UI/controllers/familylstController.js"></script>
+    <script src="UI/controllers/familyDtlsController.js"></script>
+    <script src="UI/controllers/familyController.js"></script>
+    <script src="UI/controllers/offeringController.js"></script>
+    <script src="UI/controllers/expenseController.js"></script>
+    <script src="UI/controllers/sponsorContoller.js"></script>
+    <script src="UI/controllers/logoController.js"></script>
+    <script src="UI/controllers/expenseRptController.js"></script>
+    <script src="UI/controllers/expenseRptPrtController.js"></script>
+
+    <script src="UI/controllers/offeringRptController.js"></script>
+    <script src="UI/controllers/offeringRptPrtController.js"></script>
+    <script src="UI/controllers/userConstroller.js"></script>
+    <script src="UI/controllers/offeringTypeController.js"></script>
+    <script src="UI/controllers/expenseTypeController.js"></script>
+    <script src="UI/controllers/fundTypeController.js"></script>
+    <script src="UI/controllers/eventTypeController.js"></script>
+    <script src="UI/controllers/subExpenseTypeController.js"></script>
+    <script src="UI/controllers/eventController.js"></script>
+    <script src="UI/controllers/bankController.js"></script>
+    <script src="UI/controllers/accountController.js"></script>
+    <script src="UI/controllers/depositController.js"></script>
+    <script src="UI/controllers/eventRptController.js"></script>
+    <script src="UI/controllers/depositRptController.js"></script>
+    <script src="UI/controllers/depositRptPrtController.js"></script>
+    <script src="UI/controllers/eventRptPrtController.js"></script>
+
+</body>
+</html>

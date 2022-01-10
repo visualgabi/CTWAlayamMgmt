@@ -1,0 +1,167 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+
+    <div class="col-md-12">
+        <span class="lead">Opening Balance.</span>
+        <button title="Add Opening Balance" ng-click="setAction('add')" class="btn btn-success glyphicon glyphicon-plus  pull-right" data-template-url="addOpeningBalance.html" data-placement="left" data-auto-close="1" bs-popover></button>
+
+        <hr />
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group has-feedback pull-right">
+            <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+        </div>
+        <div class="col-md-12">
+            <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{alertMsgForDelete}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div ng-init="formLoad()">
+            <table ng-table="tableParams" class="table table-bordered table-striped">
+                <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                    <td data-title="'OrgFiscalYear'" sortable="'orgFiscalYear'">
+                        {{item.orgFiscalYear}}
+                    </td>
+                    <td data-title="'Account'" sortable="'account'">
+                        {{item.account}}
+                    </td>
+                    <td data-title="amountTitle" sortable="'amount'">
+                        {{item.amount}}
+                    </td>
+                    <td>
+                        <button title="Edit" type="button" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addOpeningBalance.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                        <button title="Disable" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-remove" data-template="deleteOpeningBalance.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                        <button title="Enable" type="button" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+<script id="addOpeningBalance.html" type="text/ng-template">
+    <div class="popover popover-singlecolumn" tabindex="-1">
+        <h3 class="popover-title">Opening Balance</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+
+        <div class="popover-content popover.Form-content">
+            <form name="openingBalanceForm" ng-init="initialize(openingBalance.id)">
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="openingBalance.orgFiscalYearId">FiscalYear:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control" name="ddOrgFiscalYear" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select FiscalYear'" ng-model="openingBalance.orgFiscalYearId" ng-required="true" ng-options="orgFiscalYear.id as orgFiscalYear.fiscalYear for orgFiscalYear in orgFiscalYears">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="openingBalanceForm.ddOrgFiscalYear.$dirty && openingBalanceForm.ddOrgFiscalYear.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="openingBalance.name">Account:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control" name="ddAccount" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Account'" ng-model="openingBalance.accountId" ng-required="true" ng-options="account.id as account.name for account in accounts">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="openingBalanceForm.ddAccount.$dirty && openingBalanceForm.ddAccount.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-12" for="openingBalance.amount">Amount in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="number" step="0.01" min="0" ng-model="openingBalance.amount" ng-maxlength="10" ng-required="true" class="form-control" name="txtAmount" placeholder="Enter the amount" />
+                            <span class="error" ng-show="openingBalanceForm.txtAmount.$dirty && openingBalanceForm.txtAmount.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden-sm hidden-xs">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                            <button type="submit" class="btn btn-primary" ng-click="save(openingBalanceForm);">Save</button>
+                            <button type="button" class="btn btn-primary" ng-click="clearAlert();load();$hide()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script id="deleteOpeningBalance.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-primary" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-danger" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

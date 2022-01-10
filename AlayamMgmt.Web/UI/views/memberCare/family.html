@@ -1,0 +1,272 @@
+﻿<!--<div class="container">-->
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="lead" ng-show="familyData.id == 0">Add Family.</span>
+            <span class="lead" ng-show="familyData.id != 0">Edit Family.</span>
+            <a title="Details" ng-show="familyData.id != 0" class="btn btn-success glyphicon glyphicon-folder-open pull-right" href="#/memberCare/familyDtls/{{familyData.id}}"></a>
+            <span ng-show="familyData.id != 0" class="pull-right">&nbsp;&nbsp;</span>
+            <a title="List" type="button" ng-show="authentication.isAuth" class="btn btn-success glyphicon glyphicon-th-list pull-right" href="#/memberCare/familylst"></a>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form name="familyForm" ng-init="initialize()">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearMsg()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+                <div class="form-horizontal">
+                    <!--<div class="row">-->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">Name:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <!--<input type="text" ng-model="familyData.name" ng-required="true" ng-maxlength="100" class="form-control" name="txtName" placeholder="Enter Name" data-family-unique="familyForm.txtName" />-->
+                            <input type="text" ng-model="familyData.name" ng-required="true" ng-maxlength="100" class="form-control" name="txtName" placeholder="Enter Name" data-family-unique="{key:familyData.id, property:familyForm.txtName}" />
+                            <span class="error" ng-show="familyForm.txtName.$dirty && familyForm.txtName.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="familyForm.txtName.$dirty && familyForm.txtName.$error.maxlength">
+                                family name cannot be longer than 100 characters
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="name">Membership Status:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddMembershipStatus" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Membership Status'" ng-required="true" ng-model="familyData.membershipStatusId" ng-options="membershipStatus.id as membershipStatus.name for membershipStatus in membershipStatuses">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="familyForm.ddMembershipStatus.$dirty && familyForm.ddMembershipStatus.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                    <!--</div>-->
+                </div>
+                <div class="form-horizontal">
+                    <!--<div class="row">-->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">FirstVisitedDate:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="date" ng-model="familyData.firstVisitedDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtFirstVisitedDate" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="familyForm.txtFirstVisitedDate.$dirty && familyForm.txtFirstVisitedDate.$error.max">
+                                You can not select future date
+                            </span>
+                            <span class="error" ng-show="familyForm.txtFirstVisitedDate.$dirty && familyForm.txtFirstVisitedDate.$error.min">
+                                Start date should be within latest 5 years
+                            </span>
+                            <span class="error" ng-show="familyForm.txtFirstVisitedDate.$dirty && familyForm.txtFirstVisitedDate.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="name">MembershipStartDate:</label>
+                        <div class="col-md-4">
+                            <input type="date" ng-model="familyData.membershipStartDate" min="{{ familyData.firstVisitedDate | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" class="form-control" name="txtMembershipStartDate" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="familyForm.txtMembershipStartDate.$dirty && familyForm.txtMembershipStartDate.$error.max">
+                                You can not select future date
+                            </span>
+                            <span class="error" ng-show="familyForm.txtMembershipStartDate.$dirty && familyForm.txtMembershipStartDate.$error.min">
+                                Membership Start Date should be greater than first visited date
+                            </span>
+                        </div>
+                    </div>                   
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Phone1">Phone1:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtPhone1" ng-model="familyData.phone1" ng-required="true" ng-maxlength="15" placeholder="Enter Primary Phone" />
+                            <span class="error" ng-show="familyForm.txtPhone1.$dirty && familyForm.txtPhone1.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="familyForm.txtPhone1.$dirty && familyForm.txtPhone1.$error.maxlength">
+                                Primary Phone cannot be longer than 15 characters
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="Phone2">Phone2:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtPhone2" ng-model="familyData.phone2" ng-maxlength="15" placeholder="Enter Secondary Phone" />
+                            <span class="error" ng-show="familyForm.txtPhone2.$dirty && familyForm.txtPhone2.$error.maxlength">
+                                Secondary Phone cannot be longer than 15 characters
+                            </span>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="EmailId1">EmailId1:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="email" class="form-control" name="txtEmailId1" ng-model="familyData.emailId1" ng-required="true" ng-maxlength="100" placeholder="Enter Primary Email" />
+                            <span class="error" ng-show="familyForm.txtEmailId1.$dirty && familyForm.txtEmailId1.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="familyForm.txtEmailId1.$dirty && familyForm.txtEmailId1.$error.maxlength">
+                                Primary email cannot be longer than 100 characters
+                            </span>
+                            <span class="error" ng-show="familyForm.txtEmailId1.$dirty && familyForm.txtEmailId1.$error.email">
+                                Not valid email!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="EmailId2">Email2:</label>
+                        <div class="col-md-4">
+                            <input type="email" class="form-control" name="txtEmailId2" ng-model="familyData.emailId2" ng-maxlength="100" placeholder="Enter Secondary Email" />
+                            <span class="error" ng-show="familyForm.txtEmailId2.$dirty && familyForm.txtEmailId2.$error.maxlength">
+                                Secondary email cannot be longer than 100 characters
+                            </span>
+                            <span class="error" ng-show="familyForm.txtEmailId2.$dirty && familyForm.txtEmailId2.$error.email">
+                                Not valid email!
+                            </span>
+                        </div>
+                    </div>
+                  
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">Branch:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddBranch" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Branch'" ng-required="true" ng-model="familyData.branchId" ng-options="branch.id as branch.name for branch in branches">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="familyForm.ddBranch.$dirty && familyForm.ddBranch.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="mariageDate">Mariage Date:</label>
+                        <div class="col-md-4">
+                            <input type="date" ng-model="familyData.mariageDate" min="{{ mariageMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" class="form-control" name="txtMariageDate" placeholder="yyyy-MM-dd" />
+                            <span class="error" ng-show="familyForm.txtMariageDate.$dirty && familyForm.txtMariageDate.$error.max">
+                                You can not select future date
+                            </span>
+                            <span class="error" ng-show="familyForm.txtMariageDate.$dirty && familyForm.txtMariageDate.$error.min">
+                                Mariage Date should be within latest 100 years
+                            </span>                            
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="PrimaryLanguage">Primary Language:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Primary Language'" name="ddPrimaryLanguage" ng-required="true" ng-model="familyData.primaryLanguageId" ng-options="language.id as language.name for language in languages">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="familyForm.ddPrimaryLanguage.$dirty && familyForm.ddPrimaryLanguage.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="SecondaryLanguage">Secondry Language:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Secondary Language'" name="ddSecondaryLanguage" ng-required="true" ng-model="familyData.secondaryLanguageId" ng-options="language.id as language.name for language in languages">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="familyForm.ddSecondaryLanguage.$dirty && familyForm.ddSecondaryLanguage.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                 
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Address1">Address1:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtAddress1" ng-model="familyData.address1" ng-required="true" ng-maxlength="100" placeholder="Address1" />
+                            <span class="error" ng-show="familyForm.txtAddress1.$dirty && familyForm.txtAddress1.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="familyForm.txtAddress1.$dirty && familyForm.txtAddress1.$error.maxlength">
+                                Address1 cannot be longer than 100 characters
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="Address2">Address2:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtAddress2" ng-model="familyData.address2" ng-maxlength="100" placeholder="Address2" />
+                            <span class="error" ng-show="familyForm.txtAddress2.$dirty && familyForm.txtAddress2.$error.maxlength">
+                                Address2 cannot be longer than 100 characters
+                            </span>
+                        </div>
+                    </div>
+                  
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">Address3:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtAddress3" ng-model="familyData.address3" ng-maxlength="100" placeholder="Address3" />
+                            <span class="error" ng-show="familyForm.txtAddress3.$dirty && familyForm.txtAddress3.$error.maxlength">
+                                Address3 cannot be longer than 100 characters
+                            </span>
+                        </div>
+
+                        <label class="control-label col-sm-2" for="city">City:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtCity" ng-model="familyData.city" ng-required="true" ng-maxlength="100" placeholder="City" />
+                            <span class="error" ng-show="familyForm.txtCity.$dirty && familyForm.txtCity.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="familyForm.txtCity.$dirty && familyForm.txtCity.$error.maxlength">
+                                City cannot be longer than 100 characters
+                            </span>
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="PrimaryLanguage">Country:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddCountry" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select Country'" ng-required="true" ng-model="familyData.countryId" ng-options="country.id as country.name for country in countries">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="familyForm.ddCountry.$dirty && familyForm.ddCountry.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="State">State:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddState" ng-required="true" ng-disabled="familyData.countryId == ''" ng-model="familyData.stateId" ng-options="state.id as state.name for state in states  | filter : {countryId : familyData.countryId}">
+                                <option value="">Select State</option>
+                            </select>
+                            <span class="error" ng-show="familyForm.ddState.$dirty && familyForm.ddState.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+            
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">ZipCode:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="txtZipCode" ng-model="familyData.zipCode" ng-required="true" ng-maxlength="15" placeholder="ZipCode" />
+                            <span class="error" ng-show="familyForm.txtZipCode.$dirty && familyForm.txtZipCode.$error.required">
+                                Required!
+                            </span>
+                            <span class="error" ng-show="familyForm.txtZipCode.$dirty && familyForm.txtZipCode.$error.maxlength">
+                                Zip code cannot be longer than 15 characters
+                            </span>
+                        </div>
+                        <label class="control-label col-sm-2" for="name">EthnicOrigin:<span class="required">*</span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ddEthnicOrigin" chosen allow-single-deselect="true" disable-search="true" data-placeholder-text-single="'Select EthnicOrigin'" ng-required="true" ng-model="familyData.ethnicOriginId" ng-options="ethnicOrigin.id as ethnicOrigin.name for ethnicOrigin in ethnicOrigins">
+                                <option value=""></option>
+                            </select>
+                            <span class="error" ng-show="familyForm.ddEthnicOrigin.$dirty && familyForm.ddEthnicOrigin.$error.required">
+                                Required!
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">                                   
+                        <label class="control-label col-sm-2" for="city">Notes:</label>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="5" ng-model="familyData.discription" ng-maxlength="250" name="txtDescription"></textarea>
+                            <span class="error" ng-show="familyForm.txtDescription.$dirty && familyForm.txtDescription.$error.maxlength">
+                                discription code cannot be longer than 250 characters
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-6 col-sm-6">
+                            <br />
+                            <button type="submit" class="btn btn-primary" ng-click="savefamily(familyForm)">Save</button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-primary" ng-click="close()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        
+
+    <hr />
+
+<!--</div>-->

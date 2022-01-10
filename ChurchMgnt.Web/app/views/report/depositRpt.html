@@ -1,0 +1,217 @@
+﻿<div class="row" ng-controller="depositRptCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div class="col-md-12" ng-init="initialize()">
+                    <form name="reportForm" ng-init="initialize()">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="depositSearch.depositStartDate">Start Date:</label>
+                                <div class="col-md-4">
+                                    <input type="date" ng-model="depositSearch.depositStartDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtStartDate" placeholder="yyyy-MM-dd" />
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.max">
+                                        You can not select future date
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.min">
+                                        Start date should be within latest 5 years
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.required">
+                                        Required
+                                    </span>
+                                    <!--<div class="input-group date" id="dtpDepositStartDate">
+                                        <input type="text" class="form-control" name="txtStartDate" ng-model="depositSearch.depositStartDate" placeholder="MM/DD/YYYY" required />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>                                       
+                                    </div>
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.max">
+                                        You can not select future date
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.min">
+                                        Start date should be within latest 5 years
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtStartDate.$dirty && reportForm.txtStartDate.$error.required">
+                                        Required
+                                    </span>-->
+                                </div>
+                                <label class="control-label col-sm-2" for="depositSearch.depositEndDate">End Date:</label>
+                                <div class="col-md-4">
+                                    <!--<div class="input-group date" id="dtpDepositEndDate">
+                                        <input type="text" class="form-control" name="txtEndDate" min-Date="'2016-06-07'" ng-model="depositSearch.depositEndDate" placeholder="MM/DD/YYYY" required />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>-->
+                                    <input type="date" ng-required="true" ng-model="depositSearch.depositEndDate" max="{{ maxDate() | date:'yyyy-MM-dd' }}" min="{{depositSearch.depositStartDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtEndDate" placeholder="yyyy-MM-dd" />
+                                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.min">
+                                        End Date should be greater than start date
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.max">
+                                        Date difference should be 12 months only
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtEndDate.$dirty && reportForm.txtEndDate.$error.required">
+                                        Required
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="depositSearch.accountId">Account:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddAccounts" ng-model="depositSearch.accountId" ng-options="account.id as account.name for account in accounts">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-sm-2" for="depositSearch.orderById">Order By:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddOrderBys" ng-model="depositSearch.orderById" ng-options="orderBy.id as orderBy.name for orderBy in orderBys">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div style="align-content:center" class="col-md-5"></div>
+                                <div style="align-content:center" class="col-md-2">
+                                    &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                    <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-click="search(reportForm)">Search</button>
+                                </div>
+                                <div style="align-content:center" class="col-md-5"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForEmptyList}} alert-dismissible" ng-show="showAlertForEmptyList" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForEmptyList=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForEmptyList}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" ng-if="false">
+                        <hr />
+                        <a title="Download" ng-show="showPrint" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="print()"></a>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="row" ng-show="showPrint">
+                    <div class="col-xs-12 col-md-4 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <td>Total Deposit in {{authentication.currency}}:</td>
+                                        <td>{{totalDeposit}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by Account</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Account Name</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="item in accountSummary | filter : isGreaterThanZero()">
+                                        <td>{{item.name }} :</td>
+                                        <td>{{item.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table id="tblDeposit" class="table table-bordered table-striped">
+                    <tr>
+                        <th>
+                            Deposit Date
+                        </th>
+                        <th>
+                            Amount in {{authentication.currency}}
+                        </th>
+                        <th>
+                            Account
+                        </th>
+                        <th>
+                            Bank
+                        </th>
+                        <th>
+                            Offering Date
+                        </th>
+                        <th>
+                            User
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                    </tr>
+                    <tr ng-repeat="deposit in deposits">
+                        <td>
+                            {{deposit.depositDate | date:MM/dd/yyyy}}
+                        </td>
+                        <td>
+                            {{deposit.amount}}
+                        </td>
+                        <td>
+                            {{deposit.account}}
+                        </td>
+                        <td>
+                            {{deposit.bank}}
+                        </td>
+                        <td>
+                            {{deposit.offeringDate  | date:MM/dd/yyyy}}
+                        </td>
+                        <td>
+                            {{deposit.user}}
+                        </td>
+                        <td>
+                            {{ deposit.description}}
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

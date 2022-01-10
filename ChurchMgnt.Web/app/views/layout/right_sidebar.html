@@ -1,0 +1,77 @@
+<div class="p-m" ng-controller="reportedIssueCtrl">
+    <button id="sidebar-close" class="sidebar-button btn btn-default m-b-md" ng-click="$root.rightSidebar = false">
+        <i class="pe pe-7s-close"></i>
+    </button>
+    <div>
+        <span class="font-bold no-margins"> Report an issue </span>
+        <br>
+        <br>
+        <small> Please sumbit the application issue, ChurchMgnt support team will work it.</small>
+        <br>
+        <br>
+    </div>
+    <form name="reportedIssueForm">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label class="control-label col-md-12" for="reportedIssue.title">Issue Title:<span class="PopupRequired">*</span></label>
+                </div>
+                <div class="col-md-12">
+                    <input type="text" ng-model="reportedIssue.title" ng-maxlength="100" ng-required="true" class="form-control" name="txtTitle" placeholder="Enter issue title" />
+                    <span class="error" ng-show="reportedIssueForm.txtTitle.$dirty && reportedIssueForm.txtTitle.$error.required">
+                        Required!
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row hidden-sm hidden-xs">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label class="control-label col-md-12" for="reportedIssue.description">Description:</label>
+                </div>
+                <div class="col-md-12">
+                    <textarea class="form-control" rows="5" ng-model="reportedIssue.description" ng-maxlength="500" name="txtDescription" placeholder="Enter Description"></textarea>
+                    <span class="error" ng-show="reportedIssueForm.txtDescription.$dirty && reportedIssueForm.txtDescription.$error.maxlength">
+                        Last name cannot be longer than 500 characters
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row hidden-sm hidden-xs">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                    <button type="submit" class="btn btn-primary" ng-click="save(reportedIssueForm);">Save</button>
+                    <button type="button" class="btn btn-default" ng-click="$root.rightSidebar = false">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

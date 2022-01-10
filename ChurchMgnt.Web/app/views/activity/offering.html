@@ -1,0 +1,281 @@
+﻿
+
+        <div class="row" ng-controller="offeringCtrl">
+            <div class="col-md-12">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        Offering list
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback pull-left">
+                                <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            </div>
+                            <div class="pull-right">
+                                <button title="Add Offering" ng-click="setAction('add')" class="btn btn-success glyphicon glyphicon-plus  pull-right" data-template-url="addOffering.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>                      
+                           <div class="col-md-12">
+                                <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                                    <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{alertMsgForDelete}}
+                                </div>
+                            </div>
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                            <div class="col-md-12">
+                                <div ng-init="formLoad()" class="table-responsive">
+                                    <table ng-table="tableParams" class="table table-bordered table-striped">
+                                        <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                                            <td class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'" data-title="'Offering Source'" sortable="'familyMember'">
+                                                {{item.familyMember != null ? "Family" : "Sponsor"}}
+                                            </td>
+                                            <td data-title="'Family Member/ Sponsor'" sortable="'familyMember'">
+                                                {{item.familyMember != null ? item.familyMember : item.sponsor}}
+                                            </td>
+                                            <td class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'" data-title="'Offering Type'" sortable="'offeringType'">
+                                                {{item.offeringType}}
+                                            </td>
+                                            <td class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'" data-title="'Fund Type'" sortable="'fundType'">
+                                                {{item.fundType}}
+                                            </td>
+                                            <td class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'" data-title="'Payment Type'" sortable="'paymentType'">
+                                                {{item.paymentType}}
+                                            </td>
+                                            <td data-title="'Ref No'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'" sortable="'transactionNumber'">
+                                                {{item.transactionNumber}}
+                                            </td>
+                                            <td data-title="amountTitle" sortable="'Amount'">
+                                                {{item.amount}}
+                                            </td>
+                                            <td data-title="'Offering Date'" sortable="'amound'">
+                                                {{item.offeringDate | date:MM/dd/yyyy}}
+                                            </td>
+                                            <td data-title="'Notes'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'" sortable="'notes'">
+                                                {{ item.notes | limitTo: 20 }} {{item.notes.length < 20 ? '' : '...'}}
+                                            </td>
+                                            <td>
+                                                <button title="Edit" type="button" ng-disabled="disableEditAction(item.offeringDate)" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addOffering.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                                <button title="Disable" ng-disabled="disableEditAction(item.offeringDate)" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteOffering.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                                <button title="Enable" ng-disabled="disableEditAction(item.offeringDate)" type="button" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="panel-footer">
+                        No of rows : {{filteredData.length}}
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+
+<script id="addOffering.html" type="text/ng-template">
+    <div class="popover popover-doublecolumn" tabindex="-1">
+        <h3 class="popover-title">Offering</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                    <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{alertMsg}}
+                </div>
+            </div>
+        </div>
+        <div class="popover-content popover.Form-content">
+            <form name="offeringForm" ng-init="initialize(offering.id)">
+                <div class="form-horizontal">
+                    <!--<div class="row">-->
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.sourceId">Offering Source:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddSource" ng-required="true" ng-model="offering.sourceId" ng-options="source.id as source.name for source in sources"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6" ng-if="offering.sourceId==1">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.familyMemberId">Family Member:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12" ng-show="familyMembersLoaded==0">
+                                <select class="form-control" disabled>
+                                    <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12" ng-show="familyMembersLoaded==1">                           
+                                <ui-select name="ddFamilyMember" allow-clear ng-model="dropdownFamilyMember.selected" theme="bootstrap" required>
+                                    <ui-select-match placeholder="Select/ search a family member">{{$select.selected.fullName}}</ui-select-match>
+                                    <ui-select-choices repeat="familyMember in availFamilyMembers | filter: $select.search">
+                                        <span ng-bind-html="familyMember.fullName | highlight: $select.search"></span>
+                                        <small ng-bind-html="familyMember.family | highlight: $select.search"></small>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="error" ng-show="offeringForm.ddFamilyMember.$dirty && offeringForm.ddFamilyMember.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+
+                            <!--<div class="col-md-12">
+                                <select name="ddFamilyMember" class="form-control" ng-required="{{offering.sourceId === 1}}" ng-model="offering.familyMemberId" ng-options="familyMember.id as familyMember.fullName + ' (' + familyMember.family + ')' for familyMember in familyMembers | filter: availableFamilyMembers(offering.id)">
+                                    <option value="">Select family member</option>
+                                </select>
+                                <span class="error" ng-show="offeringForm.ddFamilyMember.$dirty && offeringForm.ddFamilyMember.$error.required">
+                                    Required!
+                                </span>
+                            </div>-->
+                        </div>
+                        <div class="col-md-6" ng-if="offering.sourceId==2">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.sponsorId">Sponsor:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddSponsor" ng-required="{{offering.sourceId === 2}}" ng-model="offering.sponsorId" ng-options="sponsor.id as sponsor.name for sponsor in sponsors | filter: availableSponsors(offering.id)">
+                                    <option value="">Select Sponsor</option>
+                                </select>
+                                <span class="error" ng-show="offeringForm.ddSponsor.$dirty && offeringForm.ddSponsor.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.offeringTypeId">Offering Type:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddOfferingType" ng-required="true" ng-model="offering.offeringTypeId" ng-options="offeringType.id as offeringType.name for offeringType in offeringTypes | filter: availableOfferingTypes(offering.id)">
+                                    <option value="">Select Offering Type</option>
+                                </select>
+                                <span class="error" ng-show="offeringForm.ddOfferingType.$dirty && offeringForm.ddOfferingType.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.fundTypeId">Fund Type:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddFundType" ng-required="true" ng-model="offering.fundTypeId" ng-options="fundType.id as fundType.name for fundType in fundTypes | filter: availableFundTypes(offering.id)">
+                                    <option value="">Select Fund Type</option>
+                                </select>
+                                <span class="error" ng-show="offeringForm.ddFundType.$dirty && offeringForm.ddFundType.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.paymentTypeId">Payment Type:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-control" name="ddPaymentType" ng-required="true" ng-model="offering.paymentTypeId" ng-options="paymentType.id as paymentType.name for paymentType in paymentTypes">
+                                    <option value="">Select Payment Type</option>
+                                </select>
+                                <span class="error" ng-show="offeringForm.ddPaymentType.$dirty && ddPaymentType.ddFundType.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.transactionNumber">Ref No:</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" ng-model="offering.transactionNumber" ng-maxlength="10" class="form-control" name="txtTransactionNumber" placeholder="Enter Transaction Number" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.amount">Amount in {{authentication.currency}}:<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="number" step="0.01" min="0" ng-model="offering.amount" ng-maxlength="10" ng-required="true" class="form-control" name="txtAmount" placeholder="Enter Amount" />
+                                <span class="error" ng-show="offeringForm.txtAmount.$dirty && offeringForm.txtAmount.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.offeringDate">Offering Date<span class="PopupRequired">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="date" ng-model="offering.offeringDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtOfferingDate" placeholder="yyyy-MM-dd" />
+                                <span class="error" ng-show="offeringForm.txtOfferingDate.$dirty && offeringForm.txtOfferingDate.$error.max">
+                                    You can not select future date
+                                </span>
+                                <span class="error" ng-show="offeringForm.txtOfferingDate.$dirty && offeringForm.txtOfferingDate.$error.min">
+                                    Start date should be greater than {{ rptMinDate() | date:'yyyy-MM-dd' }}
+                                </span>
+                                <span class="error" ng-show="offeringForm.txtOfferingDate.$dirty && offeringForm.txtOfferingDate.$error.required">
+                                    Required!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label class="col-md-12" for="offering.offeringDate">Notes</label>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="form-control" rows="2" ng-model="offering.notes" ng-maxlength="250" name="txtNotes" placeholder="Enter Notes"></textarea>
+                                <span class="error" ng-show="offeringForm.txtNotes.$dirty && offeringForm.txtNotes.$error.maxlength">
+                                    Last name cannot be longer than 250 characters
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12" style="text-align: center;">
+                            <button type="submit" name="submit" class="btn btn-primary ladda-button" data-style="expand-left" data-size="l" ng-click="save(offeringForm);">Save</button>
+                            <button type="button" class="btn btn-default" ng-click="clearAlert();load();$hide()">Close</button>
+                        </div>
+                    </div>
+                    <!--</div>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+<script id="deleteOffering.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(item.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

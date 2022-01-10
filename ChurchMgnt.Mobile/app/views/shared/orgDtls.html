@@ -1,0 +1,139 @@
+﻿<!-- This is content container for nested view in UI-Router-->
+<!-- You can put here any constant element in app content for example: Page title or breadcrum -->
+<!-- Header -->
+<div id="header" ng-include="'app/views/layout/header.html'"></div>
+
+<!-- Navigation -->
+<aside id="menu" ng-include="'app/views/layout/navigation.html'"></aside>
+
+<!-- Main Wrapper -->
+<div id="wrapper">
+    <div class="content">
+        <div ui-view animate-panel>
+            <div class="row" ng-controller="orgDtlsCtrl">
+                <div class="col-md-12">
+                    <div class="hpanel">
+                        <div class="panel-heading">
+                            <div panel-tools></div>
+                            Organization Details.
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <a title="List" ng-show="authentication.isAuth && authentication.role=='1'" class="btn btn-success glyphicon glyphicon-th-list btn-xs" ui-sref="orglst"></a>
+                                <span class="pull-right">&nbsp;&nbsp;</span>
+                                <a title="Edit" type="button" class="btn btn-success glyphicon glyphicon-edit btn-xs" ui-sref="orgEdit({id:{{orgData.id}}})"></a>
+                                <span class="pull-right">&nbsp;&nbsp;</span>
+                            </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-12" style="overflow-x:auto;">
+                                <div class="row" ng-init="formLoad()">
+
+
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th>Name:</th>
+                                            <td>{{orgData.name}}</td>                                           
+                                        </tr>
+                                        <tr>                                            
+                                            <th>Website:</th>
+                                            <td>{{orgData.website}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone1:</th>
+                                            <td>{{orgData.phone1}}</td>                                            
+                                        </tr>
+                                        <tr>                                            
+                                            <th>Phone2:</th>
+                                            <td>{{orgData.phone2}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>EmailId1:</th>
+                                            <td>{{orgData.emailId1}}</td>                                          
+                                        </tr>
+                                        <tr>                                            
+                                            <th>EmailId2:</th>
+                                            <td>{{orgData.emailId2}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Denomination:</th>
+                                            <td>{{orgData.denomination}}</td>                                            
+                                        </tr>
+                                        <tr>                                            
+                                            <th>EthnicOrigin:</th>
+                                            <td>{{orgData.ethnicOrigin}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Primary Language:</th>
+                                            <td>{{orgData.primaryLanguage}}</td>                                            
+                                        </tr>
+                                        <tr>                                            
+                                            <th>Secondry Language:</th>
+                                            <td>{{orgData.secondaryLanguage}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Address1:</th>
+                                            <td>{{orgData.address1}}</td>                                            
+                                        </tr>
+                                        <tr>                                            
+                                            <th>Address2:</th>
+                                            <td>{{orgData.address2}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Address3:</th>
+                                            <td>{{orgData.address3}}</td>                                            
+                                        </tr>
+                                        <tr>                                            
+                                            <th>City:</th>
+                                            <td>{{orgData.city}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Country:</th>
+                                            <td>{{orgData.country}}</td>                                           
+                                        </tr>
+                                        <tr>                                            
+                                            <th>State:</th>
+                                            <td>{{orgData.state}}</td>
+                                        </tr>
+                                        <tr>                                            
+                                            <th>ZipCode:</th>
+                                            <td>{{orgData.zipCode}}</td>
+                                        </tr>
+                                        <tr>
+                                           
+                                            <th>Active:</th>
+                                            <td>{{orgData.active}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>TaxId:</th>
+                                            <td>{{orgData.taxId}}</td>                                            
+                                        </tr>
+                                        <tr>                                            
+                                            <th>Currency:</th>
+                                            <td>{{orgData.currency}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Description:</th>
+                                            <td>{{orgData.description}}</td>                                          
+                                        </tr>
+                                    </table>
+
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+    
+
+    <!-- Footer -->
+    <footer class="footer" ng-include="'app/views/layout/footer.html'"></footer>
+
+
+</div>       

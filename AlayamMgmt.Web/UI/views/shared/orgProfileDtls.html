@@ -1,0 +1,38 @@
+﻿<div class="container">
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="lead">Organization Profile Information.</span>
+            <a title="Edit" type="button" class="btn btn-success glyphicon glyphicon-edit pull-right" href="#/orgProfile"></a>
+            <hr />
+        </div>
+    </div>
+    <div class="row" ng-init="formLoad()">
+        <div class="col-md-12">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Tax Id:</th>
+                    <td>{{orgProfile.taxId}}</td>
+                    <th>Currency:</th>
+                    <td>{{orgProfile.currency}}</td>
+                </tr>
+                <tr>
+                    <th>Logo:</th>
+                    <td>{{orgProfile.logo}}</td>
+                    <td colspan="2">
+                        <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*"
+                             accept="image/*" ngf-max-size="1MB" ngf-min-height="10">Select</div>
+                        <img ngf-src="file || '/thumb.jpg'">
+                        <p>
+                            Only PNG,GIF,JPG,JEPG files allowed.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <hr />
+</div>

@@ -1,0 +1,237 @@
+﻿
+<style>
+    .full button span {
+        background-color: limegreen;
+        border-radius: 32px;
+        color: black;
+    }
+
+    .partially button span {
+        background-color: orange;
+        border-radius: 32px;
+        color: black;
+    }
+
+    .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info
+    {
+            background-color: #4ea5e0;
+            /* border-color: #4ea5e0; */
+            color: #FFFFFF;
+    }
+</style>
+
+       <div class="row" ng-controller="eventCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Event
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+
+                    <a title="List" class="btn btn-success glyphicon glyphicon-th-list btn-xs" ui-sref="activity.eventlst"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Details" ng-show="event.id != 0" type="button" class="btn btn-success glyphicon glyphicon-folder-open btn-xs" ui-sref="activity.eventDtls({id:{{event.id}}})"></a>
+
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                            <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{alertMsg}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="col-md-12">
+                    <div class="row" ng-init="initialize()">
+                        <form name="eventForm" ng-init="initialize(event.id)">
+                            <div class="form-horizontal">
+                                <!--<div class="row">-->
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.name">Name:<span class="PopupRequired">*</span></label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="text" ng-model="event.name" ng-required="true" ng-maxlength="100" class="form-control" name="txtName" placeholder="Enter Event Name" />
+
+                                            <span class="error" ng-show="eventForm.txtName.$dirty && eventForm.txtName.$error.required">
+                                                Required!
+                                            </span>
+                                        </div>
+                                    </div>                                  
+                                </div>
+                                <div class="form-group">                                  
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.eventTypeId">Event Type:<span class="PopupRequired">*</span></label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <select class="form-control" name="ddEventType" ng-required="true" ng-model="event.eventTypeId" ng-options="eventType.id as eventType.name for eventType in eventTypes | filter: availableEventTypes (event.id)">
+                                                <option value="">Select Event Type</option>
+                                            </select>
+                                            <span class="error" ng-show="eventForm.ddEventType.$dirty && eventForm.ddEventType.$error.required">
+                                                Required!
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.branchId">Branch:<span class="PopupRequired">*</span></label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <select class="form-control" ng-required="true" name="ddBranch" ng-required="true" ng-model="event.branchId" ng-options="branch.id as branch.name for branch in branches | filter: availableBranches (event.id)">
+                                                <option value="">Select Branch</option>
+                                            </select>
+                                            <span class="error" ng-show="eventForm.ddBranch.$dirty && eventForm.ddBranch.$error.required">
+                                                Required!
+                                            </span>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <!--<div class="form-group">                              
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.eventDate">Event Date<span class="PopupRequired">*</span></label>
+                                        </div>
+                                        <div class="col-md-12">
+
+                                            <input type="date" ng-model="event.eventDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtEventDate" placeholder="yyyy-MM-dd" />
+                                            <span class="error" ng-show="eventForm.txtEventDate.$dirty && eventForm.txtEventDate.$error.min">
+                                                Event date should be greater than {{ rptMinDate() | date:'yyyy-MM-dd' }}
+                                            </span>
+                                            <span class="error" ng-show="eventForm.txtEventDate.$dirty && eventForm.txtEventDate.$error.required">
+                                                Required!
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.eventDate">Event Date<span class="PopupRequired">*</span></label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <p class="input-group">
+                                                <input type="text" name="txtEventDate" class="form-control" uib-datepicker-popup="{{format}}" ng-model="event.eventDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYYY"/>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.offering">Offering in {{authentication.currency}}:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="number" step="0.01" min="0" ng-model="event.offering" ng-maxlength="10" class="form-control" name="txtOffering" placeholder="Enter Offering" />
+                                        </div>
+                                    </div>                                  
+                                </div>
+                                <div class="form-group">                            
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.expense">Expense in {{authentication.currency}}:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="number" step="0.01" min="0" ng-model="event.expense" ng-maxlength="10" class="form-control" name="txtExpense" placeholder="Enter Expense" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.noOfAdultAttended">No Of Adult Attended:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="number" min="0" ng-model="event.noOfAdultAttended" ng-maxlength="10" class="form-control" name="txtNoOfAdultAttended" placeholder="Enter No Of Adult Attended" />
+                                        </div>
+                                    </div>                                  
+                                </div>
+                                <div class="form-group">                                   
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.noOfMenAttended">No Of Men Attended:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="number" min="0" ng-model="event.noOfMenAttended" ng-maxlength="10" class="form-control" name="txtNoOfMenAttended" placeholder="Enter No Of Men Attended" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.noOfWomenAttended">No Of Women Attended:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="number" min="0" ng-model="event.noOfWomenAttended" ng-maxlength="10" class="form-control" name="txtNoOfWomenAttended" placeholder="Enter No Of Women Attended" />
+                                        </div>
+                                    </div>                                   
+                                </div>
+                                <div class="form-group">                                   
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.noOfKidsParticipated">No Of Kids Participated:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="number" min="0" ng-model="event.noOfKidsParticipated" ng-maxlength="10" class="form-control" name="txtNoOfMenAttended" placeholder="Enter No Of Kids Participated" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.isSpecialEvent">Spl Event:</label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="event.isSpecialEvent" />
+                                        </div>
+                                    </div>                                   
+                                </div>
+                                <div class="form-group">                                 
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label class="col-md-12" for="event.description">Notes</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <textarea class="form-control" rows="2" ng-model="event.description" ng-maxlength="250" name="txtNotes" placeholder="Enter Description"></textarea>
+                                            <span class="error" ng-show="eventForm.txtNotes.$dirty && eventForm.txtNotes.$error.maxlength">
+                                                Last name cannot be longer than 250 characters
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12" style="text-align: center;">
+                                        <button type="submit" class="btn btn-primary" ng-click="save(eventForm);">Save</button>
+                                        <button type="button" class="btn btn-default" ng-click="clearAlert();load();$hide()" ui-sref="activity.eventlst">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                </form>
+</div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    
+
+

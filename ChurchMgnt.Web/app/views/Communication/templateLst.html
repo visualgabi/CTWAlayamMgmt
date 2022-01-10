@@ -1,0 +1,81 @@
+﻿<div class="row" ng-controller="templateLstCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Email template list
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback pull-right">
+                        <a title="Add" type="button" class="btn btn-success glyphicon glyphicon-plus pull-right" ui-sref="communication.templateAdd"></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                        <button type="button" class="close" ng-click="showAlert=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsg}}
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="col-md-12">
+                    <div ng-init="formLoad()">
+
+                        <table ng-table="tableParams" class="table table-bordered table-striped">
+                            <tr ng-repeat="template in $data" ng-class="{'danger': template.active === false }">
+                                <td data-title="'Name'" sortable="'name'">
+                                    {{template.name}}
+                                </td>
+                                <td data-title="'Description'" sortable="'description'">
+                                    {{template.description}}
+                                </td>                               
+                                <td data-title="'Action'">
+                                    <a type="button" title="Details" ui-sref="communication.templateDtls({id:{{template.id}}})" class="btn btn-info btn-sm glyphicon glyphicon-folder-open"></a>
+                                    <a title="Edit" type="button" ui-sref="communication.templateEdit({id:{{template.id}}})" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit"></a>
+                                    <button title="Disable" type="button" ng-show="template.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteTemplate.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Enable" type="button" ng-click="enable(template.id, true)" ng-show="template.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+        </div>
+    </div>
+</div>
+<script id="deleteTemplate.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(template.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

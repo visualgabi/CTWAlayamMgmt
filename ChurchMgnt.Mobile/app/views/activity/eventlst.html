@@ -1,0 +1,72 @@
+﻿
+<div class="row" ng-init="formLoad()" ng-controller="eventlstCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                Event list
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div> &nbsp;
+                        <button title="Add Event" class="btn btn-success glyphicon glyphicon-plus btn-xs" ui-sref="activity.eventAdd"></button>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+               
+                        <table ng-table="tableParams" class="table table-bordered table-striped">
+                            <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                                <td data-title="'Name'" sortable="'name'">
+                                    {{item.name}}
+                                </td>
+                                <td data-title="'Event Type'" sortable="'eventType'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.eventType}}
+                                </td>
+                                <td data-title="'Branch'" sortable="'branch'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.branch}}
+                                </td>
+                                <td data-title="'Spl Event'" sortable="'isSpecialEvent'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.isSpecialEvent == 1 ? "True" : "False"}}
+                                </td>
+                                <td data-title="'Adult Count'" sortable="'noOfAdultAttended'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.noOfAdultAttended}}
+                                </td>
+                                <td data-title="offeringTitle" sortable="'offering'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.offering}}
+                                </td>
+                                <td data-title="expenseTitle" sortable="'expense'" class="hidden-sm hidden-xs hidden-md" header-class="'hidden-sm hidden-xs hidden-md'">
+                                    {{item.expense}}
+                                </td>
+                                <td data-title="'Event Date'" sortable="'eventDate'">
+                                    {{item.eventDate | date:MM/dd/yyyy}}
+                                </td>
+                                <td>
+                                    <a title="Details" ui-sref="activity.eventDtls({id:{{item.id}}})" class="fa fa-ellipsis-h"></a>
+                                    <!--<button title="Edit" type="button" ng-disabled="disableEditAction(item.eventDate)" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addEvent.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Disable" type="button" ng-disabled="disableEditAction(item.eventDate)" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteEvent.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                    <button title="Enable" type="button" ng-disabled="disableEditAction(item.eventDate)" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>-->
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                   
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,306 @@
+﻿<!-- Header -->
+<div id="header" ng-include="'app/views/layout/header.html'"></div>
+
+<!-- Navigation -->
+<aside id="menu" ng-include="'app/views/layout/navigation.html'"></aside>
+
+<!-- Main Wrapper -->
+<div id="wrapper" ng-controller="dashboardCtrl">
+
+    <div class="content" ng-init="formLoad()" animate-panel effect="zoomIn">
+        <div class="row">
+            <div class="col-lg-12 text-center m-t-md">
+                <h2>
+                    Welcome to {{authentication.orgName}}
+                </h2>
+
+                <p>
+                    You can manage/ track/ monitor <strong>Your Church Activity</strong> in cloud !.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        Recent members details
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Phone
+                                    </th>
+                                    <th class="hidden-sm hidden-xs">
+                                        Membership Date
+                                    </th>
+                                    <th class="hidden-sm hidden-xs">
+                                        EmailId
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="family in recentMembers">
+                                    <td>
+                                        {{family.name}}
+                                    </td>
+                                    <td>
+                                        {{family.phone1}}
+                                    </td>
+                                    <td class="hidden-sm hidden-xs">
+                                        {{family.membershipStartDate | date:'MM/dd/yyyy'}}
+                                    </td>
+                                    <td class="hidden-sm hidden-xs">
+                                        {{family.emailId1 }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        No of rows : {{recentMembers.length}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        Recent visitor details
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Phone
+                                    </th>
+                                    <th class="hidden-sm hidden-xs">
+                                        Visited Date
+                                    </th>
+                                    <th class="hidden-sm hidden-xs">
+                                        EmailId
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="family in recentVisitors">
+                                    <td>
+                                        {{family.name}}
+                                    </td>
+                                    <td>
+                                        {{family.phone1}}
+                                    </td>
+                                    <td class="hidden-sm hidden-xs">
+                                        {{family.firstVisitedDate | date:'MM/dd/yyyy'}}
+                                    </td>
+                                    <td class="hidden-sm hidden-xs">
+                                        {{family.emailId1 }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        No of rows : {{recentVisitors.length}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        Recent offering details
+                    </div>
+                    <div class="panel-body">
+                        <div class="row table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Member Name
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Fund Type
+                                    </th>
+                                    <th>
+                                        OfferingDate
+                                    </th>
+                                    <th>
+                                        Amount in {{authentication.currency}}
+                                    </th>                                    
+                                </tr>
+                                <tr ng-repeat="offering in recentOfferings">
+                                    <td>
+                                        {{offering.familyMember != null ? offering.familyMember : offering.sponsor}}
+                                    </td>
+                                    <td class="hidden-sm hidden-xs hidden-md">
+                                        {{offering.fundType}}
+                                    </td>
+                                    <td>
+                                        {{offering.offeringDate | date:MM/dd/yyyy}}
+                                    </td>
+                                    <td>
+                                        {{offering.amount}}
+                                    </td>                                    
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        No of rows : {{recentOfferings.length}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        Recent deposit details
+                    </div>
+                    <div class="panel-body">
+                        <div class="row table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Deposit Date
+                                    </th>
+                                    <th>
+                                        Deposit Date
+                                    </th>
+                                    <th>
+                                        Amount in {{authentication.currency}}
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Account
+                                    </th>                                    
+                                </tr>
+                                <tr ng-repeat="deposit in recentDeposits">
+                                    <td>
+                                        {{deposit.depositDate | date:MM/dd/yyyy}}
+                                    </td>
+                                    <td>
+                                        {{deposit.offeringDate  | date:MM/dd/yyyy}}
+                                    </td>
+                                    <td>
+                                        {{deposit.amount}}
+                                    </td>
+                                    <td class="hidden-sm hidden-xs hidden-md">
+                                        {{deposit.account}}
+                                    </td>
+                                    
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        No of rows : {{recentDeposits.length}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        Recent expense details
+                    </div>
+                    <div class="panel-body">
+                        <div class="row table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Expense Type
+                                    </th>
+                                    <th>
+                                        ExpenseDate
+                                    </th>
+                                    <th>
+                                        Amount in {{authentication.currency}}
+                                    </th>                                  
+                                    <th class="hidden-sm hidden-xs">
+                                        Account
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="expense in recentExpenses">
+                                    <td>
+                                        {{expense.expenseType}}
+                                    </td>
+                                    <td>
+                                        {{expense.expenseDate | date:MM/dd/yyyy}}
+                                    </td>
+                                    <td>
+                                        {{expense.amount}}
+                                    </td>                                    
+                                    <td class="hidden-sm hidden-xs">
+                                        {{expense.account}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        No of rows : {{recentExpenses.length}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div panel-tools></div>
+                        Recent event details
+                    </div>
+                    <div class="panel-body">
+                        <div class="row table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Event Name
+                                    </th>
+                                    <th>
+                                        EventDate
+                                    </th>
+                                    <th>
+                                        Offering in {{authentication.currency}}
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Expense in {{authentication.currency}}
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="event in recentEvents">
+                                    <td>
+                                        {{event.name}}
+                                    </td>
+                                    <td>
+                                        {{event.eventDate | date:MM/dd/yyyy}}
+                                    </td>
+                                    <td>
+                                        {{event.offering}}
+                                    </td>
+                                    <td class="hidden-sm hidden-xs hidden-md">
+                                        {{event.expense}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        No of rows : {{recentEvents.length}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <!-- Footer -->
+    <footer class="footer" ng-include="'app/views/layout/footer.html'"></footer>
+</div>
+

@@ -1,0 +1,306 @@
+﻿<div class="row" ng-controller="expenseRptCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form name="reportForm" ng-init="initialize()">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="expenseSearch.expenseStartDate">Start Date:</label>
+                                <div class="col-md-4">
+                                    <input type="date" ng-model="expenseSearch.expenseStartDate" min="{{ rptMinDate() | date:'yyyy-MM-dd' }}" max="{{ todayDate() | date:'yyyy-MM-dd' }}" ng-required="true" class="form-control" name="txtExpenseStartDate" placeholder="yyyy-MM-dd" />
+                                    <span class="error" ng-show="reportForm.txtExpenseStartDate.$dirty && reportForm.txtExpenseStartDate.$error.max">
+                                        You can not select future date
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtExpenseStartDate.$dirty && reportForm.txtExpenseStartDate.$error.min">
+                                        Start date should be within latest 5 years
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtExpenseStartDate.$dirty && reportForm.txtExpenseStartDate.$error.required">
+                                        Required
+                                    </span>
+                                </div>
+                                <label class="control-label col-sm-2" for="expenseSearch.expenseEndDate">End Date:</label>
+                                <div class="col-md-4">
+                                    <input type="date" ng-required="true" ng-model="expenseSearch.expenseEndDate" max="{{ maxDate() | date:'yyyy-MM-dd' }}" min="{{expenseSearch.expenseStartDate | date:'yyyy-MM-dd'}}" class="form-control" name="txtExpenseEndDate" placeholder="yyyy-MM-dd" />
+                                    <span class="error" ng-show="reportForm.txtExpenseEndDate.$dirty && reportForm.txtExpenseEndDate.$error.min">
+                                        End Date should be greater than start date
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtExpenseEndDate.$dirty && reportForm.txtExpenseEndDate.$error.max">
+                                        Date difference should be 12 months only
+                                    </span>
+                                    <span class="error" ng-show="reportForm.txtExpenseEndDate.$dirty && reportForm.txtExpenseEndDate.$error.required">
+                                        Required
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="expenseSearch.expenseTypeId">Expense Type:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddExpenseType" ng-model="expenseSearch.expenseTypeId" ng-options="expenseType.id as expenseType.name for expenseType in expenseTypes">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-sm-2" for="Phone2">Account:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddAccount" ng-model="expenseSearch.accountId" ng-options="account.id as  account.name for  account in accounts">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="Phone2">Order By:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddOrderBy" ng-model="expenseSearch.orderById" ng-options=" orderby.id as  orderby.name for  orderby in orderBys ">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-show="false">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-show="false">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="expenseSearch.paymentId">Payment Type:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="ddPaymentType" ng-model="expenseSearch.paymentId" ng-options="paymentType.id as paymentType.name for paymentType in paymentTypes">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div style="align-content:center" class="col-md-5"></div>
+                                <div style="align-content:center" class="col-md-2">
+                                    &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                    <button class="btn btn-lg btn-primary btn-block pull-right" type="submit" ng-click="search(reportForm);">Search</button>
+                                </div>
+                                <div style="align-content:center" class="col-md-5"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert {{alertClassForEmptyList}} alert-dismissible" ng-show="showAlertForEmptyList" role="alert">
+                                <button type="button" class="close" ng-click="showAlertForEmptyList=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{alertMsgForEmptyList}}
+                            </div>
+                        </div>
+                        <!--<div class="row">
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-3">&nbsp;</div>
+                                <div class="col-md-3">&nbsp;</div>
+                                <div class="col-md-3">&nbsp;</div>
+                                <div class="col-md-3">
+                                    <a title="Download in excel" ng-show="showExcel" type="button" class="btn btn-success glyphicon glyphicon-file pull-right" ng-click="downloadExcel()"></a>  &nbsp;  &nbsp;
+                                    <a title="Download in pdf" ng-show="showPrint" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="downloadPdf()"></a>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr />
+                                <div class="col-md-11">
+                                </div>
+                                <div class="col-md-1 pull-right">
+                                    <div class="col-md-6">
+                                        <a title="Download in pdf" ng-show="showPrint" type="button" class="btn btn-success glyphicon glyphicon-download-alt" ng-click="downloadPdf()"></a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a title="Download in excel" ng-show="showExcel" type="button" class="btn btn-success glyphicon glyphicon-file" ng-click="downloadExcel()"></a>
+                                    </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" ng-show="showPrint">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <td>Total Expense in {{authentication.currency}} :</td>
+                                        <td>{{totalExpense}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by Payment Type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Payment Type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="paymentTypeTotal in paymentTypesWithAmount | filter : isGreaterThanZero()">
+                                        <td>{{paymentTypeTotal.name }} :</td>
+                                        <td>{{paymentTypeTotal.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by Account</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Account</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="accountWithAmount in accountsWithAmount | filter : isGreaterThanZero()">
+                                        <td>{{accountWithAmount.name }} :</td>
+                                        <td>{{accountWithAmount.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by Expense Type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Expense Type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="expenseTypesTotal in expenseTypesWithAmount | filter : isGreaterThanZero()">
+                                        <td>{{expenseTypesTotal.name }} :</td>
+                                        <td>{{expenseTypesTotal.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-3">&nbsp;</div>
+                        <div class="col-md-3">&nbsp;</div>
+                        <div class="col-md-3">&nbsp;</div>
+                        <div class="col-md-3">
+                            <a title="Download in excel" ng-show="showExcel" type="button" class="btn btn-success glyphicon glyphicon-file" ng-click="downloadExcel()"></a>
+                            <a title="Download" ng-show="showExcel" type="button" class="btn btn-success glyphicon glyphicon-download-alt" ng-click="downloadPdf()"></a>                                      
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>-->
+                <table id="tblExpense" class="table table-bordered table-striped">
+                    <tr>
+                        <th>
+                            Expense Type
+                        </th>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Sub Expense Type
+                        </th>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Payment Type
+                        </th>
+                        <th>
+                            Amount in {{authentication.currency}}
+                        </th>
+                        <th>
+                            ExpenseDate
+                        </th>
+                        <th class="hidden-sm hidden-xs">
+                            Account
+                        </th>
+                    </tr>
+                    <tr ng-repeat="expense in expenses">
+                        <td>
+                            {{expense.expenseType}}
+                        </td>
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{expense.subExpenseType}}
+                        </td>
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{expense.paymentType}}
+                        </td>
+                        <td>
+                            {{expense.amount}}
+                        </td>
+                        <td>
+                            {{expense.expenseDate | date: "MM/dd/yyyy"}}
+                        </td>
+                        <td class="hidden-sm hidden-xs">
+                            {{expense.account}}
+                        </td>
+                    </tr>
+                </table>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿<!-- Header -->
+<div id="header" ng-include="'app/views/layout/header.html'"></div>
+
+<!-- Navigation -->
+<aside id="menu" ng-include="'app/views/layout/navigation.html'"></aside>
+
+<!-- Main Wrapper -->
+<div id="wrapper">
+    <div class="content" animate-panel effect="fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <div class="">Frequently asked questions. Find the answer or contact with us on support email.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="hpanel panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-body">
+                        <h4 class="m-t-none m-b-none">General questions</h4>
+                        <small class="text-muted">All general questions about our app.</small>
+                    </div>
+                    <div class="panel-body">
+                        <a ng-click="q1 = !q1">
+                            <i class="fa fa-chevron-down pull-right text-muted"></i>
+                            Whenever system is not behaving as expect, please try the following options?.
+                        </a>
+                        <div uib-collapse="!q1">
+                            <hr>Step1: Please refresh the page.<br />
+                            Step2: Step1 is not solving the issue, Please logout, close the browser then login back to system<br />
+                            Step3: Step2 is not solving the issue, Please clean the browser data as below.<br />
+                            If use chrome browser:<br />
+                            Open browser - select customize and control option -> more tools -> clear browser data.
+                            then login back to www.churchMgnt.com
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <a ng-click="q2 = !q2">
+                            <i class="fa fa-chevron-down pull-right text-muted"></i>
+                            Why the family member not showing in the offering page?
+                        </a>
+                        <div uib-collapse="!q2">
+                            <hr>Offering page shows the family members if they are a taxpayer. So please go MemberCare -> Family -> Edit family then check Tax Payer option then save.
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <a ng-click="q3 = !q3">
+                            <i class="fa fa-chevron-down pull-right text-muted"></i>
+                            Why am I not able to edit/ delete/ create offering/ expense/ deposit for previous years?
+                        </a>
+                        <div uib-collapse="!q3">
+                            <hr>Once you filed the tax, System will not allow you doing any action on tax filed years.
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <a ng-click="q4 = !q4">
+                            <i class="fa fa-chevron-down pull-right text-muted"></i>
+                            How to add new expesne type/ fund type/ offering type/ sub expense type/ event type?
+                        </a>
+                        <div uib-collapse="!q4">
+                            <hr>Go to Left nav bar -> Master data -> select appropriate menu.
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <a ng-click="q5 = !q5">
+                            <i class="fa fa-chevron-down pull-right text-muted"></i>
+                            Why does report page not allowing to select more 12 months date range?
+                        </a>
+                        <div uib-collapse="!q5">
+                            <hr>The system only supports 12 months date range in the report, If you want to more data, Please contact ChurchMgnt support team..
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <a ng-click="q6 = !q6">
+                            <i class="fa fa-chevron-down pull-right text-muted"></i>
+                            How to report an issue to ChurchMgnt support team?.
+                        </a>
+                        <div uib-collapse="!q6">
+                            <hr>There is action link available from right side on page header close to logout action link.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="right-sidebar" ng-include="'app/views/layout/right_sidebar.html'" class="sidebar-open" ng-show="rightSidebar"></div>
+
+        <!-- Footer -->
+        <footer class="footer" ng-include="'app/views/layout/footer.html'"></footer>
+    </div>
+

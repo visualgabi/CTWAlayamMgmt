@@ -1,0 +1,501 @@
+﻿<!--div class="container">
+    <div class="container">-->
+<div class="col-md-12" ng-init="formLoad()">
+    &nbsp;
+</div>
+
+<div id="exTab2">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#1" data-toggle="tab">Recent activity</a>
+        </li>
+        <li>
+            <a href="#2" data-toggle="tab">Quick summary</a>
+        </li>     
+    </ul>
+    <div class="tab-content ">
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane active" id="1">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Recent Members Details</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div ng-if="loadingRecentMembers">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading recent members...</label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Phone
+                                        </th>
+                                        <th class="hidden-sm hidden-xs">
+                                            Membership Date
+                                        </th>
+                                        <th class="hidden-sm hidden-xs">
+                                            EmailId
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="family in recentMembers">
+                                        <td>
+                                            {{family.name}}
+                                        </td>
+                                        <td>
+                                            {{family.phone1}}
+                                        </td>
+                                        <td class="hidden-sm hidden-xs">
+                                            {{family.membershipStartDate | date:'MM/dd/yyyy'}}
+                                        </td>
+                                        <td class="hidden-sm hidden-xs">
+                                            {{family.emailId1 }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Recent Visitors Details</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div ng-if="loadingRecentVisitors">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading recent visitors...</label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Phone
+                                        </th>
+                                        <th class="'hidden-sm hidden-xs'">
+                                            Visited Date
+                                        </th>
+                                        <th class="'hidden-sm hidden-xs'">
+                                            EmailId
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="family in recentVisitors">
+                                        <td>
+                                            {{family.name}}
+                                        </td>
+                                        <td>
+                                            {{family.phone1}}
+                                        </td>
+                                        <td class="hidden-sm hidden-xs">
+                                            {{family.firstVisitedDate | date:'MM/dd/yyyy'}}
+                                        </td>
+                                        <td class="hidden-sm hidden-xs">
+                                            {{family.emailId1 }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Recent offering details</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div ng-if="loadingRecentOfferings">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading recent offerings...</label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>
+                                            Member Name
+                                        </th>
+                                        <th class="hidden-sm hidden-xs hidden-md">
+                                            Fund Type
+                                        </th>
+                                        <th>
+                                            Amount in {{authentication.currency}}
+                                        </th>
+                                        <th>
+                                            OfferingDate
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="offering in recentOfferings">
+                                        <td>
+                                            {{offering.familyMember != null ? offering.familyMember : offering.sponsor}}
+                                        </td>
+                                        <td>
+                                            {{offering.fundType}}
+                                        </td>
+                                        <td>
+                                            {{offering.amount}}
+                                        </td>
+                                        <td>
+                                            {{offering.offeringDate | date:MM/dd/yyyy}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Recent deposit details</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div ng-if="loadingRecentDeposits">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading recent deposits...</label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>
+                                            Deposit Date
+                                        </th>
+                                        <th>
+                                            Amount in {{authentication.currency}}
+                                        </th>
+                                        <th>
+                                            Account
+                                        </th>
+                                        <th>
+                                            Offering Date
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="deposit in recentDeposits">
+                                        <td>
+                                            {{deposit.depositDate | date:MM/dd/yyyy}}
+                                        </td>
+                                        <td>
+                                            {{deposit.amount}}
+                                        </td>
+                                        <td>
+                                            {{deposit.account}}
+                                        </td>
+                                        <td>
+                                            {{deposit.offeringDate  | date:MM/dd/yyyy}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Recent expense details</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div ng-if="loadingRecentExpenses">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading recent expenses...</label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>
+                                            Expense Type
+                                        </th>
+                                        <th>
+                                            Amount in {{authentication.currency}}
+                                        </th>
+                                        <th>
+                                            ExpenseDate
+                                        </th>
+                                        <th class="hidden-sm hidden-xs">
+                                            Account
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="expense in recentExpenses">
+                                        <td>
+                                            {{expense.expenseType}}
+                                        </td>
+                                        <td>
+                                            {{expense.amount}}
+                                        </td>
+                                        <td>
+                                            {{expense.expenseDate | date:MM/dd/yyyy}}
+                                        </td>
+                                        <td class="hidden-sm hidden-xs">
+                                            {{expense.account}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Recent event details</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div ng-if="loadingRecentEvents">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading recent event...</label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>
+                                            Event Name
+                                        </th>
+                                        <th>
+                                            EventDate
+                                        </th>
+                                        <th>
+                                            Offering in {{authentication.currency}}
+                                        </th>
+                                        <th>
+                                            Expense in {{authentication.currency}}
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="event in recentEvents">
+                                        <td>
+                                            {{event.name}}
+                                        </td>
+                                        <td>
+                                            {{event.eventDate | date:MM/dd/yyyy}}
+                                        </td>
+                                        <td>
+                                            {{event.offering}}
+                                        </td>
+                                        <td>
+                                            {{event.expense}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="2">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Member/ Visitor Report</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div ng-if="loadingMemVisRpt">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-4">
+                                    <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading report...</label>
+                                </div>
+                                <div class="col-xs-4"></div>
+                            </div>
+
+                            <canvas id="line" class="chart chart-line" chart-data="memVisCntChartData"
+                                    chart-labels="memVisCntChartLabels" chart-legend="true" chart-series="memVisCntChartSeries"
+                                    chart-click="onMemVisCntChartClick"></canvas>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Offering Received Report</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div ng-if="loadingOfferingRpt">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-4">
+                                    <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading offering report...</label>
+                                </div>
+                                <div class="col-xs-4"></div>
+                            </div>
+
+                            <canvas id="bar" class="chart chart-bar" chart-series="receivedChartSeries" chart-legend="true"
+                                    chart-data="receivedChartData" chart-labels="receivedChartLabels"></canvas>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Budget Report</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div ng-if="loadingBudgetRpt">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-4">
+                                    <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading budget report...</label>
+                                </div>
+                                <div class="col-xs-4"></div>
+                            </div>
+
+                            <canvas id="doughnut" class="chart chart-doughnut" chart-legend="true"
+                                    chart-data="budgetChartData" chart-labels="budgetChartLabels"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Expense Report</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <div ng-if="loadingExpenseRpt">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-4">
+                                    <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading expense report...</label>
+                                </div>
+                                <div class="col-xs-4"></div>
+                            </div>
+
+                            <canvas id="pie" class="chart chart-pie" chart-legend="true"
+                                    chart-data="expenseChartData" chart-labels="expenseChartLabels"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+            <!--<div class="col-md-12">
+        </div>
+        <div class="col-md-12">
+        </div>
+
+        <div class="col-md-5 panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Member/ Visitor Report</h3>
+            </div>
+            <div class="panel-body">
+                <canvas id="line" class="chart chart-line" chart-data="memVisCntChartData"
+                        chart-labels="memVisCntChartLabels" chart-legend="true" chart-series="memVisCntChartSeries"
+                        chart-click="onMemVisCntChartClick"></canvas>
+            </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-5 panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Budget Report</h3>
+            </div>
+            <div class="panel-body">
+                <canvas id="doughnut" class="chart chart-doughnut" chart-legend="true"
+                        chart-data="budgetChartData" chart-labels="budgetChartLabels"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+        </div>
+        <div class="col-md-12">
+        </div>
+        <div class="col-md-5 panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Offering Received Report</h3>
+            </div>
+            <div class="panel-body">
+                <canvas id="bar" class="chart chart-bar" chart-series="receivedChartSeries" chart-legend="true"
+                        chart-data="receivedChartData" chart-labels="receivedChartLabels"></canvas>
+            </div>
+            <br />
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-5 panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Expense Report</h3>
+            </div>
+
+            <div class="panel-body">
+                <canvas id="pie" class="chart chart-pie" chart-legend="true"
+                        chart-data="expenseChartData" chart-labels="expenseChartLabels"></canvas>
+            </div>
+        </div>
+        <div class="col-md-12">
+        </div>
+        <div class="col-md-12">
+        </div>-->

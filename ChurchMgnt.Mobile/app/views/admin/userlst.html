@@ -1,0 +1,70 @@
+﻿<div class="row" ng-init="formLoad()" ng-controller="userlstCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                User list
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-group has-feedback pull-left">
+                        <input type="text" ng-model="filterText" class="form-control" placeholder="Search" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <div>  &nbsp;
+                        <button title="Add User" class="btn btn-success glyphicon glyphicon-plus btn-xs" ui-sref="admin.userAdd"></button>                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert {{alertClassForDelete}} alert-dismissible" ng-show="showAlertForDelete" role="alert">
+                        <button type="button" class="close" ng-click="showAlertForDelete=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{alertMsgForDelete}}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>               
+                    <table ng-table="tableParams" class="table table-bordered table-striped">
+                        <tr ng-repeat="item in $data" ng-class="{'danger': item.active === false }">
+                            <td data-title="'User Name'" sortable="'userName'">
+                                {{item.userName}}
+                            </td>
+                            <td data-title="'Role'" sortable="'role'">
+                                {{item.role}}
+                            </td>
+                            <td data-title="'First Name'" sortable="'firstName'" class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'">
+                                {{item.firstName}}
+                            </td>
+                            <td data-title="'Last Name'" sortable="'lastName'" class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'">
+                                {{item.lastName}}
+                            </td>
+                            <td data-title="'organization'" sortable="'organization'" class="hidden-sm hidden-xs" header-class="'hidden-sm hidden-xs'">
+                                {{item.organization}}
+                            </td>
+                            <td>
+                                <a title="Details" ui-sref="admin.userDtls({id:{{item.id}}})" class="fa fa-ellipsis-h"></a>
+                                <!--<button title="Edit" type="button" ng-click="initialize(item.id)" class="btn btn-primary btn-sm glyphicon glyphicon glyphicon-edit" data-template-url="addUser.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Disable" type="button" ng-show="item.active === true" class="btn btn-warning btn-sm glyphicon glyphicon glyphicon-trash" data-template="deleteUser.html" data-placement="left" data-auto-close="1" bs-popover></button>
+                                <button title="Enable" type="button" ng-click="enable(item.id, true)" ng-show="item.active === false" class="btn btn-success btn-sm glyphicon glyphicon glyphicon-ok"></button>-->
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                    
+            </div>
+            <div class="panel-footer">
+                No of rows : {{filteredData.length}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,901 @@
+﻿<div id="exportthis" class="row" ng-controller="contributionRptCtrl" ng-init="initialize()">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-body">               
+                <div class="row">                    
+                        <div class="pull-right">
+                            <b>Include Pastor Signature: </b>
+                            <input type="checkbox" name="chkIncludeSignature" checked> &nbsp;
+                        </div>                    
+                </div>
+                
+                <div class="col-md-12" ng-if="emailSending">
+                    <div class="col-xs-4"></div>
+                    <div class="col-xs-4">
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i> <label class="label label-primary">Email sending...</label>
+                    </div>
+                    <div class="col-xs-4"></div>
+                </div>
+
+                <div class="col-md-12" ng-if="pdfDownloading">
+                    <div class="col-xs-4"></div>
+                    <div class="col-xs-4">
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i> <label class="label label-primary">pdf downloading...</label>
+                    </div>
+                    <div class="col-xs-4"></div>
+                </div>
+
+                <div id="exTab2">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#1" data-toggle="tab">Family offering</a>
+                        </li>
+                        <li>
+                            <a href="#2" data-toggle="tab">Family member offering</a>
+                        </li>
+                        <li>
+                            <a href="#3" data-toggle="tab">Sponsor offering</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content ">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane active" id="1">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <form name="familyForm">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamily.familyId">Family Name:</label>
+                                        <div class="col-md-4" ng-show="familiesLoaded==0">
+                                            <select class="form-control" disabled>
+                                                <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>                                              
+                                            </select>                                        
+
+                                        </div>
+                                        <div class="col-md-4" ng-show="familiesLoaded==1">                                          
+                                            <!--<select class="form-control" ng-required="true" name="ddFamily" ng-model="offeringSearchFamily.familyId" ng-options=" family.id as family.name + ' (' + family.emailId1 + ')' for family in familes">                                                                                                
+                                                <option value="">Select Family</option>
+                                            </select>-->
+
+                                            <ui-select name="ddFamily" allow-clear ng-model="family.selected" theme="bootstrap" required>
+                                                <ui-select-match placeholder="Select or search a family in the list...">{{$select.selected.name}}</ui-select-match>
+                                                <ui-select-choices repeat="family in familes | filter: $select.search">
+                                                    <span ng-bind-html="family.name | highlight: $select.search"></span>
+                                                    <small ng-bind-html="family.emailId1 | highlight: $select.search"></small>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="error" ng-show="familyForm.ddFamily.$dirty && familyForm.ddFamily.$error.required">
+                                                Required!
+                                            </span>
+                                        </div>
+                                        <label class="control-label col-sm-2" for="offeringSearchFamily.fiscalYearId">Fiscal Year:</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddFiscalYearsFamily" required ng-model="offeringSearchFamily.fiscalYearId" ng-options="fiscalYear.id as  fiscalYear.fiscalYear for  fiscalYear in fiscalYears">
+                                                <option value="">Select Fiscal Year</option>
+                                            </select>
+                                            <span class="error" ng-show="familyForm.ddFiscalYearsFamily.$dirty && familyForm.ddFiscalYearsFamily.$error.required">
+                                                Required!
+                                            </span>
+                                        </div>                                      
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <div style="align-content:center" class="col-md-5"></div>
+                                        <div style="align-content:center" class="col-md-2">
+                                            &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                            <button class="btn btn-lg btn-primary btn-block pull-right" type="submit"                                                  
+                                                    ng-click="getFamilyOfferingReport(familyForm)">
+                                                Show
+                                            </button>
+                                        </div>
+                                        <div style="align-content:center" class="col-md-5">
+                                            <div class="center">                                               
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12">
+                                <div class="alert {{alertClassForEmptyListFamily}} alert-dismissible" ng-show="showAlertForEmptyListFamily" role="alert">
+                                    <button type="button" class="close" ng-click="showAlertForEmptyListFamily=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{alertMsgForEmptyListFamily}}
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-11">                                        
+                                    </div>
+                                    <div class="col-md-1 pull-right">                                          
+                                        <div class="col-md-6">
+                                            <a title="Download" ng-show="showPrintFamily" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printOrEmail(1,selectedFamilyMembers, 'print')"></a>                                      
+                                        </div>                
+                                        <div class="col-md-6">
+                                            <a title="Email" ng-show="showPrintFamily" type="button" class="btn btn-success glyphicon glyphicon-envelope pull-right" ng-click="printOrEmail(1,selectedFamilyMembers, 'email')"></a>                                    
+                                        </div>                
+                                    </div>                                   
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row" ng-show="showPrintFamily">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <img style="width:100px;height:100px" ng-show="includeLogo == 1" src="{{logoImage}}" alt="profile-picture">
+                                        </div>
+                                        <div class="col-md-4" style="text-align: center">
+                                            <p>
+                                                <b> {{org.name}} </b><br />{{org.address1}}<br />{{org.city}}<br /> {{org.state}},{{org.zipCode}}
+                                            </p>
+                                        </div>                                           
+                                            <div class="col-md-4"></div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-12">
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td style="text-align: left">
+                                                    <b>Tax Id :</b> {{org.taxId}}
+                                                </td>
+                                                <td style="text-align: right">
+                                                    <b>Date :</b> {{today | date:MM/dd/yyyy }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <hr />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span class="col-sd-4">
+                                            <b> {{getFamilyTaxPayerNames()}}</b>
+                                        </span>
+                                        <p>
+                                            {{selectedFamily.address1}},<br />{{selectedFamily.city}},<br /> {{selectedFamily.state}} - {{selectedFamily.zipCode}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-show="showPrintFamily">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4" style="text-align: center">
+                                    <p>
+                                        <b>Contribution report</b><br />
+                                        {{offeringSearchFamily.startDate | date:MM/dd/yyyy}} to {{offeringSearchFamily.endDate | date:MM/dd/yyyy}}
+                                    </p>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="showPrintFamily">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <b>Total Contribution</b> : {{authentication.currency}} {{totalFamilyOffering}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                          
+                                <table id="tblFamily" class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>
+                                            Offering Type
+                                        </th>
+                                        <th class="hidden-sm hidden-xs hidden-md">
+                                            Fund Type
+                                        </th>
+                                        <th class="hidden-sm hidden-xs hidden-md">
+                                            Payment Type
+                                        </th>
+                                        <th>
+                                            Amount in  {{authentication.currency}}
+                                        </th>
+                                        <th>
+                                            Offering Date
+                                        </th>
+                                        <th>
+                                            RefNo
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="familyOffering in familyOfferings">
+                                        <td>
+                                            {{familyOffering.offeringType}}
+                                        </td>
+                                        <td>
+                                            {{familyOffering.fundType}}
+                                        </td>
+                                        <td>
+                                            {{familyOffering.paymentType}}
+                                        </td>
+                                        <td>
+                                            {{familyOffering.amount}}
+                                        </td>
+                                        <td>
+                                            {{familyOffering.offeringDate | date:MM/dd/yyyy}}
+                                        </td>
+                                        <td>
+                                            {{familyOffering.transactionNumber}}
+                                        </td>
+                                    </tr>
+                                </table>                              
+
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+
+                                <div class="col-md-12" ng-show="showPrintFamily">
+                                    <p ng-show="contributionMsg ==''">
+                                        The IRS requires that individual contributions of $250.00 or more be listed separately to ensure tax deductibility.
+                                        Contributions to {{org.name}} are tax deductible. Statements that are not questioned within 90 days will be considered to be accurate. No goods or services were provided by {{org.name}} in connection with any contribution,
+                                        or their value were insignificant or
+                                        consisted entirely of intangible religious benefits.
+                                    </p>
+                                    <p ng-show="contributionMsg !=''">
+                                       {{contributionMsg}}
+                                    </p>
+                                </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-12" ng-show="showPrintFamily">
+                                <p>
+                                    Thank you for your generous gifts last year!
+                                </p>
+                                <div class="col-md-12">
+                                    <br />
+                                    <img style="width:200px;height:100px" ng-show="includeSignature == 1" src="{{signatureImage}}" alt="profile-picture">
+                                </div>
+                                <div class="col-md-12" ng-show="includeSignature == 0">
+                                    <br />
+                                    <br />
+                                </div>  
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>                               
+                                <p ng-show="pastorInfo != null">
+                                    <b>Pastor </b>{{pastorInfo.firstName}}<span>&nbsp;</span>{{pastorInfo.lastName}}
+                                </p>
+                            </div>
+                                <div class="col-md-12" ng-show="showPrintFamily">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td colspan="3">
+                                                <hr />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left">
+                                                {{org.website}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{org.phone1}}
+                                            </td>
+                                            <td style="text-align: right">
+                                                {{org.emailId1}}
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                        <div class="tab-pane" id="2">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <form name="familyMemberForm">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="offeringSearchFamilyMember.familyMemberId">FamilyMember Name:</label>
+                                        <div class="col-md-4" ng-show="familyMembersLoaded==0">
+                                            <select class="form-control" disabled>
+                                                <option data-icon="fa fa-spinner fa-pulse fa-2x fa-fw">Loading...</option>
+                                            </select>
+                                        </div>
+                                            <div class="col-md-4" ng-show="familyMembersLoaded==1">
+                                                <!--<select class="form-control" name="ddFamilyMember" ng-model="offeringSearchFamilyMember.familyMemberId" ng-options=" familyMember.id as familyMember.fullName + ' (' + familyMember.family + ')' for familyMember in familyMembers">
+                        <option value="">-- Select FamilyMember --</option>
+                    </select>-->
+                                                <ui-select name="ddFamilyMember" allow-clear ng-model="familyMember.selected" theme="bootstrap" required>
+                                                    <ui-select-match placeholder="Select or search a family member in the list...">{{$select.selected.fullName}}</ui-select-match>
+                                                    <ui-select-choices repeat="familyMember in familyMembers | filter: $select.search">
+                                                        <span ng-bind-html="familyMember.fullName | highlight: $select.search"></span>
+                                                        <small ng-bind-html="familyMember.family | highlight: $select.search"></small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="error" ng-show="familyMemberForm.ddFamilyMember.$dirty && familyMemberForm.ddFamilyMember.$error.required">
+                                                    Required!
+                                                </span>
+                                            </div>
+                                            <label class="control-label col-sm-2" for="offeringSearchFamilyMember.fiscalYearId">Fiscal Year:</label>
+                                            <div class="col-md-4">
+                                                <select class="form-control" name="ddFiscalYearsFamilyMember" required ng-model="offeringSearchFamilyMember.fiscalYearId" ng-options=" fiscalYear.id as fiscalYear.fiscalYear for fiscalYear in fiscalYears ">
+                                                    <option value="">-- Select Fiscal Year --</option>
+                                                </select>
+                                                <span class="error" ng-show="familyMemberForm.ddFiscalYearsFamilyMember.$dirty && familyMemberForm.ddFiscalYearsFamilyMember.$error.required">
+                                                    Required!
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <div style="align-content:center" class="col-md-5"></div>
+                                            <div style="align-content:center" class="col-md-2">
+                                                &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                                <button class="btn btn-lg btn-primary btn-block pull-right" type="submit"                                                       
+                                                        ng-click="getFamilyMemberOfferingReport(familyMemberForm)">
+                                                    Show
+                                                </button>
+                                            </div>
+                                            <div style="align-content:center" class="col-md-5"></div>
+                                        </div>
+                                    </div>
+                            </form>
+                            <div class="col-md-12">
+                                <div class="alert {{alertClassForEmptyListFamilyMember}} alert-dismissible" ng-show="showAlertForEmptyListFamilyMember" role="alert">
+                                    <button type="button" class="close" ng-click="showAlertForEmptyListFamilyMember=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{alertMsgForEmptyListFamilyMember}}
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>                          
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-11">
+                                    </div>
+                                    <div class="col-md-1 pull-right">
+                                        <div class="col-md-6">
+                                            <a title="Download" ng-show="showPrintFamilyMember" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printOrEmail(2,selectedFamilyMember.fullName, 'print')"></a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a title="Email" ng-show="showPrintFamilyMember" type="button" class="btn btn-success glyphicon glyphicon-envelope pull-right" ng-click="printOrEmail(2,selectedFamilyMember.fullName, 'email')"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <hr />
+
+                            <!--<div class="row">
+                                <div class="col-md-12">
+                                    <hr />
+                                    <a title="Download" ng-show="showPrintFamilyMember" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="print(2,selectedFamilyMember.fullName)"></a>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                            </div>-->
+
+                            <div class="row" ng-show="showPrintFamilyMember">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <img style="width:100px;height:100px" ng-show="includeLogo == 1" src="{{logoImage}}" alt="profile-picture">
+                                        </div>
+                                        <div class="col-md-4" style="text-align: center">
+                                            <p>
+                                                <b> {{org.name}} </b><br />{{org.address1}}<br />{{org.city}}<br /> {{org.state}},{{org.zipCode}}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-4" style="text-align: left">
+                                            <p>
+                                                <b>Tax Id :</b> {{org.taxId}}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4" style="text-align: right">
+                                            <p>
+                                                <b>Date :</b> {{today | date:MM/dd/yyyy }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span class="col-sd-4">
+                                            <b> {{selectedFamilyMember.fullName}}</b>,
+                                        </span>
+                                        <p>
+                                            {{selectedFamilyForMember.address1}},<br />{{selectedFamilyForMember.city}},<br /> {{selectedFamilyForMember.state}},{{selectedFamilyForMember.zipCode}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-show="showPrintFamilyMember">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4" style="text-align: center">
+                                    <p>
+                                        <b>Contribution report</b><br />
+                                        {{offeringSearchFamilyMember.startDate | date:MM/dd/yyyy}} to {{offeringSearchFamilyMember.endDate | date:MM/dd/yyyy}}
+                                    </p>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group" ng-show="showPrintFamilyMember">
+                                    <div class="col-md-12">
+                                        <b>Total Contribution</b> : {{authentication.currency}} {{totalFamilyOffering}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table id="tblFamilyMember" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>
+                                        Offering Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Fund Type
+                                    </th>
+                                    <th class="hidden-sm hidden-xs hidden-md">
+                                        Payment Type
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+                                        Offering Date
+                                    </th>
+                                    <th>
+                                        Ref No
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="familyMemberOffering in familyMemberOfferings">
+                                    <td>
+                                        {{familyMemberOffering.offeringType}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.fundType}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.paymentType}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.amount}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.offeringDate | date:MM/dd/yyyy}}
+                                    </td>
+                                    <td>
+                                        {{familyMemberOffering.transactionNumber}}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-12" ng-show="showPrintFamilyMember">
+                                <p ng-show="contributionMsg ==''">
+                                    The IRS requires that individual contributions of $250.00 or more be listed separately to ensure tax deductibility.
+                                    Contributions to {{org.name}} are tax deductible. Statements that are not questioned within 90 days will be considered to be accurate. No goods or services were provided by {{org.name}} in connection with any contribution,
+                                    or their value were insignificant or
+                                    consisted entirely of intangible religious benefits.
+                                </p>
+                                <p ng-show="contributionMsg !=''">
+                                    {{contributionMsg}}
+                                </p>
+                            </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-12" ng-show="showPrintFamilyMember">
+                                <p>
+                                    Thank you for your generous gifts last year!
+                                </p>
+                                <div class="col-md-12">
+                                    <br />
+                                    <img style="width:200px;height:100px" ng-show="includeSignature == 1" src="{{signatureImage}}" alt="profile-picture">
+                                </div>
+                                <div class="col-md-12" ng-show="includeSignature == 0">
+                                    <br />
+                                    <br />
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
+                                <p ng-show="pastorInfo != null">
+                                    <b>Pastor </b>{{pastorInfo.firstName}}<span>&nbsp;</span>{{pastorInfo.lastName}}
+                                </p>
+                            </div>
+                            <div class="col-md-12" ng-show="showPrintFamilyMember">
+                                <hr />
+                                <div class="col-md-12">
+                                    <div class="col-md-4" style="text-align: left">
+                                        <p>
+                                            {{org.website}}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4" style="text-align: center">
+                                        <p>
+                                            {{org.phone1}}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4" style="text-align: right">
+                                        <p>
+                                            {{org.emailId1}}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                                <div class="tab-pane" id="3">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="offeringSearchSponsor.sponsorId">Sponsor Name:</label>
+                                            <div class="col-md-4">
+                                                <select class="form-control" name="ddSponsor" ng-model="offeringSearchSponsor.sponsorId" ng-options=" sponsor.id as sponsor.name for sponsor in sponsors">
+                                                    <option value="">-- Select Sponsor --</option>
+                                                </select>
+                                            </div>
+                                            <label class="control-label col-sm-2" for="offeringSearchSponsor.fiscalYearId">Fiscal Year:</label>
+                                            <div class="col-md-4">
+                                                <select class="form-control" name="ddFiscalYearsSponsor" ng-model="offeringSearchSponsor.fiscalYearId" ng-options=" fiscalYear.id as fiscalYear.fiscalYear for fiscalYear in fiscalYears ">
+                                                    <option value="">-- Select fiscal year --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <div style="align-content:center" class="col-md-5"></div>
+                                            <div style="align-content:center" class="col-md-2">
+                                                &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;
+                                                <button class="btn btn-lg btn-primary btn-block pull-right" type="submit"
+                                                        ng-disabled="offeringSearchSponsor.sponsorId == '' || offeringSearchSponsor.fiscalYearId == '' || offeringSearchSponsor.sponsorId == null || offeringSearchSponsor.fiscalYearId == null"
+                                                        ng-click="getSponsorOfferingReport()">
+                                                    Show
+                                                </button>
+                                            </div>
+                                            <div style="align-content:center" class="col-md-5"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="alert {{alertClassForEmptyListSponsor}} alert-dismissible" ng-show="showAlertForEmptyListSponsor" role="alert">
+                                            <button type="button" class="close" ng-click="showAlertForEmptyListSponsor=false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            {{alertMsgForEmptyListSponsor}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                    <!--<div class="row">
+                                        <div class="col-md-12">
+                                            <hr />
+                                            <a title="Download" ng-show="showPrintSponsor" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="print(3,selectedSponsor.name)"></a>
+                                        </div>
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>-->
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-11">
+                                            </div>
+                                            <div class="col-md-1 pull-right">
+                                                <div class="col-md-6">
+                                                    <a title="Download" ng-show="showPrintSponsor" type="button" class="btn btn-success glyphicon glyphicon-download-alt pull-right" ng-click="printOrEmail(3,selectedSponsor.name, 'print')"></a>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <a title="Email" ng-show="showPrintSponsor" type="button" class="btn btn-success glyphicon glyphicon-envelope pull-right" ng-click="printOrEmail(3,selectedSponsor.name, 'email')"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row" ng-show="showPrintSponsor">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="col-md-4">
+                                                    <img style="width:100px;height:100px" ng-show="includeLogo == 1" src="{{logoImage}}" alt="profile-picture">
+                                                </div>
+                                                <div class="col-md-4" style="text-align: center">
+                                                    <p>
+                                                        <b> {{org.name}} </b><br />{{org.address1}}<br />{{org.city}}<br /> {{org.state}},{{org.zipCode}}
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4"></div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                &nbsp;
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-4" style="text-align: left">
+                                                    <p>
+                                                        <b>Tax Id :</b> {{org.taxId}}
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                </div>
+                                                <div class="col-md-4" style="text-align: right">
+                                                    <p>
+                                                        <b>Date :</b> {{today | date:MM/dd/yyyy }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <hr />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <span class="col-sd-4">
+                                                    <b> {{selectedSponsor.name}}</b>,
+                                                </span>
+                                                <p>
+                                                    {{selectedSponsor.address1}},<br />{{selectedSponsor.city}},<br /> {{selectedSponsor.state}},{{selectedSponsor.zipCode}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" ng-show="showPrintSponsor">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4" style="text-align: center">
+                                            <p>
+                                                <b>Contribution report</b><br />
+                                                {{offeringSearchSponsor.startDate | date:MM/dd/yyyy}} to {{offeringSearchSponsor.endDate | date:MM/dd/yyyy}}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group" ng-show="showPrintSponsor">
+                                            <div class="col-md-12">
+                                                <b>Total Contribution</b> : {{authentication.currency}} {{totalSponsorOffering}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <table id="tblSponsor" class="table table-bordered table-striped">
+                                        <tr>
+                                            <th>
+                                                Offering Type
+                                            </th>
+                                            <th class="hidden-sm hidden-xs hidden-md">
+                                                Fund Type
+                                            </th>
+                                            <th class="hidden-sm hidden-xs hidden-md">
+                                                Payment Type
+                                            </th>
+                                            <th>
+                                                Amount
+                                            </th>
+                                            <th>
+                                                Offering Date
+                                            </th>
+                                            <th>
+                                                Ref No
+                                            </th>
+                                        </tr>
+                                        <tr ng-repeat="sponsorOffering in sponsorOfferings">
+                                            <td>
+                                                {{sponsorOffering.offeringType}}
+                                            </td>
+                                            <td>
+                                                {{sponsorOffering.fundType}}
+                                            </td>
+                                            <td>
+                                                {{sponsorOffering.paymentType}}
+                                            </td>
+                                            <td>
+                                                {{sponsorOffering.amount}}
+                                            </td>
+                                            <td>
+                                                {{sponsorOffering.offeringDate | date:MM/dd/yyyy}}
+                                            </td>
+                                            <td>
+                                                {{sponsorOffering.transactionNumber}}
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-12" ng-show="showPrintSponsor">
+                                        <p ng-show="contributionMsg ==''">
+                                            The IRS requires that individual contributions of $250.00 or more be listed separately to ensure tax deductibility.
+                                            Contributions to {{org.name}} are tax deductible. Statements that are not questioned within 90 days will be considered to be accurate. No goods or services were provided by {{org.name}} in connection with any contribution,
+                                            or their value were insignificant or
+                                            consisted entirely of intangible religious benefits.
+                                        </p>
+                                        <p ng-show="contributionMsg !=''">
+                                            {{contributionMsg}}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-12" ng-show="showPrintSponsor">
+                                        <p>
+                                            Thank you for your generous gifts last year!
+                                        </p>
+                                        <div class="col-md-12">
+                                            <br />
+                                            <img style="width:200px;height:100px" ng-show="includeSignature == 1" src="{{signatureImage}}" alt="profile-picture">
+                                        </div>
+                                        <div class="col-md-12" ng-show="includeSignature == 0">
+                                            <br />
+                                            <br />
+                                        </div>
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                        <p ng-show="pastorInfo != null">
+                                            <b>Pastor </b>{{pastorInfo.firstName}}<span>&nbsp;</span>{{pastorInfo.lastName}}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12" ng-show="showPrintSponsor">
+                                        <hr />
+                                        <div class="col-md-12">
+                                            <div class="col-md-4" style="text-align: left">
+                                                <p>
+                                                    {{org.website}}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-4" style="text-align: center">
+                                                <p>
+                                                    {{org.phone1}}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-4" style="text-align: right">
+                                                <p>
+                                                    {{org.emailId1}}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+</div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

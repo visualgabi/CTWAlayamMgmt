@@ -1,0 +1,25 @@
+﻿<div id="navigation">
+    <div class="profile-picture">
+        <a href="index.html">
+            <img src="app/images/logo.png" class="img-circle m-b" alt="logo">
+        </a>
+    </div> 
+
+    <ul side-navigation class="nav" id="side-menu" ng-if="authentication.isAuth && (authentication.role==2 || authentication.role==3 || authentication.role==4)">
+        <li ui-sref-active="active"><a ng-click="logOut()">Logout</a></li>
+        <li ui-sref-active="active"><a ui-sref="dashboard">Dashboard</a></li>
+        <li ui-sref-active="active"><a ui-sref="orgDtls({id:{{authentication.orgId}}})">Organization</a></li>
+        <li ui-sref-active="active"><a ui-sref="activity.offeringlst">Offering</a></li>
+        <li ui-sref-active="active"><a ui-sref="activity.expenselst">Expense</a></li>
+        <li ui-sref-active="active"><a ui-sref="activity.depositlst">Deposit</a></li>
+        <li ui-sref-active="active"><a ui-sref="activity.eventlst">Event</a></li>
+
+        <li ui-sref-active="active"><a ui-sref="yearEndActivity.balanceSheet">Balance Sheet</a></li>
+        <li ui-sref-active="active"><a ui-sref="admin.userlst">User</a></li>
+    </ul>
+    <ul side-navigation class="nav" id="side-menu" ng-if="authentication.isAuth && (authentication.role==1)">
+        <li ui-sref-active="active"><a ng-click="logOut()">Logout</a></li>        
+        <li ui-sref-active="active"><a ui-sref="orglst">Organization</a></li>  
+        <li ui-sref-active="active"><a ui-sref="admin.userlst">User</a></li>      
+    </ul>
+</div>

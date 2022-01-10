@@ -1,0 +1,165 @@
+﻿<div class="row" ng-controller="offeringRptCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div class="row" ng-show="showPrint">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <td>Total offering in {{authentication.currency}}</td>
+                                        <td>{{total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by source type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Source type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in sourceTypeSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by payment type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Payment type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in paymentTypesSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by fund type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Fund type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in fundTypeSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Summary by offering type</div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>Offering type</th>
+                                        <th>Total in {{authentication.currency}}</th>
+                                    </tr>
+                                    <tr ng-repeat="summary in offeringTypeSummary | filter : isGreaterThanZero()">
+                                        <td>{{summary.name }}</td>
+                                        <td>{{summary.total}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-12">
+                        <a title="Download in excel" ng-show="showExcel" type="button" class="btn btn-success fa fa-file-excel-o pull-right" ng-click="downloadExcel()"></a>
+                    </div>
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Source
+                        </th>
+                        <th>
+                            Member Name
+                        </th>
+                        <th>
+                            Offering Type
+                        </th>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Fund Type
+                        </th>
+                        <th class="hidden-sm hidden-xs hidden-md">
+                            Payment Type
+                        </th>
+                        <th>
+                            Amount in {{authentication.currency}}
+                        </th>
+                        <th>
+                            OfferingDate
+                        </th>
+                    </tr>
+                    <tr ng-repeat="offering in offerings">
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{offering.familyMember != null ? "Family" : "Sponsor"}}
+                        </td>
+                        <td>
+                            {{offering.familyMember != null ? offering.familyMember : offering.sponsor}}
+                        </td>
+                        <td>
+                            {{offering.offeringType}}
+                        </td>
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{offering.fundType}}
+                        </td>
+                        <td class="hidden-sm hidden-xs hidden-md">
+                            {{offering.paymentType}}
+                        </td>
+                        <td>
+                            {{offering.amount}}
+                        </td>
+                        <td>
+                            {{offering.offeringDate | date:MM/dd/yyyy}}
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

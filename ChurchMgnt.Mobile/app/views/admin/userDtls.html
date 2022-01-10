@@ -1,0 +1,80 @@
+﻿<div class="row" ng-controller="userDtlsCtrl">
+    <div class="col-md-12">
+        <div class="hpanel">
+            <div class="panel-heading">
+                <div panel-tools></div>
+                User details
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+
+                    <a title="List" class="btn btn-success glyphicon glyphicon-th-list btn-xs" ui-sref="admin.userlst"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Edit" type="button" class="btn btn-success glyphicon glyphicon-edit btn-xs" ui-sref="admin.userEdit({id:{{user.id}}})"></a>
+                    <span class="pull-right">&nbsp;&nbsp;</span>
+                    <a title="Disable" type="button" ng-show="user.active === true" class="btn btn-warning glyphicon glyphicon glyphicon-trash btn-xs" data-template="deleteUser.html" data-placement="right" data-auto-close="1" bs-popover></a>
+                    <a title="Enable" type="button" ng-show="user.active === false" class="btn btn-success glyphicon glyphicon glyphicon-ok btn-xs" ng-click="enable(user.id, true)"></a>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert {{alertClass}} alert-dismissible" ng-show="showAlert" role="alert">
+                            <button type="button" class="close" ng-click="clearAlert();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{alertMsg}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+                <div class="col-md-12">
+                    <div class="row" ng-init="initialize()">
+
+
+                        <table class="table table-bordered">
+                            <tr ng-class="{'danger': user.active === false }">
+                                <th>User Name:</th>
+                                <td>{{user.userName}} </td>
+                            </tr>
+                            <tr ng-class="{'danger': user.active === false }">
+                                <th>Role:</th>
+                                <td>{{user.role}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': user.active === false }">
+                                <th>First Name:</th>
+                                <td>{{user.firstName}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': user.active === false }">
+                                <th>Last Name:</th>
+                                <td>{{user.lastName}}</td>
+                            </tr>
+                            <tr ng-class="{'danger': user.active === false }">
+                                <th>organization:</th>
+                                <td>{{user.organization}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="deleteUser.html" type="text/ng-template">
+    <div class="popover popover-delete right" tabindex="-1">
+        <div class="arrow" style="top: 50%;"></div>
+        <h3 class="popover-title">Are you sure?</h3>
+        <div class="popover-content">
+            <div class="input-group">
+                <div class="form-actions">
+                    <button type="button" class="btn-xs btn-danger" ng-click="enable(user.id,false);popover.saved=true;$hide()">Delete</button>
+                    <button type="button" class="btn-xs btn-default" ng-click="$hide()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
